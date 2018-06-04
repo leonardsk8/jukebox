@@ -32,6 +32,7 @@ public class MenuDAO extends CRUD implements ValueEventListener{
         position = 0;
     }
 
+    //PRUEBA COMMIT
     public void getMenuBars() {
         Query query = null;
         for(EstablishmentVO b: listEstablishment) {
