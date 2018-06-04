@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="accent_material_light">#061e65</color>
+    <color name="orange">#FF9814</color>
+    <color name="transpar">#00d3d3d3</color>
+    <color name="color1">#ff0000</color>
+    <color name="color2">#00ff00</color>
+    <color name="color4">#ffff00</color>
+    <color name="white">#ffffff</color>
+    <color name="top_divider">#9d9d9d</color>
+    <color name="black">#80000000</color>
+    <color name="hyperBlack">#000000</color>
+</resources>

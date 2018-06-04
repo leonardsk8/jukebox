@@ -1,0 +1,59 @@
+{
+  "project_info": {
+    "project_number": "629911785392",
+    "firebase_url": "https://dispositivo1-202101.firebaseio.com",
+    "project_id": "dispositivo1-202101",
+    "storage_bucket": "dispositivo1-202101.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:629911785392:android:3badce70f8845ea6",
+        "android_client_info": {
+          "package_name": "ilioncorp.com.jukebox"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "629911785392-8gger4bhpdgta24l72j5d529hg4sbr09.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ilioncorp.com.jukebox",
+            "certificate_hash": "94c90e0f562a3add869cc6dfe0fa48164eb41a0c"
+          }
+        },
+        {
+          "client_id": "629911785392-0dhe49ao2qds972c3r5s2es4v5ukeicm.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "629911785392-0dhe49ao2qds972c3r5s2es4v5ukeicm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6w7OgT8K_5QjOo1Gw3aTBMnnd70cRGlI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "629911785392-0dhe49ao2qds972c3r5s2es4v5ukeicm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

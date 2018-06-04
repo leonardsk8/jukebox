@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:animateLayoutChanges="true"
+    >
+
+    <ImageView
+        android:id="@+id/imagePreviewBar"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/previewbar" />
+
+    <LinearLayout
+        android:animateLayoutChanges="true"
+        android:id="@+id/lypreviewBar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvNameBarPreview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NOMBRE DEL BAR"
+            android:layout_gravity="center_horizontal"
+            android:textSize="20sp" />
+
+        <RatingBar
+            android:id="@+id/ratingBarPreview"
+            style="@style/custumStyleBar"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:stepSize="1.0" />
+
+        <TextView
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/tvAddressBarPreview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="Dirección" />
+
+        <TextView
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/tvGendersBarPreview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Generos " />
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

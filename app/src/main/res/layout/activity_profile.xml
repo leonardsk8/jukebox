@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    tools:context=".view.activity.RegisterActivity"
+    android:animateLayoutChanges="true"
+    >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:animateLayoutChanges="true"
+            android:id="@+id/rlWhole"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tap on \nme to \nset image"
+                android:textSize="16sp"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/top_divider"
+                android:layout_marginTop="45dp"
+                />
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:layout_height="130dp"
+                android:layout_width="130dp"
+                android:layout_marginTop="25dp"
+                fresco:actualImageScaleType="centerCrop"
+                android:id="@+id/imageProfile"
+                fresco:roundAsCircle="true"
+                fresco:roundedCornerRadius="1dp"
+                fresco:roundingBorderWidth="2dp"
+                fresco:backgroundImage="@color/transpar"
+                fresco:roundingBorderColor="@color/orange"
+                android:layout_centerHorizontal="true"
+                />
+            <EditText
+                android:id="@+id/etNameProfile"
+                android:layout_width="300dp"
+                android:layout_height="40dp"
+                android:layout_below="@+id/imageProfile"
+                android:layout_marginTop="35dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/rounded_corner"
+                android:ems="10"
+                android:textAlignment="center"
+                android:hint="Nombre"
+                android:inputType="textEmailAddress" />
+            <EditText
+                android:id="@+id/etEmailProfile"
+                android:layout_width="300dp"
+                android:layout_height="40dp"
+                android:layout_below="@+id/etNameProfile"
+                android:layout_marginTop="25dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/rounded_corner"
+                android:ems="10"
+                android:textAlignment="center"
+                android:hint="Email"
+                android:inputType="textEmailAddress" />
+
+            <DatePicker
+                android:id="@+id/dpBirthdayProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/etEmailProfile"
+                android:calendarViewShown="false"
+                android:layout_centerHorizontal="true"
+                android:datePickerMode="spinner"
+                android:spinnersShown="true"
+                android:layout_marginTop="25dp"
+                android:maxDate="01-01-"
+                />
+
+            <Spinner
+                android:id="@+id/spinnerGenderProfile"
+                android:layout_below="@+id/dpBirthdayProfile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:paddingRight="15dp"
+
+                android:paddingLeft="15dp"
+                />
+            <EditText
+                android:id="@+id/etAboutProfile"
+                android:layout_below="@+id/spinnerGenderProfile"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:ems="10"
+                android:layout_marginBottom="25dp"
+                android:hint="Write about you"
+                android:inputType="textMultiLine" />
+            <android.support.v7.widget.CardView
+                android:id="@+id/btnSaveProfie"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_below="@+id/etAboutProfile"
+                android:layout_marginBottom="39dp"
+                android:layout_centerHorizontal="true"
+                app:cardBackgroundColor="@color/orange"
+                app:cardCornerRadius="25dp"
+                app:cardElevation="50dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="11dp"
+                        android:layout_marginBottom="11dp"
+                        android:text="Save"
+                        android:textColor="#fff"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+        </RelativeLayout>
+    </ScrollView>
+
+
+</RelativeLayout>

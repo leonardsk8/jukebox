@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
+
+        <LinearLayout
+            android:layout_marginTop="25dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Bar Ozzy"
+                android:layout_gravity="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:textColor="@color/hyperBlack"
+                android:textStyle="bold|italic"
+                />
+            <TextView
+                android:id="@+id/tvDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="15dp"
+                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum congue et libero quis commodo. Suspendisse vehicula dolor ut mi pretium mattis. Nullam fermentum massa a finibus sagittis. In hac habitasse platea dictumst. Mauris sollicitudin est massa. Nulla commodo nisl nulla, sed porta sem placerat sit amet. Aenean non porta dolor. Donec luctus sed est a consectetur. Etiam sed venenatis mauris. Vivamus in hendrerit elit. Aenean venenatis vitae erat sed pulvinar. "
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/tvMenu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="25dp"
+                android:text="Menú"
+                android:textSize="25dp" />
+
+            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/fragmentContainer"
+                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:context=".MainActivity">
+            </FrameLayout>
+
+            <TextView
+                android:text="Horarios"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginLeft="25dp"
+                />
+            <RelativeLayout
+                android:layout_marginTop="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tvMonday"
+                    android:text="MON"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="25dp"
+                    />
+                <ImageView
+                    android:id="@+id/ivMonday"
+                    android:layout_below="@id/tvMonday"
+                    android:layout_alignStart="@+id/tvMonday"
+                    android:src="@drawable/close"
+                    android:layout_width="30dp"
+                    android:layout_height="35dp"/>
+
+                <TextView
+                    android:id="@+id/tvTuesday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="70dp"
+                    android:text="TUE" />
+                <ImageView
+                    android:id="@+id/ivTuesday"
+                    android:layout_below="@id/tvTuesday"
+                    android:layout_alignStart="@+id/tvTuesday"
+                    android:src="@drawable/close"
+                    android:layout_width="30dp"
+                    android:layout_height="35dp"/>
+
+                <TextView
+                    android:id="@+id/tvWednesday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="111dp"
+                    android:text="WEN" />
+                <ImageView
+                    android:id="@+id/ivWednesday"
+                    android:layout_below="@id/tvWednesday"
+                    android:layout_alignStart="@+id/tvWednesday"
+                    android:src="@drawable/close"
+                    android:layout_width="30dp"
+                    android:layout_height="35dp"/>
+
+                <TextView
+                    android:id="@+id/tvThursday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="152dp"
+                    android:text="THU" />
+                <ImageView
+                    android:id="@+id/ivThursday"
+                    android:layout_below="@id/tvThursday"
+                    android:layout_alignStart="@+id/tvThursday"
+                    android:src="@drawable/open"
+                    android:layout_width="30dp"
+                    android:layout_height="35dp" />
+
+                <TextView
+                    android:id="@+id/tvFriday"
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginEnd="135dp"
+                android:text="FRI" />
+
+                <ImageView
+                    android:id="@+id/ivFriday"
+                    android:layout_below="@id/tvFriday"
+                    android:layout_alignStart="@+id/tvFriday"
+                    android:src="@drawable/open"
+                    android:layout_width="30dp"
+                    android:layout_height="35dp" />
+
+                <TextView
+                    android:id="@+id/tvSaturday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginEnd="85dp"
+                    android:text="SAT" />
+
+                <ImageView
+                    android:id="@+id/ivSaturday"
+                    android:layout_below="@id/tvSaturday"
+                    android:layout_alignStart="@+id/tvSaturday"
+                    android:src="@drawable/open"
+                    android:layout_width="30dp"
+                    android:layout_height="35dp" />
+
+                <TextView
+                    android:id="@+id/tvSunday"
+                    android:layout_width="30dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginEnd="37dp"
+                    android:text="SUN" />
+                <ImageView
+                    android:id="@+id/ivSunday"
+                    android:src="@drawable/open"
+                    android:layout_below="@id/tvSunday"
+                    android:layout_alignStart="@+id/tvSunday"
+                    android:layout_width="30dp"
+                    android:layout_height="35dp" />
+
+            </RelativeLayout>
+            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/fragmentContainerPhotos"
+                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:context=".MainActivity">
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+</RelativeLayout>
