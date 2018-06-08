@@ -74,11 +74,6 @@ public class RegisterActivity extends GenericActivity implements Handler.Callbac
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-
-    }
-    @Override
     public void onBackPressed()
     {
         finish();
@@ -168,7 +163,7 @@ public class RegisterActivity extends GenericActivity implements Handler.Callbac
 
         }
     }
-    public File getFile() throws IOException {
+    public File getFile() {
 
         File fileDir = new File(Environment.getExternalStorageDirectory()
                 + "/Android/data/"
@@ -180,9 +175,6 @@ public class RegisterActivity extends GenericActivity implements Handler.Callbac
                 return fileDir;
             }
         }
-
-
-        File mediaFile = new File(fileDir.getPath() + File.separator + "temp.jpg");
         return new File(fileDir.getPath() + File.separator + "temp.jpg");
     }
 
@@ -223,11 +215,7 @@ public class RegisterActivity extends GenericActivity implements Handler.Callbac
     }
     private void catchPhoto() {
 
-        try {
-            filen = getFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        filen = getFile();
         if(filen!=null) {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             try {

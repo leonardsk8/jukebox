@@ -8,6 +8,16 @@ public class ReproductionListVO implements Serializable{
     private String thumbnail;
     private String video_id;
     private String user;
+    private boolean approved;
+
+    public boolean isApproved() {
+        return approved;
+    }
+
+    public void setApproved(boolean approved) {
+        this.approved = approved;
+    }
+
 
 
     public String getUser() {

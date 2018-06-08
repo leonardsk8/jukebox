@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class EstablishmentVO implements Serializable{
-    public int id;
+    public String id;
     public String email;
     public String phone;
     public String schedules;
@@ -78,11 +78,11 @@ public class EstablishmentVO implements Serializable{
         this.password = password;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

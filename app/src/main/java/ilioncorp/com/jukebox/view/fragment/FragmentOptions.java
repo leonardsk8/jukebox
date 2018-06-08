@@ -17,6 +17,7 @@ import ilioncorp.com.jukebox.view.activity.ChargeAccountActivity;
 import ilioncorp.com.jukebox.view.activity.HistoryActivity;
 import ilioncorp.com.jukebox.view.activity.ListBarActivity;
 import ilioncorp.com.jukebox.view.activity.ProfileActivity;
+import ilioncorp.com.jukebox.view.activity.ScanCodeActivity;
 import ilioncorp.com.jukebox.view.generic.GenericFragment;
 import ilioncorp.com.jukebox.view.activity.MainActivity;
 
@@ -66,6 +67,7 @@ public class FragmentOptions extends GenericFragment implements View.OnClickList
                 startActivity(new Intent(getContext(), HistoryActivity.class));
                 break;
             case R.id.btnScan:
+                startActivity(new Intent(getContext(), ScanCodeActivity.class));
                 break;
             case R.id.btnListBar:
                 startActivity(new Intent(getContext(), ListBarActivity.class));

@@ -12,6 +12,8 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
 
     <application
         android:allowBackup="true"
@@ -32,7 +34,7 @@
         <activity
             android:name=".view.activity.RegisterActivity"
             android:theme="@style/JukeboxTheme" />
-        <activity android:name=".view.activity.MainActivity"></activity>
+        <activity android:name=".view.activity.MainActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -80,8 +82,9 @@
         <activity
             android:name=".view.activity.HistoryActivity"
             android:label="@string/title_activity_history"
-            android:theme="@style/JukeboxTheme"></activity>
-        <activity android:name=".view.activity.ProfileActivity"></activity>
+            android:theme="@style/JukeboxTheme" />
+        <activity android:name=".view.activity.ProfileActivity" />
+        <activity android:name=".view.activity.ScanCodeActivity"></activity>
     </application>
 
 </manifest>

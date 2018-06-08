@@ -104,7 +104,7 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
         mensaje = new Handler(this);
         btnArrow.setOnClickListener(this);
         bar = new ArrayList<>();
-        createBars();
+
         mlocManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(),
@@ -161,23 +161,7 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
     }
 
 
-    private void createBars() {
-        for (int i = 0; i < 5; i++) {
-            EstablishmentVO establecimiento = new EstablishmentVO();
-            establecimiento.setId(i);
-            establecimiento.setName(String.valueOf(i));
-            establecimiento.setEmail(String.valueOf(i));
-            establecimiento.setAddress(String.valueOf(i));
-            establecimiento.setDescription(String.valueOf(i));
-            establecimiento.setLatitude(i);
-            establecimiento.setLenght(i);
-            establecimiento.setPhone(String.valueOf(i));
-            establecimiento.setQrcontent(String.valueOf(i));
-            establecimiento.setRaiting(i);
-            establecimiento.setSchedules(String.valueOf(i));
-            establecimiento.setImages(String.valueOf(i));
-        }
-    }
+
 
     private void locationStart() {
         mlocManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);

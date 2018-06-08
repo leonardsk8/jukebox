@@ -38,7 +38,7 @@ public class ListBarActivity extends GenericActivity implements Handler.Callback
         this.listBarsRecicler = findViewById(R.id.listBarsRecicler);
         this.listBarsRecicler.setHasFixedSize(true);
         this.listBarsRecicler.setLayoutManager(new LinearLayoutManager(this));
-        showCharging("Cargando Pedidos");
+        showCharging("Loading");
         bridge = new Handler(this);
         EstablishmentDAO establishment = new EstablishmentDAO("",bridge);
         establishment.getAllBars();
@@ -60,7 +60,7 @@ public class ListBarActivity extends GenericActivity implements Handler.Callback
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem menuItem) {
-                adapter.setFilter((ArrayList<EstablishmentVO>) listItems);
+                adapter.setFilter(listItems);
                 return true;
             }
         });

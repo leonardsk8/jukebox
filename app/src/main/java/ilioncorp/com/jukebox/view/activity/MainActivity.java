@@ -183,9 +183,7 @@ public class MainActivity extends GenericActivity implements View.OnClickListene
                 start();
                 break;
             case 0:
-                for (int i = 0; i < 10000000; i++) {
 
-                }
             finish();
             break;
         }

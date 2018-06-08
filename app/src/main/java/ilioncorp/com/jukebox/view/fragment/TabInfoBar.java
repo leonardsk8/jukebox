@@ -53,7 +53,13 @@ public class TabInfoBar extends Fragment {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         String[] days = establishment.getSchedules().split("-");
         for (int i=0;i<=6;i++)
             if(days[i].contains("1"))
@@ -64,15 +70,15 @@ public class TabInfoBar extends Fragment {
         this.tvTitle.setText(establishment.getName());
         this.tvDescription.setText(establishment.getDescription());
         FragmentManager fm = getActivity().getSupportFragmentManager();
-        Fragment fragment = fm.findFragmentById(R.id.fragmentContainer);
+        Fragment fragment;
         Fragment fragmentPhotos;
 
-        if (fragment == null) {
+        //if (fragment == null) {
             fragment = new MenuListAdapter(establishment.getMenuList());
             fragmentPhotos = new PhotoListAdapter(establishment);
             fm.beginTransaction().add(R.id.fragmentContainer, fragment).commit();
             fm.beginTransaction().add(R.id.fragmentContainerPhotos,fragmentPhotos).commit();
-        }
+        //}
 
     }
 

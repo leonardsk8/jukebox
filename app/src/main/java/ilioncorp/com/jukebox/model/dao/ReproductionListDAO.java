@@ -38,6 +38,7 @@ public class ReproductionListDAO extends CRUD implements ValueEventListener {
             song = new ReproductionListVO();
             for (DataSnapshot ds: dataSnapshot.getChildren()){
                 this.song = ds.getValue(ReproductionListVO.class);
+                if(this.song.isApproved())
                 listSongs.add(this.song);
             }
             if(handlerActive)
