@@ -14,10 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import ilioncorp.com.jukebox.R;
 import ilioncorp.com.jukebox.model.dao.ReproductionListDAO;
 import ilioncorp.com.jukebox.model.dto.ReproductionListVO;
+import ilioncorp.com.jukebox.model.dto.UserLikeVO;
 import ilioncorp.com.jukebox.view.adapter.ReproductionListAdapter;
 
 @SuppressLint("ValidFragment")
@@ -44,7 +46,9 @@ public class TabReproducing extends Fragment implements Handler.Callback{
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        songDAO = new ReproductionListDAO("",idBar,bridge,true);
+        songDAO = new ReproductionListDAO(idBar,bridge,true);
+        adapter = new ReproductionListAdapter(listSongs,getContext(),songDAO);
+        listReproductionBar.setAdapter(adapter);
     }
 
     @Override
@@ -52,14 +56,14 @@ public class TabReproducing extends Fragment implements Handler.Callback{
         listSongs = (ArrayList<ReproductionListVO>) message.obj;
         listReproductionBar.setHasFixedSize(true);
         listReproductionBar.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new ReproductionListAdapter(listSongs,getContext());
-        listReproductionBar.setAdapter(adapter);
+        Collections.sort(listSongs);
+        Collections.sort(listSongs, (ReproductionListVO p1, ReproductionListVO p2) -> new Integer(p2.getLikes()).compareTo(p1.getLikes()));
+        adapter.setListSongs(listSongs);
         return false;
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        songDAO.stopListener();
     }
 }

@@ -21,8 +21,8 @@ public class EstablishmentDAO extends CRUD implements ValueEventListener,Handler
     public ArrayList<EstablishmentVO> listEstablishment;
     Handler bridge;
     Handler bridgeMenu;
-    public EstablishmentDAO(String json,Handler bridge) {
-        super(json);
+    public EstablishmentDAO(Handler bridge) {
+        super();
         this.bridge = bridge;
         listEstablishment = new ArrayList<>();
         bridgeMenu = new Handler(this);
@@ -49,7 +49,7 @@ public class EstablishmentDAO extends CRUD implements ValueEventListener,Handler
                 this.establishment.setImagesBar(this.establishment.getImages().split("~"));
                 listEstablishment.add(this.establishment);
             }
-            MenuDAO menu = new MenuDAO("",listEstablishment,bridgeMenu);
+            MenuDAO menu = new MenuDAO(listEstablishment,bridgeMenu);
             menu.getMenuBars();
         }
 

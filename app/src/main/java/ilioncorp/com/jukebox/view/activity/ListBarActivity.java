@@ -30,7 +30,7 @@ public class ListBarActivity extends GenericActivity implements Handler.Callback
     private ArrayList<EstablishmentVO> listItems;
     private Handler bridge;
     private android.support.v7.widget.RecyclerView listBarsRecicler;
-    MenuDAO menu;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +40,7 @@ public class ListBarActivity extends GenericActivity implements Handler.Callback
         this.listBarsRecicler.setLayoutManager(new LinearLayoutManager(this));
         showCharging("Loading");
         bridge = new Handler(this);
-        EstablishmentDAO establishment = new EstablishmentDAO("",bridge);
+        EstablishmentDAO establishment = new EstablishmentDAO(bridge);
         establishment.getAllBars();
     }
 
@@ -111,8 +111,7 @@ public class ListBarActivity extends GenericActivity implements Handler.Callback
     @Override
     public void onClick(View view) {
         Intent pantalla = new Intent(this,BarActivity.class);
-        EstablishmentVO establishment = listItems.get(listBarsRecicler.
-                getChildAdapterPosition(view));
+        EstablishmentVO establishment = listItems.get(listBarsRecicler.getChildAdapterPosition(view));
         pantalla.putExtra("establishment",establishment);
         startActivity(pantalla);
     }

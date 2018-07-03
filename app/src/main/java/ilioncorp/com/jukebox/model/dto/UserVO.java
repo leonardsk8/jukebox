@@ -12,6 +12,7 @@ public class UserVO {
     private String userBirthday;
     private boolean userProfileComplete;
     private String gender;
+    private String token;
 
 
     public UserVO(String userUID, String userName, String userEmail, String userUrlImage, String userAbout, String userBirthday, boolean userProfileComplete) {
@@ -28,6 +29,14 @@ public class UserVO {
         this.userUID = userUID;
         this.userName = userName;
         this.userEmail = userEmail;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public String getGender() {

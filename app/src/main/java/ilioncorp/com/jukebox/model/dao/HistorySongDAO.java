@@ -1,4 +1,8 @@
 package ilioncorp.com.jukebox.model.dao;
 
-public class HistorySongDAO {
+import ilioncorp.com.jukebox.model.generic.CRUD;
+
+public class HistorySongDAO extends CRUD {
+
+
 }

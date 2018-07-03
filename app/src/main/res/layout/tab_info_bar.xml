@@ -15,21 +15,22 @@
         android:layout_alignParentTop="true">
 
         <LinearLayout
-            android:layout_marginTop="25dp"
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginTop="25dp"
+            android:orientation="vertical">
+
             <TextView
                 android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:text="Bar Ozzy"
-                android:layout_gravity="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                 android:textColor="@color/hyperBlack"
-                android:textStyle="bold|italic"
-                />
+                android:textStyle="bold|italic" />
+
             <TextView
                 android:id="@+id/tvDescription"
                 android:layout_width="wrap_content"
@@ -40,49 +41,89 @@
                 android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum congue et libero quis commodo. Suspendisse vehicula dolor ut mi pretium mattis. Nullam fermentum massa a finibus sagittis. In hac habitasse platea dictumst. Mauris sollicitudin est massa. Nulla commodo nisl nulla, sed porta sem placerat sit amet. Aenean non porta dolor. Donec luctus sed est a consectetur. Etiam sed venenatis mauris. Vivamus in hendrerit elit. Aenean venenatis vitae erat sed pulvinar. "
                 android:textAlignment="center" />
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tvPhone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="25dp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="25dp"
+                    android:text="Telefono: 0000000000" />
+
+                <TextView
+                    android:id="@+id/tvAddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignTop="@+id/tvPhone"
+                    android:layout_marginEnd="94dp"
+                    android:text="Direc:" />
+
+                <TextView
+                    android:id="@+id/tvEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@id/tvPhone"
+                    android:layout_below="@+id/tvPhone"
+                    android:layout_marginBottom="25dp"
+                    android:text="Correo: ejemplocorreo@hotmail.com" />
+                <TextView
+                    android:id="@+id/tvGenders"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@id/tvPhone"
+                    android:layout_below="@+id/tvEmail"
+                    android:text="Generos: Jazz-Salsa-Rock" />
+            </RelativeLayout>
+
             <TextView
                 android:id="@+id/tvMenu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
                 android:layout_marginLeft="25dp"
+                android:layout_marginTop="15dp"
                 android:text="Menú"
                 android:textSize="25dp" />
 
             <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/fragmentContainer"
-                android:layout_marginTop="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:context=".MainActivity">
-            </FrameLayout>
+                android:layout_marginTop="20dp"
+                tools:context=".MainActivity"></FrameLayout>
 
             <TextView
-                android:text="Horarios"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:layout_marginLeft="25dp"
-                />
+
+                android:text="Horarios" />
+
             <RelativeLayout
-                android:layout_marginTop="15dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp">
+
                 <TextView
                     android:id="@+id/tvMonday"
-                    android:text="MON"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="25dp"
-                    />
+                    android:text="MON" />
+
                 <ImageView
                     android:id="@+id/ivMonday"
-                    android:layout_below="@id/tvMonday"
-                    android:layout_alignStart="@+id/tvMonday"
-                    android:src="@drawable/close"
                     android:layout_width="30dp"
-                    android:layout_height="35dp"/>
+                    android:layout_height="35dp"
+                    android:layout_alignStart="@+id/tvMonday"
+                    android:layout_below="@id/tvMonday"
+                    android:src="@drawable/close" />
 
                 <TextView
                     android:id="@+id/tvTuesday"
@@ -91,13 +132,14 @@
                     android:layout_alignParentStart="true"
                     android:layout_marginStart="70dp"
                     android:text="TUE" />
+
                 <ImageView
                     android:id="@+id/ivTuesday"
-                    android:layout_below="@id/tvTuesday"
-                    android:layout_alignStart="@+id/tvTuesday"
-                    android:src="@drawable/close"
                     android:layout_width="30dp"
-                    android:layout_height="35dp"/>
+                    android:layout_height="35dp"
+                    android:layout_alignStart="@+id/tvTuesday"
+                    android:layout_below="@id/tvTuesday"
+                    android:src="@drawable/close" />
 
                 <TextView
                     android:id="@+id/tvWednesday"
@@ -106,13 +148,14 @@
                     android:layout_alignParentStart="true"
                     android:layout_marginStart="111dp"
                     android:text="WEN" />
+
                 <ImageView
                     android:id="@+id/ivWednesday"
-                    android:layout_below="@id/tvWednesday"
-                    android:layout_alignStart="@+id/tvWednesday"
-                    android:src="@drawable/close"
                     android:layout_width="30dp"
-                    android:layout_height="35dp"/>
+                    android:layout_height="35dp"
+                    android:layout_alignStart="@+id/tvWednesday"
+                    android:layout_below="@id/tvWednesday"
+                    android:src="@drawable/close" />
 
                 <TextView
                     android:id="@+id/tvThursday"
@@ -122,30 +165,31 @@
                     android:layout_alignParentTop="true"
                     android:layout_marginStart="152dp"
                     android:text="THU" />
+
                 <ImageView
                     android:id="@+id/ivThursday"
-                    android:layout_below="@id/tvThursday"
-                    android:layout_alignStart="@+id/tvThursday"
-                    android:src="@drawable/open"
                     android:layout_width="30dp"
-                    android:layout_height="35dp" />
+                    android:layout_height="35dp"
+                    android:layout_alignStart="@+id/tvThursday"
+                    android:layout_below="@id/tvThursday"
+                    android:src="@drawable/open" />
 
                 <TextView
                     android:id="@+id/tvFriday"
-                android:layout_width="30dp"
-                android:layout_height="match_parent"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginEnd="135dp"
-                android:text="FRI" />
+                    android:layout_width="30dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginEnd="135dp"
+                    android:text="FRI" />
 
                 <ImageView
                     android:id="@+id/ivFriday"
-                    android:layout_below="@id/tvFriday"
-                    android:layout_alignStart="@+id/tvFriday"
-                    android:src="@drawable/open"
                     android:layout_width="30dp"
-                    android:layout_height="35dp" />
+                    android:layout_height="35dp"
+                    android:layout_alignStart="@+id/tvFriday"
+                    android:layout_below="@id/tvFriday"
+                    android:src="@drawable/open" />
 
                 <TextView
                     android:id="@+id/tvSaturday"
@@ -158,11 +202,11 @@
 
                 <ImageView
                     android:id="@+id/ivSaturday"
-                    android:layout_below="@id/tvSaturday"
-                    android:layout_alignStart="@+id/tvSaturday"
-                    android:src="@drawable/open"
                     android:layout_width="30dp"
-                    android:layout_height="35dp" />
+                    android:layout_height="35dp"
+                    android:layout_alignStart="@+id/tvSaturday"
+                    android:layout_below="@id/tvSaturday"
+                    android:src="@drawable/open" />
 
                 <TextView
                     android:id="@+id/tvSunday"
@@ -172,24 +216,25 @@
                     android:layout_alignParentTop="true"
                     android:layout_marginEnd="37dp"
                     android:text="SUN" />
+
                 <ImageView
                     android:id="@+id/ivSunday"
-                    android:src="@drawable/open"
-                    android:layout_below="@id/tvSunday"
-                    android:layout_alignStart="@+id/tvSunday"
                     android:layout_width="30dp"
-                    android:layout_height="35dp" />
+                    android:layout_height="35dp"
+                    android:layout_alignStart="@+id/tvSunday"
+                    android:layout_below="@id/tvSunday"
+                    android:src="@drawable/open" />
 
             </RelativeLayout>
+
             <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/fragmentContainerPhotos"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="30dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:context=".MainActivity">
-            </FrameLayout>
+                android:layout_marginBottom="30dp"
+                android:layout_marginTop="20dp"
+                tools:context=".MainActivity"></FrameLayout>
 
         </LinearLayout>
 

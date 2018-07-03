@@ -10,11 +10,8 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
@@ -26,7 +23,6 @@ import java.util.UUID;
 import ilioncorp.com.jukebox.model.dto.UserVO;
 import ilioncorp.com.jukebox.model.generic.CRUD;
 import ilioncorp.com.jukebox.utils.constantes.Constantes;
-import ilioncorp.com.jukebox.view.activity.MainActivity;
 
 public class UserDAO extends CRUD implements ValueEventListener{
 
@@ -35,14 +31,15 @@ public class UserDAO extends CRUD implements ValueEventListener{
     UserVO userObj;
     FirebaseStorage storage;
     StorageReference storageReference;
+
+
     public UserDAO(Context context) {
-        super("");
+        super();
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
         this.context=context;
         this.userObj = new UserVO();
     }
-
     public UserVO getUser() {
         return userObj;
     }
@@ -52,11 +49,13 @@ public class UserDAO extends CRUD implements ValueEventListener{
 
     public void createUser(){
         userObj = new UserVO(user.getUid(),user.getDisplayName(),user.getEmail(),"","","",false);
+        userObj.setToken(Constantes.userToken);
+        userObj.setUserUrlImage(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString());
+        Constantes.userActive = userObj;
         myRef.child("user").child(userID).setValue(userObj);
         stopListener();
         if(!userObj.isUserProfileComplete())
             Constantes.openDialog=true;  //  openDialogProfile();
-
     }
 
 

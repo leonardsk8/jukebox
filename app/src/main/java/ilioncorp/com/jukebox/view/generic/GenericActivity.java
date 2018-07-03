@@ -1,6 +1,7 @@
 package ilioncorp.com.jukebox.view.generic;
 
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -34,6 +35,9 @@ public abstract class GenericActivity  extends AppCompatActivity {
     }
     public void message (String message){
         Toast.makeText(this,message + "" , Toast.LENGTH_SHORT).show();
+    }
+    protected void messageSnackBar(String s, View view) {
+        Snackbar.make(view,s,Snackbar.LENGTH_SHORT).show();
     }
     public void goLoginScreen() {
         Intent intent = new Intent(this,LoginActivity.class);

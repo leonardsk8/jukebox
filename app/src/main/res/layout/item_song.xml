@@ -14,14 +14,6 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <ProgressBar
-            android:id="@+id/progressBar2"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="25dp"
-            />
-
         <TextView
             android:id="@+id/tvTitleSong"
             android:layout_width="match_parent"
@@ -45,12 +37,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <ImageView
+                android:id="@+id/btnLike"
                 android:layout_marginTop="8dp"
                 android:layout_marginLeft="10dp"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:src="@drawable/like"/>
             <TextView
+                android:id="@+id/tvLikes"
                 android:text="Likes : 0"
                 android:layout_marginTop="15dp"
                 android:textAlignment="center"

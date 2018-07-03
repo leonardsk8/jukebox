@@ -22,7 +22,11 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ilioncorp.com.jukebox.R;
+import ilioncorp.com.jukebox.view.fragment.TabHistorySongs;
 import ilioncorp.com.jukebox.view.generic.GenericActivity;
 
 public class HistoryActivity extends GenericActivity implements Handler.Callback,View.OnClickListener,Runnable {
@@ -47,21 +51,10 @@ public class HistoryActivity extends GenericActivity implements Handler.Callback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
-        // Set up the ViewPager with the sections adapter.
         mViewPager = findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         TabLayout tab = findViewById(R.id.tabsHistory);
         tab.setupWithViewPager(mViewPager);
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
     }
 
 
@@ -142,22 +135,26 @@ public class HistoryActivity extends GenericActivity implements Handler.Callback
      * one of the sections/tabs/pages.
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
+        private List<Fragment> mFragmentList;
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
+            mFragmentList = new ArrayList<>();
+            TabHistorySongs tab = new TabHistorySongs();
+            mFragmentList.add(tab);
+            mFragmentList.add(PlaceholderFragment.newInstance(1));
         }
 
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            return mFragmentList.get(position);
         }
 
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 2;
+            return mFragmentList.size();
         }
         @Nullable
         @Override

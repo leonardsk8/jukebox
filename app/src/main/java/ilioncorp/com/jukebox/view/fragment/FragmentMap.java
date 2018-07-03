@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Geocoder;
 import android.location.LocationManager;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -22,9 +23,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -46,6 +50,7 @@ import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 
+import ilioncorp.com.jukebox.model.dao.EstablishmentDAO;
 import ilioncorp.com.jukebox.utils.constantes.Constantes;
 import ilioncorp.com.jukebox.view.activity.BarActivity;
 import ilioncorp.com.jukebox.R;
@@ -72,6 +77,7 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
     private Circle circulo;
     private ImageView btnArrow;
     Handler mensaje;
+    private Handler bridge;
     private Marker mainMarker;
     private String hilo;
     private boolean firts = true;
@@ -79,6 +85,7 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
     double latitud;
     double longitud;
     LocationManager mlocManager;
+    EstablishmentDAO establishmentDAO;
 
 
     private FusedLocationProviderClient mFusedLocationProviderClient;
@@ -92,7 +99,7 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
         this.layoutRango = view.findViewById(R.id.layoutRango);
         this.tvRank = view.findViewById(R.id.tvRank);
         this.sbRank = view.findViewById(R.id.sbRank);
-        this.btnArrow = view.findViewById(R.id.btnArrow);
+
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         this.sbRank.setOnSeekBarChangeListener(this);
@@ -102,9 +109,13 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
         myLocation.setOnClickListener(this);
         circleOptions = new CircleOptions();
         mensaje = new Handler(this);
-        btnArrow.setOnClickListener(this);
         bar = new ArrayList<>();
-
+        bridge = new Handler((msg)->{
+            bar = (ArrayList<EstablishmentVO>) msg.obj;
+            return false;
+        });
+        establishmentDAO = new EstablishmentDAO(bridge);
+        establishmentDAO.getAllBars();
         mlocManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(),
@@ -264,8 +275,24 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
                 View v;
                 if(marker.isDraggable())
                     v = getLayoutInflater().inflate(R.layout.item_info_window, null);
-                else
-                    v= getLayoutInflater().inflate(R.layout.preview_bar, null);
+                else {
+                    v = getLayoutInflater().inflate(R.layout.preview_bar, null);
+                    ImageView imageBar = v.findViewById(R.id.imagePreviewBar);
+                    TextView nameBar = v.findViewById(R.id.tvNameBarPreview);
+                    RatingBar bar = v.findViewById(R.id.ratingBarPreview);
+                    TextView tvAddressBarPreview = v.findViewById(R.id.tvAddressBarPreview);
+                    TextView tvGendersBarPreview = v.findViewById(R.id.tvGendersBarPreview);
+                    EstablishmentVO establishment = (EstablishmentVO) marker.getTag();
+                    Glide.with(getContext())
+                            .load(establishment.getImagesBar()[0])
+                            .placeholder(R.drawable.error)
+                            .into(imageBar);
+                    nameBar.setText(establishment.getName());
+                    bar.setRating(establishment.getRaiting());
+                    tvAddressBarPreview.setText(establishment.getAddress());
+                    tvGendersBarPreview.setText(establishment.getGenders());
+
+                }
                 return v;
             }
         });
@@ -285,11 +312,11 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
             case R.id.myLocation:
                 getDeviceLocation();
                 break;
-            case R.id.btnArrow:
+            /*case R.id.btnArrow:
                 startActivity(new Intent(getContext(),FilterOptions.class));
                 getActivity().overridePendingTransition(R.anim.hide, R.anim.show);
                 break;
-
+*/
 
         }
     }
@@ -339,31 +366,56 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
         return false;
     }
 
+    /*mMap.addMarker(new MarkerOptions().position(
+              new LatLng(positionAct.latitude + progress*0.001 + 0.0003, positionAct.longitude +progress*0.0041 )).title("0 Position")
+              .icon(BitmapDescriptorFactory.fromResource(R.drawable.drink)));
+      mMap.addMarker(new MarkerOptions().position(
+              new LatLng(positionAct.latitude + progress*0.002 + 0.0007, positionAct.longitude +progress*0.0031)).title("1 Position")
+              .icon(BitmapDescriptorFactory.fromResource(R.drawable.drink)));
+      mMap.addMarker(new MarkerOptions().position(
+              new LatLng(positionAct.latitude + progress*0.003 + 0.0008, positionAct.longitude +progress*0.0021 )).title("2 Position")
+              .icon(BitmapDescriptorFactory.fromResource(R.drawable.drink)));
+      mMap.addMarker(new MarkerOptions().position(
+              new LatLng(positionAct.latitude + progress*0.004 - 0.0001 , positionAct.longitude +progress*0.0011 )).title("3 Position")
+              .icon(BitmapDescriptorFactory.fromResource(R.drawable.drink)));
+      mMap.addMarker(new MarkerOptions().position(
+              new LatLng(positionAct.latitude + progress*0.005 + 0.0003, positionAct.longitude +progress*0.0001)).title("4  Position")
+              .icon(BitmapDescriptorFactory.fromResource(R.drawable.drink)));
+      if(progress>=2) {
+          mMap.addMarker(new MarkerOptions().position(
+                  new LatLng(positionAct.latitude - 0.01, positionAct.longitude + 0.01)).title("5  Position")
+                  .icon(BitmapDescriptorFactory.fromResource(R.drawable.drink)));
+      }*/
     private void addMarks() {
-        /*mMap.addMarker(new MarkerOptions().position(
-                new LatLng(positionAct.latitude + progress*0.001 + 0.0003, positionAct.longitude +progress*0.0041 )).title("0 Position")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.drink)));
-        mMap.addMarker(new MarkerOptions().position(
-                new LatLng(positionAct.latitude + progress*0.002 + 0.0007, positionAct.longitude +progress*0.0031)).title("1 Position")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.drink)));
-        mMap.addMarker(new MarkerOptions().position(
-                new LatLng(positionAct.latitude + progress*0.003 + 0.0008, positionAct.longitude +progress*0.0021 )).title("2 Position")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.drink)));
-        mMap.addMarker(new MarkerOptions().position(
-                new LatLng(positionAct.latitude + progress*0.004 - 0.0001 , positionAct.longitude +progress*0.0011 )).title("3 Position")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.drink)));
-        mMap.addMarker(new MarkerOptions().position(
-                new LatLng(positionAct.latitude + progress*0.005 + 0.0003, positionAct.longitude +progress*0.0001)).title("4  Position")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.drink)));
-        if(progress>=2) {
-            mMap.addMarker(new MarkerOptions().position(
-                    new LatLng(positionAct.latitude - 0.01, positionAct.longitude + 0.01)).title("5  Position")
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.drink)));
-        }*/
         mMap.addMarker(new MarkerOptions().position(positionAct)
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)).draggable(true));
+        for (EstablishmentVO establishmentVO:bar){
+            if(masCercano(establishmentVO.latitude,establishmentVO.lenght,positionAct.latitude,positionAct.longitude))
+            mMap.addMarker(new MarkerOptions().position(
+                    new LatLng(establishmentVO.getLatitude(), establishmentVO.getLenght())).title(establishmentVO.getName())
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.drink))).setTag(establishmentVO);
+        }
     }
+    public static double distFrom(double lat1, double lng1, double lat2, double lng2) {
+        double earthRadius = 6371000; //meters
+        double dLat = Math.toRadians(lat2-lat1);
+        double dLng = Math.toRadians(lng2-lng1);
+        double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+                        Math.sin(dLng/2) * Math.sin(dLng/2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        double dist = (earthRadius * c);
+        return dist;
+    }
+    public boolean masCercano(double lat1, double lng1, double lat2, double lng2){
+        double distance = distFrom(lat1, lng1, lat2, lng2);
+            if(distance <= (this.progress * 1000.0)){
+                return true;
+            }
+            else
+                return false;
 
+    }
     private void startMarks() {
         LatLng myPossition = new LatLng(latitud, longitud);
         positionAct = myPossition;
@@ -447,7 +499,13 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        startActivity(new Intent(getContext(), BarActivity.class));
+        EstablishmentVO vo = (EstablishmentVO) marker.getTag();
+        Log.e("Probando",vo.getName());
+        Log.e("Probando",vo.getAddress());
+        Log.e("Probando",vo.toString());
+        Intent intent = new Intent(getContext(), BarActivity.class);
+        intent.putExtra("establishment",vo);
+        startActivity(intent);
 
     }
     //EndMarkertOptions

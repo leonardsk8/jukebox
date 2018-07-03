@@ -2,6 +2,8 @@ package ilioncorp.com.jukebox.view.activity;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.Button;
@@ -16,23 +18,27 @@ import com.google.firebase.auth.FirebaseUser;
 
 import ilioncorp.com.jukebox.R;
 import ilioncorp.com.jukebox.model.dao.ReproductionListDAO;
+import ilioncorp.com.jukebox.model.dao.SessionDAO;
 import ilioncorp.com.jukebox.model.dto.ReproductionListVO;
 import ilioncorp.com.jukebox.view.YoutubeConnector;
 import ilioncorp.com.jukebox.view.fragment.TabReproducing;
 
-public class PlayerActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener, View.OnClickListener {
+public class PlayerActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener,
+        Handler.Callback,View.OnClickListener {
 
 
 
     private YouTubePlayerView playerView;
-
+    private View view;
     private Button btnSend;
     private ReproductionListVO song;
     private String idBar;
+    private Handler bridge;
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         setContentView(R.layout.activity_player);
+        bridge = new Handler(this);
         this.playerView =  findViewById(R.id.player_view);
        this.playerView.initialize(YoutubeConnector.KEY, this);
        btnSend = findViewById(R.id.btnSendSong);
@@ -57,8 +63,26 @@ public class PlayerActivity extends YouTubeBaseActivity implements YouTubePlayer
 
     @Override
     public void onClick(View view) {
-        new ReproductionListDAO("",idBar, TabReproducing.bridge,true).sendSong(song);
-        Snackbar.make(view, "Canción Enviada", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
+        SessionDAO session = new SessionDAO();
+        this.view = view;
+        session.checkSession(bridge,idBar);
+
+    }
+
+    @Override
+    public boolean handleMessage(Message message) {
+        String answer = (String)message.obj;
+        if(answer.equals("active")) {
+            new ReproductionListDAO(idBar, TabReproducing.bridge, true).sendSong(song);
+            Snackbar.make(view, "Canción Enviada", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        }
+        else if(answer.equals("inactive") || answer.equals(""))
+            Snackbar.make(view, "Debes iniciar Sesión", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        else if (answer.equals("vetoed"))
+            Snackbar.make(view, "No puedes agendar musica, estas vetado", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        return false;
     }
 }

@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.List;
 import ilioncorp.com.jukebox.R;
 import ilioncorp.com.jukebox.model.dto.ReproductionListVO;
 import ilioncorp.com.jukebox.model.dto.VideoItemVO;
+import ilioncorp.com.jukebox.utils.constantes.Constantes;
 import ilioncorp.com.jukebox.view.activity.PlayerActivity;
 
 public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.ViewHolder> {
@@ -48,19 +50,18 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.View
         holder.tvVideoTitle.setText(vItem.getTitle());
         holder.tvVideoDescription.setText(vItem.getDescription());
         Picasso.with(context).load(vItem.getThumbnailURL()).into(holder.ivThumnails);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                        ReproductionListVO song = new ReproductionListVO();
-                        song.setName(listVideos.get(position).getTitle());
-                        song.setThumbnail(listVideos.get(position).getThumbnailURL());
-                        song.setUser(user.getDisplayName());
-                        song.setVideo_id(listVideos.get(position).getId());
-                        Intent intent = new Intent(context, PlayerActivity.class);
-                        intent.putExtra("song",song);
-                        intent.putExtra("idBar",idBar);
-                        context.startActivity(intent);
-            }
+        holder.itemView.setOnClickListener(view -> {
+                    ReproductionListVO song = new ReproductionListVO();
+                    song.setName(listVideos.get(position).getTitle());
+                    song.setThumbnail(listVideos.get(position).getThumbnailURL());
+                    song.setUser(user.getDisplayName());
+                    song.setVideo_id(listVideos.get(position).getId());
+                    song.setToken(FirebaseInstanceId.getInstance().getToken());
+                    song.setUserId(Constantes.userActive.getUserUID());
+                    Intent intent = new Intent(context, PlayerActivity.class);
+                    intent.putExtra("song",song);
+                    intent.putExtra("idBar",idBar);
+                    context.startActivity(intent);
         });
     }
 

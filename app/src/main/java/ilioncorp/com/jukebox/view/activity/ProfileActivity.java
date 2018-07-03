@@ -25,13 +25,13 @@ import ilioncorp.com.jukebox.utils.constantes.Constantes;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener{
 
+
     private com.facebook.drawee.view.SimpleDraweeView imageProfile;
     private android.widget.EditText etNameProfile;
     private android.widget.EditText etEmailProfile;
     private android.widget.DatePicker dpBirthdayProfile;
     private android.widget.Spinner spinnerGenderProfile;
     private android.widget.EditText etAboutProfile;
-    private android.widget.TextView textView;
     private android.support.v7.widget.CardView btnSaveProfie;
     private FirebaseUser user;
     private UserDAO daoUser;
@@ -42,7 +42,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_profile);
 
         this.btnSaveProfie =  findViewById(R.id.btnSaveProfie);
-        this.textView =  findViewById(R.id.textView);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         this.etAboutProfile =  findViewById(R.id.etAboutProfile);
         this.spinnerGenderProfile =  findViewById(R.id.spinnerGenderProfile);

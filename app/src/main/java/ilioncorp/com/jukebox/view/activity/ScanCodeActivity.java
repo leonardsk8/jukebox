@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -15,23 +17,32 @@ import android.widget.Toast;
 
 import com.google.zxing.Result;
 
+import java.util.ArrayList;
+
 import ilioncorp.com.jukebox.R;
+import ilioncorp.com.jukebox.model.dao.EstablishmentDAO;
+import ilioncorp.com.jukebox.model.dto.EstablishmentVO;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 import static android.Manifest.permission.CAMERA;
 
 
-public class ScanCodeActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
+public class ScanCodeActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler
+,Handler.Callback{
 
     private static final int REQUEST_CAMERA = 1;
     private ZXingScannerView scannerView;
-
+    private Handler bridge;
+    private ArrayList<EstablishmentVO> listItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan_code);
+        bridge = new Handler(this);
         int currentApiVersion = Build.VERSION.SDK_INT;
+        EstablishmentDAO establishment = new EstablishmentDAO(bridge);
+        establishment.getAllBars();
 
         if(currentApiVersion >=  Build.VERSION_CODES.M)
         {
@@ -130,14 +141,31 @@ public class ScanCodeActivity extends AppCompatActivity implements ZXingScannerV
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Scan Result");
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                scannerView.resumeCameraPreview(ScanCodeActivity.this);
+        builder.setPositiveButton("OK",(DialogInterface dialog, int which) -> {
+                boolean aux =false;
+                Intent pantalla = new Intent(getApplicationContext(),BarActivity.class);
+                EstablishmentVO establishment= null;
+                for (EstablishmentVO e:listItems){
+                    if(myResult.contains(e.getQrcontent())){
+                        establishment = e;
+                        aux = true;
+                        break;
+                    }
+                }
+                if(aux) {
+                    pantalla.putExtra("establishment", establishment);
+                    startActivity(pantalla);
+                }
             }
-        });
+        );
         builder.setMessage(result.getText());
         AlertDialog alert1 = builder.create();
         alert1.show();
+    }
+
+    @Override
+    public boolean handleMessage(Message message) {
+        listItems = (ArrayList<EstablishmentVO>) message.obj;
+        return false;
     }
 }

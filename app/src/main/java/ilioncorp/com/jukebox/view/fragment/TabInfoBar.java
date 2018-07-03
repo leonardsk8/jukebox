@@ -31,6 +31,11 @@ public class TabInfoBar extends Fragment {
     private ImageView ivFriday;
     private ImageView ivSaturday;
     private ImageView ivSunday;
+    private TextView tvPhone;
+    private TextView tvAddress;
+    private TextView tvEmail;
+    private TextView tvGenders;
+
 
 
     public TabInfoBar(EstablishmentVO establishment) {
@@ -40,15 +45,20 @@ public class TabInfoBar extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab_info_bar, container, false);
-        this.tvDescription = (TextView) rootView.findViewById(R.id.tvDescription);
-        this.tvTitle = (TextView) rootView.findViewById(R.id.tvTitle);
-        this.ivSunday = (ImageView) rootView.findViewById(R.id.ivSunday);
-        this.ivSaturday = (ImageView) rootView.findViewById(R.id.ivSaturday);
-        this.ivFriday = (ImageView) rootView.findViewById(R.id.ivFriday);
-        this.ivThursday = (ImageView) rootView.findViewById(R.id.ivThursday);
-        this.ivWednesday = (ImageView) rootView.findViewById(R.id.ivWednesday);
-        this.ivTuesday = (ImageView) rootView.findViewById(R.id.ivTuesday);
-        this.ivMonday = (ImageView) rootView.findViewById(R.id.ivMonday);
+
+        this.tvGenders =  rootView.findViewById(R.id.tvGenders);
+        this.tvEmail = rootView.findViewById(R.id.tvEmail);
+        this.tvAddress = rootView.findViewById(R.id.tvAddress);
+        this.tvPhone = rootView.findViewById(R.id.tvPhone);
+        this.tvDescription = rootView.findViewById(R.id.tvDescription);
+        this.tvTitle = rootView.findViewById(R.id.tvTitle);
+        this.ivSunday = rootView.findViewById(R.id.ivSunday);
+        this.ivSaturday = rootView.findViewById(R.id.ivSaturday);
+        this.ivFriday = rootView.findViewById(R.id.ivFriday);
+        this.ivThursday = rootView.findViewById(R.id.ivThursday);
+        this.ivWednesday = rootView.findViewById(R.id.ivWednesday);
+        this.ivTuesday = rootView.findViewById(R.id.ivTuesday);
+        this.ivMonday = rootView.findViewById(R.id.ivMonday);
         return rootView;
     }
 
@@ -69,6 +79,10 @@ public class TabInfoBar extends Fragment {
             }
         this.tvTitle.setText(establishment.getName());
         this.tvDescription.setText(establishment.getDescription());
+        this.tvAddress.setText(establishment.getAddress());
+        this.tvEmail.setText(establishment.getEmail());
+        this.tvGenders.setText(establishment.getGenders());
+        this.tvPhone.setText(establishment.getPhone());
         FragmentManager fm = getActivity().getSupportFragmentManager();
         Fragment fragment;
         Fragment fragmentPhotos;

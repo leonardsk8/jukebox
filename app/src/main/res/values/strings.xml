@@ -11,7 +11,7 @@
     <string name="title_activity_bar">BarActivity</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_history">HistoryActivity</string>
-    <string name="facebook_app_id">670148899983294</string>
+    <string name="facebook_id">670148899983294</string>
     <string name="fb_login_protocol_scheme">fb670148899983294</string>
     <string name="problem_log_in">Problema al ingresar</string>
 

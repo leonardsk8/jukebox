@@ -25,8 +25,8 @@ public class MenuDAO extends CRUD implements ValueEventListener{
     Handler bridge;
     int position;
 
-    public MenuDAO(String json, ArrayList<EstablishmentVO> listEstablishment, Handler bridgeMenu) {
-        super(json);
+    public MenuDAO(ArrayList<EstablishmentVO> listEstablishment, Handler bridgeMenu) {
+        super();
         bridge = bridgeMenu;
         this.listEstablishment  = listEstablishment;
         position = 0;
@@ -34,7 +34,7 @@ public class MenuDAO extends CRUD implements ValueEventListener{
 
     //PRUEBA COMMIT
     public void getMenuBars() {
-        Query query = null;
+        Query query;
         for(EstablishmentVO b: listEstablishment) {
             query = myRef.child("menu").child("establishment").child(String.valueOf(b.getQrcontent()))
                     .child("product").orderByChild("establishment");

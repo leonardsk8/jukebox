@@ -16,6 +16,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
 }
 
 dependencies {
@@ -46,5 +50,8 @@ dependencies {
     implementation 'com.androidhuman.rxfirebase2:firebase-auth:11.8.0.1'
     implementation 'com.google.android.gms:play-services-auth:12.0.1'
     implementation 'com.google.firebase:firebase-database:12.0.1'
+    implementation 'com.google.firebase:firebase-messaging:12.0.1'
+    implementation 'com.firebaseui:firebase-ui:2.1.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
 }
 apply plugin: 'com.google.gms.google-services'

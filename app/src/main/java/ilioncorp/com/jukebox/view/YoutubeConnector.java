@@ -36,16 +36,13 @@ public class YoutubeConnector {
     public YoutubeConnector(final Context context) {
         contexto = context;
         youtube = new YouTube.Builder(new NetHttpTransport(),
-                new JacksonFactory(), new HttpRequestInitializer() {
-            @Override
-            public void initialize(HttpRequest hr){
-                String packageName = context.getPackageName();
-                String SHA1 = getSHA1(packageName);
+                new JacksonFactory(), hr -> {
+                    String packageName = context.getPackageName();
+                    String SHA1 = getSHA1(packageName);
 
-                hr.getHeaders().set("X-Android-Package", packageName);
-                hr.getHeaders().set("X-Android-Cert",SHA1);
-            }
-        }).setApplicationName(context.getString(R.string.app_name)).build();
+                    hr.getHeaders().set("X-Android-Package", packageName);
+                    hr.getHeaders().set("X-Android-Cert",SHA1);
+                }).setApplicationName(context.getString(R.string.app_name)).build();
 
         try{
             query = youtube.search().list("id,snippet");

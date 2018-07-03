@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="ilioncorp.com.jukebox">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -14,7 +15,6 @@
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -22,6 +22,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/JukeboxTheme">
+        <service android:name=".model.notifications.MiFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".model.notifications.MiFirebaseInstanceIdService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
         <activity
             android:name=".view.activity.LoginActivity"
             android:theme="@style/JukeboxTheme">
@@ -47,8 +58,9 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
         <meta-data
+            tools:replace="android:value"
             android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
+            android:value="@string/facebook_id" />
 
         <activity
             android:name="com.facebook.FacebookActivity"
@@ -84,7 +96,8 @@
             android:label="@string/title_activity_history"
             android:theme="@style/JukeboxTheme" />
         <activity android:name=".view.activity.ProfileActivity" />
-        <activity android:name=".view.activity.ScanCodeActivity"></activity>
+        <activity android:name=".view.activity.ScanCodeActivity" />
+        <activity android:name=".view.activity.ChatActivity"></activity>
     </application>
 
 </manifest>

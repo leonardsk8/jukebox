@@ -4,8 +4,9 @@ import ilioncorp.com.jukebox.model.dto.UserVO;
 
 public enum ERoutes {
     USER_SERVICE("/service","Route for all the service"),
-    DOMAIN("http://ilioncorp.com:8080/sellerApp","Domain of the project"),
-    CHECKLOGIN("checkLogin","Option for login on the application");
+    DOMAIN("http://35.237.73.197:8080/JukeboxAdministrator","Domain of the project"),
+    CHECKLOGIN("checkLogin","Option for login on the application"),
+    NOTIFY("/servletNotify","Notify a user of a new message");
     ;
 
     private String url;

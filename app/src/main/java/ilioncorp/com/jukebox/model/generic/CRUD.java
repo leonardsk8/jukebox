@@ -34,8 +34,7 @@ public abstract class CRUD {
     protected FirebaseUser user;
     protected Context context;
 
-    public CRUD(String json) {
-        this.json = json;
+    public CRUD() {
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myRef = mFirebaseDatabase.getReference();
@@ -46,7 +45,7 @@ public abstract class CRUD {
 
     public String Read(String parameter,Handler bridge,boolean handlerActive)  {
         try {
-            String ruta = ERoutes.DOMAIN.getUrl() + ERoutes.USER_SERVICE.getUrl();
+            String ruta = ERoutes.DOMAIN.getUrl() + ERoutes.NOTIFY.getUrl();
             URL address = new URL(ruta);
             HttpURLConnection cnn = (HttpURLConnection) address.openConnection();
             cnn.setRequestMethod("POST");

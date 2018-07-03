@@ -41,7 +41,6 @@ public class Localizacion implements LocationListener {
     public void onLocationChanged(Location loc) {
        latitud = loc.getLatitude();
        longitud = loc.getLongitude();
-
     }
 
     @Override

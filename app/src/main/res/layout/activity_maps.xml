@@ -25,16 +25,10 @@ xmlns:android="http://schemas.android.com/apk/res/android" >
             android:id="@+id/sbRank"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="20dp"
-            android:layout_width="270dp"
+            android:layout_marginRight="20dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp" />
-        <ImageView
-            android:id="@+id/btnArrow"
-            android:src="@drawable/downarrow"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="15dp"
-            android:layout_gravity="center_vertical"
-            android:layout_width="20dp"
-            android:layout_height="20dp" />
+
 
     </LinearLayout>
 
