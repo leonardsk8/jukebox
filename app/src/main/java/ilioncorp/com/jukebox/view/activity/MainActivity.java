@@ -56,13 +56,7 @@ public class MainActivity extends GenericActivity implements View.OnClickListene
         imOptions.setOnClickListener(this);
         maps = new FragmentMap();
         mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-        googleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this,this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API,gso)
-                .build();
+
         administrator = getSupportFragmentManager();
         options = new FragmentOptions(this);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();

@@ -15,25 +15,21 @@
       },
       "oauth_client": [
         {
-          "client_id": "629911785392-8gger4bhpdgta24l72j5d529hg4sbr09.apps.googleusercontent.com",
+          "client_id": "629911785392-vlonqb5mbo12smi3hmsgkffcl9bcu8dn.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "ilioncorp.com.jukebox",
-            "certificate_hash": "94c90e0f562a3add869cc6dfe0fa48164eb41a0c"
+            "certificate_hash": "b8a5ac47538e1de55f36f2486469d853b11a962c"
           }
         },
         {
-          "client_id": "629911785392-0dhe49ao2qds972c3r5s2es4v5ukeicm.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
-          "client_id": "629911785392-0dhe49ao2qds972c3r5s2es4v5ukeicm.apps.googleusercontent.com",
+          "client_id": "629911785392-dn9dpgknvtk1fpck4efenud74fuj695j.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB6w7OgT8K_5QjOo1Gw3aTBMnnd70cRGlI"
+          "current_key": "AIzaSyCDZi00XwcnAZtNscrre3yiguMuhFFNQdI"
         }
       ],
       "services": {
@@ -44,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "629911785392-0dhe49ao2qds972c3r5s2es4v5ukeicm.apps.googleusercontent.com",
+              "client_id": "629911785392-dn9dpgknvtk1fpck4efenud74fuj695j.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

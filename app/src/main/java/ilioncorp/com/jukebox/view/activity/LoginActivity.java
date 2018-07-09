@@ -88,7 +88,13 @@ public class LoginActivity extends GenericActivity implements Handler.Callback,V
 //        guardar();
         this.btnLoginFacebook.registerCallback(callbackManager,this);
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
+        firebaseAuthListener = (firebaseAuth)->{
+            FirebaseUser user =  firebaseAuth.getCurrentUser();
+            if(user != null){
+                goToMainScreen();
+            }
+        };
+       /* firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user =  firebaseAuth.getCurrentUser();
@@ -96,7 +102,7 @@ public class LoginActivity extends GenericActivity implements Handler.Callback,V
                     goToMainScreen();
                 }
             }
-        };
+        };*/
 
         btnLoginFacebook.setReadPermissions(Arrays.asList("email"));
 
@@ -207,7 +213,8 @@ public class LoginActivity extends GenericActivity implements Handler.Callback,V
             showCharging("Cargando");
             firebaseAuthWithGoogle(result.getSignInAccount());
         } else {
-            Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
+            Log.e("ERROR FIREBASE",result.toString());
+            Toast.makeText(this, "Error ", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -245,6 +252,6 @@ public class LoginActivity extends GenericActivity implements Handler.Callback,V
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
+        Log.e("Error conection",connectionResult.getErrorMessage());
     }
 }

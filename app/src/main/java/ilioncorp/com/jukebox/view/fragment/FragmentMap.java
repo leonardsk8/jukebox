@@ -326,7 +326,7 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
         switch (hilo) {
             case "start":
                 while (true) {
-                    if (Local.getLatitud() > 0 | Local.getLongitud() > 0) {
+                    if (Local.getLatitud() != 0 & Local.getLongitud() != 0) {
                         latitud = Local.getLatitud();
                         longitud = Local.getLongitud();
                         mlocManager.removeUpdates(Local);

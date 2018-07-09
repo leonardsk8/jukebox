@@ -24,7 +24,7 @@ public class AdapterPromotion extends RecyclerView.Adapter<AdapterPromotion.MyVi
     private Context context;
 
 
-    private AdapterPromotion(ArrayList<PromotionsVO> listPromotions, Context context) {
+    public AdapterPromotion(ArrayList<PromotionsVO> listPromotions, Context context) {
         this.listPromotions = listPromotions;
         this.context = context;
     }

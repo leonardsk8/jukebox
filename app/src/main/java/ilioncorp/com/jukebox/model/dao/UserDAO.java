@@ -67,7 +67,7 @@ public class UserDAO extends CRUD implements ValueEventListener{
         Toast.makeText(context,s,Toast.LENGTH_SHORT).show();
     }
 
-    public void uploadImageUser(Uri photo){
+/*    public void uploadImageUser(Uri photo){
         if(photo != null){
             final ProgressDialog progressDialog = new ProgressDialog(context);
             progressDialog.setTitle("Uploading...");
@@ -95,7 +95,7 @@ public class UserDAO extends CRUD implements ValueEventListener{
                 }
             });
         }
-    }
+    }*/
 
     @Override
     public void onDataChange(DataSnapshot dataSnapshot) {
