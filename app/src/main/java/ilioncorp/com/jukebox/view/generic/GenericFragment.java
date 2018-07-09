@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
@@ -47,7 +48,9 @@ public abstract class GenericFragment extends Fragment {
         Intent intent = new Intent(getContext(),LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-
+    }
+    private void showMessage(String message){
+        Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
     }
 
 }

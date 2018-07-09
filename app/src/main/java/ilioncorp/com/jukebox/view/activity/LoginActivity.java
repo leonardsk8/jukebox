@@ -94,15 +94,6 @@ public class LoginActivity extends GenericActivity implements Handler.Callback,V
                 goToMainScreen();
             }
         };
-       /* firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user =  firebaseAuth.getCurrentUser();
-                if(user != null){
-                    goToMainScreen();
-                }
-            }
-        };*/
 
         btnLoginFacebook.setReadPermissions(Arrays.asList("email"));
 

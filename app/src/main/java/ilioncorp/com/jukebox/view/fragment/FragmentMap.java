@@ -71,10 +71,12 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
     private android.widget.ImageView myLocation;
     private CircleOptions circleOptions;
     private int progress;
+    private boolean isThereBars;
     private LatLng positionAct;
     private GoogleMap mMap;
     private Localizacion Local;
     private Circle circulo;
+    private boolean endHandler=false;
     private ImageView btnArrow;
     Handler mensaje;
     private Handler bridge;
@@ -112,8 +114,11 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
         bar = new ArrayList<>();
         bridge = new Handler((msg)->{
             bar = (ArrayList<EstablishmentVO>) msg.obj;
+            isThereBars = (bar.size() > 0)?true :false;
+            endHandler = true;
             return false;
         });
+        hilo = "start";
         establishmentDAO = new EstablishmentDAO(bridge);
         establishmentDAO.getAllBars();
         mlocManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
@@ -329,9 +334,7 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
                     if (Local.getLatitud() != 0 & Local.getLongitud() != 0) {
                         latitud = Local.getLatitud();
                         longitud = Local.getLongitud();
-                        mlocManager.removeUpdates(Local);
-                        Local = null;
-                        mlocManager = null;
+
                         break;
                     }
                 }
@@ -342,9 +345,14 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
                 break;
 
         }
+
+        while(!endHandler){
+
+        }
         hideCharging();
         Message msg = new Message();
         mensaje.sendMessage(msg);
+
     }
 
     @Override
@@ -387,6 +395,7 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
                   .icon(BitmapDescriptorFactory.fromResource(R.drawable.drink)));
       }*/
     private void addMarks() {
+
         mMap.addMarker(new MarkerOptions().position(positionAct)
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)).draggable(true));
         for (EstablishmentVO establishmentVO:bar){
@@ -417,6 +426,9 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
 
     }
     private void startMarks() {
+        mlocManager.removeUpdates(Local);
+        Local = null;
+        mlocManager = null;
         LatLng myPossition = new LatLng(latitud, longitud);
         positionAct = myPossition;
         drawPosition();

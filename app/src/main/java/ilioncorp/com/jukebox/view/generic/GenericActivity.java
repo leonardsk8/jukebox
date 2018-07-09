@@ -33,7 +33,7 @@ public abstract class GenericActivity  extends AppCompatActivity {
         alert.dismiss();
 
     }
-    public void message (String message){
+    public void messageToast (String message){
         Toast.makeText(this,message + "" , Toast.LENGTH_SHORT).show();
     }
     protected void messageSnackBar(String s, View view) {
