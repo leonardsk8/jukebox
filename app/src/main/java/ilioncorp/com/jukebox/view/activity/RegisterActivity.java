@@ -18,9 +18,21 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -28,6 +40,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import ilioncorp.com.jukebox.R;
+import ilioncorp.com.jukebox.model.dto.UserVO;
 import ilioncorp.com.jukebox.view.generic.GenericActivity;
 import pl.droidsonroids.gif.GifImageView;
 
@@ -42,8 +55,7 @@ public class RegisterActivity extends GenericActivity implements Handler.Callbac
     private android.widget.DatePicker dpBirthday;
     private android.support.v7.widget.CardView cvBtnRegister;
     private com.facebook.drawee.view.SimpleDraweeView selectImage;
-    private com.facebook.drawee.view.SimpleDraweeView view;
-    private GifImageView gifRegister;
+    private EditText etPassword;
 
     public static final int MY_REQUEST_CAMERA   = 10;
     public static final int MY_REQUEST_WRITE_CAMERA   = 11;
@@ -53,16 +65,19 @@ public class RegisterActivity extends GenericActivity implements Handler.Callbac
     public static final int MY_REQUEST_WRITE_GALLERY   = 14;
     public static final int MY_REQUEST_GALLERY   = 15;
 
+    private StorageReference mStorageRef;
     public File filen = null;
+    private UserVO user;
+    private Uri photo;
+    private FirebaseAuth firebaseAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         Fresco.initialize(this);
+        firebaseAuth = FirebaseAuth.getInstance();
         setContentView(R.layout.activity_register);
-        this.gifRegister = findViewById(R.id.gifRegister);
+        this.etPassword = findViewById(R.id.etPassword);
         this.selectImage = findViewById(R.id.selectImage);
-        this.view = findViewById(R.id.view);
         this.cvBtnRegister =  findViewById(R.id.cvBtnRegister);
         this.dpBirthday =  findViewById(R.id.dpBirthday);
         this.etCellphone =  findViewById(R.id.etCellphone);
@@ -71,6 +86,8 @@ public class RegisterActivity extends GenericActivity implements Handler.Callbac
         this.etName = findViewById(R.id.etName);
         this.selectImage.setOnClickListener(this);
         cvBtnRegister.setOnClickListener(this);
+        user = new UserVO();
+        mStorageRef = FirebaseStorage.getInstance().getReference();
     }
 
     @Override
@@ -85,11 +102,11 @@ public class RegisterActivity extends GenericActivity implements Handler.Callbac
         int id = view.getId();
         switch (id){
             case R.id.selectImage:
-                Toast.makeText(this,"Image",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this,"Image",Toast.LENGTH_SHORT).show();
                 dialog();
                 break;
             case R.id.cvBtnRegister:
-                Toast.makeText(this,"Registrado",Toast.LENGTH_SHORT).show();
+                registerUser();
                 break;
             case R.id.view:
                 break;
@@ -97,10 +114,90 @@ public class RegisterActivity extends GenericActivity implements Handler.Callbac
 
     }
 
+    private void registerUser() {
+       if(validateFields()){
+           showCharging("Registrando\nUn momento por favor");
+           if(photo != null) {
+               StorageReference photoRef = mStorageRef.child("images/"+user.getUserEmail()+".jpg");
+               photoRef.putFile(photo)
+                       .addOnSuccessListener(taskSnapshot -> {
+                           Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                           registerUserInFireBaseAuth(downloadUrl);
+                       })
+                       .addOnFailureListener(exception -> {
+                           hideCharging();
+                           messageToast("Error subiendo imagen");
+                       });
+           }else{
+               Uri uri =  Uri.parse( "https://pbs.twimg.com/profile_images/958172060206841856/xNhKM5Sn_400x400.png" );
+               registerUserInFireBaseAuth(uri);
+           }
+
+
+
+       }
+       else
+           messageToast("Complete los campos");
+    }
+
+    private void registerUserInFireBaseAuth(Uri downloadUrl) {
+        firebaseAuth.createUserWithEmailAndPassword(user.getUserEmail(), etPassword.getText().toString().trim())
+                .addOnCompleteListener(this, task -> {
+                    //checking if success
+                    if(task.isSuccessful()){
+                        setAttributesUser(downloadUrl);
+                        finish();
+                        //startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                    }else{
+                        hideCharging();
+                        messageToast("Error Registrando");
+                    }
+
+                });
+    }
+
+    private void setAttributesUser(Uri downloadUrl) {
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        if(user != null & downloadUrl != null){
+            UserProfileChangeRequest profile = new UserProfileChangeRequest.Builder()
+                    .setDisplayName(this.user.getUserName())
+                    .setPhotoUri(downloadUrl)
+                    .build();
+            user.updateProfile(profile).addOnCompleteListener(task -> {
+                    hideCharging();
+                    messageToast("Registro Completado");
+
+            });
+        }
+    }
+
+    private boolean validateFields() {
+        String name = etName.getText().toString();
+        String surName = etSurname.getText().toString();
+        String email = etEmail.getText().toString();
+        String cellphone = etCellphone.getText().toString();
+        String password = etPassword.getText().toString();
+        String dateBirth = checkDigit(dpBirthday.getMonth()+1)+"/"+checkDigit(dpBirthday
+                .getDayOfMonth())+"/"+dpBirthday.getYear();
+        if(!name.isEmpty() & !surName.isEmpty() & !email.isEmpty() & !cellphone.isEmpty()
+                & !password.isEmpty() & !dateBirth.isEmpty()) {
+            user.setUserBirthday(dateBirth);
+            user.setGender("");
+            user.setUserEmail(email);
+            user.setUserName(name+" "+surName);
+            return true;
+        }
+        return false;
+    }
+    public String checkDigit(int number)
+    {
+        return number<=9?"0"+number:String.valueOf(number);
+    }
+
     private void dialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Source of the photo").setNeutralButton("Cancel",this)
-        .setPositiveButton("CAMERA",this).setNegativeButton("GALLERY",this);
+        builder.setMessage("Source of the photo").setNeutralButton("Cancel",this::onClick)
+        .setPositiveButton("CAMERA",this).setNegativeButton("GALLERY",this::onClick);
         builder.create();
         builder.show();
     }
@@ -110,10 +207,10 @@ public class RegisterActivity extends GenericActivity implements Handler.Callbac
         try {
             switch (i) {
                 case DialogInterface.BUTTON_POSITIVE:
-                    catchPhoto();
+                    checkPermissionCW();
                     break;
                 case DialogInterface.BUTTON_NEGATIVE:
-                    getPhotos();
+                    checkPermissionWG();
                     break;
                 case DialogInterface.BUTTON_NEUTRAL:
 
@@ -135,8 +232,9 @@ public class RegisterActivity extends GenericActivity implements Handler.Callbac
         switch (requestCode) {
 
             case CAPTURE_CAMERA:
+                photo = Uri.parse("file:///" + filen);
+                selectImage.setImageURI(photo);
 
-                selectImage.setImageURI(Uri.parse("file:///" + filen));
                 break;
 
 
@@ -153,7 +251,8 @@ public class RegisterActivity extends GenericActivity implements Handler.Callbac
                     }
                     fileOutputStream.close();
                     inputStream.close();
-                    selectImage.setImageURI(Uri.parse("file:///" + filen));//fresco library
+                    photo = Uri.parse("file:///" + filen);
+                    selectImage.setImageURI(photo);//fresco library
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -214,7 +313,6 @@ public class RegisterActivity extends GenericActivity implements Handler.Callbac
         }
     }
     private void catchPhoto() {
-
         filen = getFile();
         if(filen!=null) {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -223,7 +321,7 @@ public class RegisterActivity extends GenericActivity implements Handler.Callbac
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, photocUri);
                 startActivityForResult(intent, CAPTURE_CAMERA);
             } catch (ActivityNotFoundException e) {
-
+                e.printStackTrace();
             }
         } else {
             Toast.makeText(this, "please check your sdcard status", Toast.LENGTH_SHORT).show();
