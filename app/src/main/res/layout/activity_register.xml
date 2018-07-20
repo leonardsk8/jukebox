@@ -83,12 +83,24 @@
                 android:textAlignment="center"
                 android:hint="Cellphone"
                 android:inputType="number" />
+            <EditText
+                android:id="@+id/etPassword"
+                android:layout_width="300dp"
+                android:layout_height="40dp"
+                android:layout_below="@+id/etCellphone"
+                android:layout_marginTop="25dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/rounded_corner"
+                android:ems="10"
+                android:textAlignment="center"
+                android:hint="Password"
+                android:inputType="textPassword" />
 
             <DatePicker
                 android:id="@+id/dpBirthday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/etCellphone"
+                android:layout_below="@id/etPassword"
                 android:calendarViewShown="false"
                 android:layout_centerHorizontal="true"
                 android:datePickerMode="spinner"

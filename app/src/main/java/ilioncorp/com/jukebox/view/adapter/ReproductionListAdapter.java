@@ -130,6 +130,8 @@ public class ReproductionListAdapter extends RecyclerView.Adapter<ReproductionLi
             btnLike = itemView.findViewById(R.id.btnLike);
             tvLikes = itemView.findViewById(R.id.tvLikes);
             btnLike.setOnClickListener(this);
+
+
         }
 
         @Override

@@ -15,5 +15,6 @@
     <string name="fb_login_protocol_scheme">fb670148899983294</string>
     <string name="problem_log_in">Problema al ingresar</string>
     <string name="auth">629911785392-vlonqb5mbo12smi3hmsgkffcl9bcu8dn.apps.googleusercontent.com</string>
+    <string name="menu">Menu</string>
 
 </resources>

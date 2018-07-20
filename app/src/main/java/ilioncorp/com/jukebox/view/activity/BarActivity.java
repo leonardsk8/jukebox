@@ -1,28 +1,23 @@
 package ilioncorp.com.jukebox.view.activity;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
+import android.graphics.drawable.Icon;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +25,6 @@ import java.util.List;
 import ilioncorp.com.jukebox.R;
 import ilioncorp.com.jukebox.model.dao.SessionDAO;
 import ilioncorp.com.jukebox.model.dto.EstablishmentVO;
-import ilioncorp.com.jukebox.model.dto.PromotionsVO;
 import ilioncorp.com.jukebox.utils.constantes.Constantes;
 import ilioncorp.com.jukebox.view.fragment.TabBar;
 import ilioncorp.com.jukebox.view.fragment.TabInfoBar;
@@ -40,7 +34,7 @@ import ilioncorp.com.jukebox.view.fragment.TabUsers;
 import ilioncorp.com.jukebox.view.fragment.TabYoutube;
 import ilioncorp.com.jukebox.view.generic.GenericActivity;
 
-public class BarActivity extends GenericActivity implements BottomNavigationView.OnNavigationItemSelectedListener
+public class BarActivity extends GenericActivity implements View.OnClickListener, BottomNavigationView.OnNavigationItemSelectedListener
 ,Handler.Callback{
 
         private static final int REQUESTCODE_WRITE = 2;
@@ -59,75 +53,47 @@ public class BarActivity extends GenericActivity implements BottomNavigationView
         private Handler bridge;
         private String answer;
         private View view;
-        private FloatingActionButton fab;
+
 
 
         /**
          * The {@link ViewPager} that will host the section contents.
          */
-        private ViewPager mViewPager;
-        private EstablishmentVO establishment;
-        private String TAG = "BarActivity";
+    private ViewPager mViewPager;
+    private EstablishmentVO establishment;
+
+
+
+    private com.github.clans.fab.FloatingActionMenu fabMenu;
+    private com.github.clans.fab.FloatingActionButton subFabOpenSesion;
+
 
     @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            checkPermissionWriteReadExternalStorage();
-            setContentView(R.layout.activity_bar);
-            establishment = (EstablishmentVO) getIntent().getExtras().getSerializable("establishment");
-            mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-            // Set up the ViewPager with the sections adapter.
-            mViewPager = findViewById(R.id.container);
-            mViewPager.setAdapter(mSectionsPagerAdapter);
-            tab = findViewById(R.id.tabs);
-            state = true;
-            answer="";
-            tab.setupWithViewPager(mViewPager);
-            BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_bar);
-            bottomNavigationView.setOnNavigationItemSelectedListener(this);
-            bridge = new Handler(this);
-            fab =  findViewById(R.id.fabBar);
-            fab.setOnClickListener(view ->generateSession(view));
-            Constantes.idBar = String.valueOf(establishment.getId());
 
+        setContentView(R.layout.activity_bar);
+        this.subFabOpenSesion = findViewById(R.id.subFabOpenSesion);
+        this.fabMenu = findViewById(R.id.fabMenu);
+        establishment = (EstablishmentVO) getIntent().getExtras().getSerializable("establishment");
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        // Set up the ViewPager with the sections adapter.
+        mViewPager = findViewById(R.id.container);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+        tab = findViewById(R.id.tabs);
+        state = true;
+        answer="";
+        tab.setupWithViewPager(mViewPager);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_bar);
+        bottomNavigationView.setOnNavigationItemSelectedListener(this);
+        bridge = new Handler(this);
+        fabMenu.setClosedOnTouchOutside(true);
+        Constantes.idBar = String.valueOf(establishment.getId());
+        subFabOpenSesion.setOnClickListener(this::onClick);
         }
 
 
-    private void checkPermissionWriteReadExternalStorage() {
-        isReadStoragePermissionGranted();
-        isWriteStoragePermissionGranted();
 
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case REQUESTCODE_WRITE:
-                Log.d(TAG, "External storage2");
-                if(grantResults.length > 0 && grantResults[0]== PackageManager.PERMISSION_GRANTED){
-                    Log.v(TAG,"Permission: "+permissions[0]+ "was "+grantResults[0]);
-                    //resume tasks needing this permission
-
-                }else{
-                    messageToast("No se garantizo el permiso");
-                    finish();
-                }
-                break;
-
-            case REQUESTCODE_READ:
-                Log.d(TAG, "External storage1");
-                if(grantResults.length > 0 && grantResults[0]== PackageManager.PERMISSION_GRANTED){
-                    Log.v(TAG,"Permission: "+permissions[0]+ "was "+grantResults[0]);
-                    //resume tasks needing this permission
-
-                }else{
-                    messageToast("No se garantizo el permiso");
-                    finish();
-                }
-                break;
-        }
-    }
 
     private void generateSession(View view) {
             state = true;
@@ -136,7 +102,9 @@ public class BarActivity extends GenericActivity implements BottomNavigationView
             this.view = view;
             showCharging("cargando");
         }
-        @Override
+
+
+    @Override
         public boolean handleMessage(Message message) {
             hideCharging();
             answer = (String) message.obj;
@@ -145,7 +113,6 @@ public class BarActivity extends GenericActivity implements BottomNavigationView
                 session.generatedSession(establishment.getId());
                 messageSnackBar("Sesión generada con el bar",view);
                 state = false;
-
             }
             else if(answer.contains("vetoed")){
                 messageSnackBar("Te encuentras Vetado de este bar",view);
@@ -153,23 +120,32 @@ public class BarActivity extends GenericActivity implements BottomNavigationView
 
             }
             else if(answer.contains("active")){
-                messageSnackBar("Ya iniciaste sesión en este bar ",view);
+
+                session.closeSession(establishment.getId());
+                messageSnackBar("Sesión cerrada",view);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    subFabOpenSesion.setImageIcon(Icon.createWithResource(this,R.drawable.open_sesion));
+                }
+                subFabOpenSesion.setImageResource(R.drawable.open_sesion);
                 state = false;
 
-            }
+                }
             else if(answer.contains("")){
+                session.closeSession(Constantes.idBarSessionActual);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    subFabOpenSesion.setImageIcon(Icon.createWithResource(this,R.drawable.close_sesion));
+                }
+                subFabOpenSesion.setImageResource(R.drawable.close_sesion);
                 session.generatedSession(establishment.getId());
                 messageSnackBar("Sesión generada con el bar",view);
                 state = false;
             }
-            Log.e("Stop","Stop");
-            Log.e("Message",answer);
             return false;
         }
 
 
 
-        @Override
+    @Override
         public boolean onOptionsItemSelected(MenuItem item) {
             // Handle action bar item clicks here. The action bar will
             // automatically handle clicks on the Home/Up button, so long
@@ -178,7 +154,6 @@ public class BarActivity extends GenericActivity implements BottomNavigationView
 
             //noinspection SimplifiableIfStatement
             if (id == R.id.action_settings) {
-
                 return true;
             }
 
@@ -190,7 +165,7 @@ public class BarActivity extends GenericActivity implements BottomNavigationView
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             Handler call = new Handler(message -> {
                 hideCharging();
-                fab.setVisibility(View.VISIBLE);
+                fabMenu.setVisibility(View.VISIBLE);
                 switch (message.arg1){
                     case 0:
                         mSectionsPagerAdapter.bar.changeFragment(new TabInfoBar(establishment));
@@ -199,7 +174,7 @@ public class BarActivity extends GenericActivity implements BottomNavigationView
                         mSectionsPagerAdapter.bar.changeFragment(new TabUsers(establishment.getId()));
                         break;
                     case 2:
-                        fab.setVisibility(View.INVISIBLE);
+                        fabMenu.setVisibility(View.INVISIBLE);
                         mSectionsPagerAdapter.bar.changeFragment(new TabPromotions(establishment.getId()));
                         break;
                 }
@@ -208,7 +183,7 @@ public class BarActivity extends GenericActivity implements BottomNavigationView
             });
             showCharging("Loading");
             mViewPager.setCurrentItem(2);
-            fab.setVisibility(View.VISIBLE);
+            fabMenu.setVisibility(View.VISIBLE);
             switch (item.getItemId()) {
                 case R.id.action_information:
                     mSectionsPagerAdapter.bar.startFragment(call,0);
@@ -225,44 +200,9 @@ public class BarActivity extends GenericActivity implements BottomNavigationView
             return true;
         }
 
-    public void isReadStoragePermissionGranted() {
-        if (Build.VERSION.SDK_INT >= 23) {
-            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED) {
-                Log.v(TAG,"Permission is granted1");
-
-            } else {
-
-                Log.v(TAG,"Permission is revoked1");
-                ActivityCompat.requestPermissions(this, new String[]{
-                        Manifest.permission.READ_EXTERNAL_STORAGE}, REQUESTCODE_READ);
-
-            }
-        }
-        else { //permission is automatically granted on sdk<23 upon installation
-            Log.v(TAG,"Permission is granted1");
-
-        }
-    }
-
-    public void isWriteStoragePermissionGranted() {
-        if (Build.VERSION.SDK_INT >= 23) {
-            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED) {
-                Log.v(TAG,"Permission is granted2");
-
-            } else {
-
-                Log.v(TAG,"Permission is revoked2");
-                ActivityCompat.requestPermissions(this, new String[]
-                        {Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUESTCODE_WRITE);
-
-            }
-        }
-        else { //permission is automatically granted on sdk<23 upon installation
-            Log.v(TAG,"Permission is granted2");
-
-        }
+    @Override
+    public void onClick(View view) {
+        generateSession(view);
     }
 
 
@@ -291,7 +231,7 @@ public class BarActivity extends GenericActivity implements BottomNavigationView
 
             @Override
             public Fragment getItem(int position) {
-                fab.setVisibility(View.VISIBLE);
+                fabMenu.setVisibility(View.VISIBLE);
                 return mFragmentList.get(position);
             }
 

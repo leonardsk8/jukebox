@@ -11,8 +11,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseListAdapter;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -36,6 +34,8 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     String DEFAULT_PATTERN;
     DateFormat formatter;
     private Handler bridge;
+    private ListView listOfMessages;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,9 +53,17 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         fab.setOnClickListener(this::onClick);
 
     }
+    private void scrollMyListViewToBottom() {
+        listOfMessages.post(new Runnable() {
+            @Override
+            public void run() {
+                listOfMessages.setSelection(adapter.getCount() - 1);
+            }
+        });
+    }
 
     private void displayChatMessages() {
-        ListView listOfMessages =findViewById(R.id.list_of_messages);
+        listOfMessages =findViewById(R.id.list_of_messages);
         adapter = new FirebaseListAdapter<ChatMessageVO>(this, ChatMessageVO.class,
                 R.layout.item_chat, userDao.getReferenceMessage()) {
             @Override
@@ -71,10 +79,12 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
 
                 // Format the date before showing it
                 messageTime.setText(model.getFecha());
+                //scrollMyListViewToBottom();
             }
         };
-
+        //scrollMyListViewToBottom();
         listOfMessages.setAdapter(adapter);
+
     }
 
     @Override
@@ -88,9 +98,10 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
 
         userDao.sendMessage(message);
         //notifyUser(input.getText().toString(),"Nuevo mensaje de: "+Constantes.userActive.getUserName());
-        notifyUserOkHttp(input.getText().toString(),"Nuevo mensaje de: "+Constantes.userActive.getUserName());
+        //notifyUserOkHttp(input.getText().toString(),"Nuevo mensaje de: "+Constantes.userActive.getUserName());
         // Clear the input
         input.setText("");
+
 
 
     }

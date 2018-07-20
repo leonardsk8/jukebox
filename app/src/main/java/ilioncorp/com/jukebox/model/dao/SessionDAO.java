@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import ilioncorp.com.jukebox.model.dto.SessionUserVO;
 import ilioncorp.com.jukebox.model.dto.SessionVO;
 import ilioncorp.com.jukebox.model.generic.CRUD;
 import ilioncorp.com.jukebox.utils.constantes.Constantes;
@@ -33,6 +34,7 @@ import ilioncorp.com.jukebox.utils.constantes.Constantes;
 public class SessionDAO extends CRUD implements ValueEventListener,Runnable {
 
     SessionVO sessionObj;
+    SessionUserVO sessionUser;
     private Handler bridge;
     private String idBar;
     private SessionVO usersChat;
@@ -51,6 +53,7 @@ public class SessionDAO extends CRUD implements ValueEventListener,Runnable {
     }
 
     public SessionDAO() {
+        super();
     }
 
     public void generatedSession(String idBar){
@@ -66,11 +69,23 @@ public class SessionDAO extends CRUD implements ValueEventListener,Runnable {
         sessionObj.setSessionUserImage(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString()+"?type=large");
         myRef.child("session").child("establishment").child(idBar).child("users")
                 .child(sessionObj.getSessionUserId()).setValue(sessionObj);
+        sessionUser = new SessionUserVO();
+        sessionUser.setEstablishmentId(idBar);
+        sessionUser.setUserId(Constantes.userActive.getUserUID());
+        myRef.child("sessionUserEstablishment").child("user").child(Constantes.userActive.getUserUID()).setValue(sessionUser);
+        Constantes.idBarSessionActual = idBar;
+    }
+
+    public void closeSession(String idBar) {
+        myRef.child("session").child("establishment").child(idBar).child("users")
+                .child(Constantes.userActive.getUserUID()).removeValue();
+        myRef.child("sessionUserEstablishment").child("user").child(Constantes.userActive.getUserUID()).removeValue();
     }
 
     @Override
     public void onDataChange(DataSnapshot dataSnapshot) {
         listUsers.clear();
+        listUris.clear();
         if (dataSnapshot.exists()) {
             for(DataSnapshot ds:dataSnapshot.getChildren()){
                 usersChat = ds.getValue(SessionVO.class);
@@ -78,8 +93,9 @@ public class SessionDAO extends CRUD implements ValueEventListener,Runnable {
                     listUsers.add(usersChat);
                 }
             }
-            new Thread(this).start();
+
         }
+        new Thread(this).start();
     }
 
 
@@ -148,4 +164,5 @@ public class SessionDAO extends CRUD implements ValueEventListener,Runnable {
             e.printStackTrace();
         }
     }
+
 }

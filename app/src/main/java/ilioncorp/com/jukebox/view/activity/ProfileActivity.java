@@ -111,5 +111,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             Toast.makeText(this,"EXITO",Toast.LENGTH_SHORT).show();
             finish();
         }
+        else
+            Toast.makeText(this,"Llene todo los campos",Toast.LENGTH_SHORT).show();
     }
 }

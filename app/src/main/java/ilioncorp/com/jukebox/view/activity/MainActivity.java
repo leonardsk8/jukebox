@@ -43,7 +43,6 @@ public class MainActivity extends GenericActivity implements View.OnClickListene
     private FragmentMap maps;
     private FragmentOptions options;
     private int hilo;
-    private GoogleApiClient googleApiClient;
     LocationManager mlocManager;
     UserDAO userdao;
 
@@ -113,6 +112,7 @@ public class MainActivity extends GenericActivity implements View.OnClickListene
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        outState.putString("WORKAROUND_FOR_BUG_19917_KEY", "WORKAROUND_FOR_BUG_19917_VALUE");
         super.onSaveInstanceState(outState);
     }
 

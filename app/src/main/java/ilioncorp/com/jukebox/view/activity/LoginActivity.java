@@ -47,6 +47,7 @@ import ilioncorp.com.jukebox.view.generic.GenericActivity;
 public class LoginActivity extends GenericActivity implements Handler.Callback,View.OnClickListener,
         Runnable,FacebookCallback<LoginResult>,OnCompleteListener<AuthResult>, GoogleApiClient.OnConnectionFailedListener {
 
+    private static final String TAG = "LOGIN_ACTIVITY";
     private android.widget.EditText etUser;
     private android.widget.EditText etPassword;
     private android.support.v7.widget.CardView cvBtnLogin;
@@ -58,6 +59,8 @@ public class LoginActivity extends GenericActivity implements Handler.Callback,V
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
     private GoogleApiClient googleApiClient;
     private SignInButton signInButton;
+
+
 
 
     @Override
@@ -85,7 +88,7 @@ public class LoginActivity extends GenericActivity implements Handler.Callback,V
         this.tvRegisterHere.setOnClickListener(this);
         this.tvForgotPassword.setOnClickListener(this);
         this.cvBtnLogin.setOnClickListener(this);
-//        guardar();
+        //        guardar();
         this.btnLoginFacebook.registerCallback(callbackManager,this);
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseAuthListener = (firebaseAuth)->{
@@ -135,6 +138,7 @@ public class LoginActivity extends GenericActivity implements Handler.Callback,V
         int id = view.getId();
         switch (id){
             case R.id.cvBtnLogin:
+                checkLogin();
                 /*startActivity(new Intent(this,MainActivity.class));
                 finish();
                 */
@@ -150,6 +154,27 @@ public class LoginActivity extends GenericActivity implements Handler.Callback,V
                 break;
 
         }
+    }
+
+    private void checkLogin() {
+        String email = etUser.getText().toString().trim();
+        String password = etPassword.getText().toString().trim();
+        firebaseAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d(TAG, "signInWithEmail:success");
+                        messageToast("EXITO");
+                        goToMainScreen();
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w(TAG, "signInWithEmail:failure", task.getException());
+                        messageToast("Error al iniciar sesión"+task.getException());
+
+                    }
+
+                    // ...
+                });
     }
 
 

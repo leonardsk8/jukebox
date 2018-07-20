@@ -9,4 +9,7 @@ public class Constantes {
     public static String idBar="";
     public static int positionLike;
     public static String userToken;
+    public static String idBarSessionActual="";
+
+
 }

@@ -62,8 +62,17 @@ import ilioncorp.com.jukebox.view.Localizacion;
 
 @SuppressLint("ValidFragment")
 public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
-        GoogleApiClient.OnConnectionFailedListener, View.OnClickListener, SeekBar.OnSeekBarChangeListener,
-        GoogleMap.OnMarkerDragListener, Runnable, Handler.Callback, GoogleMap.OnInfoWindowClickListener {
+        GoogleApiClient.OnConnectionFailedListener,
+        View.OnClickListener,
+        SeekBar.OnSeekBarChangeListener,
+        GoogleMap.OnMarkerDragListener,
+        Runnable,
+        Handler.Callback,
+        GoogleMap.OnInfoWindowClickListener,
+        GoogleMap.OnCameraMoveStartedListener,
+        GoogleMap.OnCameraMoveListener,
+        GoogleMap.OnCameraMoveCanceledListener,
+        GoogleMap.OnCameraIdleListener{
 
     private android.widget.SeekBar sbRank;
     private android.widget.TextView tvRank;
@@ -77,12 +86,12 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
     private Localizacion Local;
     private Circle circulo;
     private boolean endHandler=false;
-    private ImageView btnArrow;
+
     Handler mensaje;
     private Handler bridge;
-    private Marker mainMarker;
+
     private String hilo;
-    private boolean firts = true;
+
     private ArrayList<EstablishmentVO> bar;
     double latitud;
     double longitud;
@@ -518,6 +527,26 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
         Intent intent = new Intent(getContext(), BarActivity.class);
         intent.putExtra("establishment",vo);
         startActivity(intent);
+
+    }
+
+    @Override
+    public void onCameraIdle() {
+
+    }
+
+    @Override
+    public void onCameraMoveCanceled() {
+
+    }
+
+    @Override
+    public void onCameraMove() {
+
+    }
+
+    @Override
+    public void onCameraMoveStarted(int i) {
 
     }
     //EndMarkertOptions

@@ -47,15 +47,14 @@ public class FragmentOptions extends GenericFragment implements View.OnClickList
         this.btnChargeAccount = view.findViewById(R.id.btnChargeAccount);
         this.btnMap = view.findViewById(R.id.btnMap);
         this.btnProfile = view.findViewById(R.id.btnProfile);
-        this.btnProfile.setOnClickListener(this);
-        this.btnHistory.setOnClickListener(this);
-        this.btnScan.setOnClickListener(this);
-        this.btnListBar.setOnClickListener(this);
-        this.btnChargeAccount.setOnClickListener(this);
-        this.btnMap.setOnClickListener(this);
-
+        this.btnProfile.setOnClickListener(this::onClick);
+        this.btnHistory.setOnClickListener(this::onClick);
+        this.btnScan.setOnClickListener(this::onClick);
+        this.btnListBar.setOnClickListener(this::onClick);
+        this.btnChargeAccount.setOnClickListener(this::onClick);
+        this.btnMap.setOnClickListener(this::onClick);
         this.btnExit = view.findViewById(R.id.btnExit);
-        this.btnExit.setOnClickListener(this);
+        this.btnExit.setOnClickListener(this::onClick);
         return view;
     }
 

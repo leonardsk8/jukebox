@@ -13,6 +13,8 @@ import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 
 import ilioncorp.com.jukebox.R;
+import ilioncorp.com.jukebox.model.dao.SessionDAO;
+import ilioncorp.com.jukebox.utils.constantes.Constantes;
 import ilioncorp.com.jukebox.view.activity.LoginActivity;
 
 /**
@@ -39,7 +41,12 @@ public abstract class GenericFragment extends Fragment {
         this.alert = alert.show();
     }
 
+    public void messageToast (String message){
+        Toast.makeText(getContext(),message + "" , Toast.LENGTH_SHORT).show();
+    }
     public void logout() {
+        SessionDAO session = new SessionDAO();
+        session.closeSession(Constantes.idBarSessionActual);
         FirebaseAuth.getInstance().signOut();
         LoginManager.getInstance().logOut();
         goLoginScreen();

@@ -35,19 +35,29 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
     </LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabBar"
+    <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/fabMenu"
+        app:menu_fab_label="@string/menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_gravity="end|bottom"
         android:layout_marginBottom="72dp"
-        android:layout_marginEnd="35dp"
-        android:background="@color/transpar"
-        app:backgroundTint="@android:color/transparent"
-        app:rippleColor="@android:color/transparent"
-        app:srcCompat="@drawable/youtube" />
+        android:layout_marginEnd="21dp">
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/subFabOpenSesion"
+            android:src="@drawable/open_sesion"
+            app:fab_label="Open/Close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/subCredits"
+            android:src="@drawable/creditsphone"
+            app:fab_label="Credits"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </com.github.clans.fab.FloatingActionMenu>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation_bar"
