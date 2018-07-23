@@ -52,7 +52,7 @@
             android:layout_height="wrap_content" />
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/subCredits"
-            android:src="@drawable/creditsphone"
+            android:src="@drawable/credits"
             app:fab_label="Credits"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

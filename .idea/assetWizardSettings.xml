@@ -23,7 +23,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="url" value="jar:file:/snap/android-studio/51/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/social/ic_person_add_black_24dp.xml" />
+                                                <entry key="url" value="jar:file:/snap/android-studio/51/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/editor/ic_monetization_on_black_24dp.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -33,11 +33,10 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="assetType" value="IMAGE" />
                                       <entry key="imageAsset" value="$USER_HOME$/Downloads/close(1).png" />
-                                      <entry key="outputName" value="close_sesion" />
+                                      <entry key="outputName" value="credits" />
                                       <entry key="theme" value="CUSTOM" />
-                                      <entry key="themeColor" value="e50312" />
+                                      <entry key="themeColor" value="130102" />
                                     </map>
                                   </option>
                                 </PersistentState>

@@ -17,8 +17,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import ilioncorp.com.jukebox.R;
+import ilioncorp.com.jukebox.model.dao.CreditsDAO;
 import ilioncorp.com.jukebox.model.dao.ReproductionListDAO;
 import ilioncorp.com.jukebox.model.dao.SessionDAO;
+import ilioncorp.com.jukebox.model.dto.CreditsVO;
 import ilioncorp.com.jukebox.model.dto.ReproductionListVO;
 import ilioncorp.com.jukebox.view.YoutubeConnector;
 import ilioncorp.com.jukebox.view.fragment.TabReproducing;
@@ -34,17 +36,28 @@ public class PlayerActivity extends YouTubeBaseActivity implements YouTubePlayer
     private ReproductionListVO song;
     private String idBar;
     private Handler bridge;
+    private Handler bridgeCredits;
+    private int credits;
+    private CreditsDAO creditsDAO;
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         setContentView(R.layout.activity_player);
         bridge = new Handler(this);
-        this.playerView =  findViewById(R.id.player_view);
-       this.playerView.initialize(YoutubeConnector.KEY, this);
-       btnSend = findViewById(R.id.btnSendSong);
-       btnSend.setOnClickListener(this);
-       song = (ReproductionListVO) getIntent().getExtras().getSerializable("song");
-       idBar= getIntent().getExtras().getString("idBar");
+        this.playerView = findViewById(R.id.player_view);
+        this.playerView.initialize(YoutubeConnector.KEY, this);
+        btnSend = findViewById(R.id.btnSendSong);
+        btnSend.setOnClickListener(this);
+        song = (ReproductionListVO) getIntent().getExtras().getSerializable("song");
+        idBar = getIntent().getExtras().getString("idBar");
+        bridgeCredits = new Handler(msg -> {
+            int x;
+            CreditsVO credits = (CreditsVO) msg.obj;
+            this.credits = Integer.parseInt(credits.getCredits());
+            return false;
+
+        });
+        creditsDAO = new CreditsDAO(bridgeCredits);
     }
 
     @Override
@@ -73,16 +86,30 @@ public class PlayerActivity extends YouTubeBaseActivity implements YouTubePlayer
     public boolean handleMessage(Message message) {
         String answer = (String)message.obj;
         if(answer.equals("active")) {
-            new ReproductionListDAO(idBar, TabReproducing.bridge, true).sendSong(song);
-            Snackbar.make(view, "Canción Enviada", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
+            if(checkCredits()) {
+                new ReproductionListDAO(idBar, TabReproducing.bridge, true).sendSong(song);
+                Snackbar.make(view, "Canción Enviada", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                Toast.makeText(this,"1 Credito Descontado",Toast.LENGTH_SHORT).show();
+                creditsDAO.takeFromCredit(credits-1);
+            }
+            else
+                Snackbar.make(view, "Creditos Insuficientes, por favor recarga", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+
         }
         else if(answer.equals("inactive") || answer.equals(""))
-            Snackbar.make(view, "Debes iniciar Sesión", Snackbar.LENGTH_LONG)
+            Snackbar.make(view, "Debes iniciar Sesión en el bar", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
         else if (answer.equals("vetoed"))
             Snackbar.make(view, "No puedes agendar musica, estas vetado", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
+        return false;
+    }
+
+    private boolean checkCredits() {
+        if(this.credits>0)
+            return true;
         return false;
     }
 }

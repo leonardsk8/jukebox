@@ -248,18 +248,15 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
             if (true) {
 
                 final Task location = mFusedLocationProviderClient.getLastLocation();
-                location.addOnCompleteListener(new OnCompleteListener() {
-                    @Override
-                    public void onComplete(@NonNull Task task) {
-                        if (task.isSuccessful()) {
+                location.addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
 
-                            moveCamera(new LatLng(latitud, longitud),
-                                    14,
-                                    "My Location");
+                        moveCamera(new LatLng(latitud, longitud),
+                                14,
+                                "My Location");
 
-                        } else {
-                            Toast.makeText(getContext(), "unable to get current location", Toast.LENGTH_SHORT).show();
-                        }
+                    } else {
+                        Toast.makeText(getContext(), "unable to get current location", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -521,9 +518,6 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
     @Override
     public void onInfoWindowClick(Marker marker) {
         EstablishmentVO vo = (EstablishmentVO) marker.getTag();
-        Log.e("Probando",vo.getName());
-        Log.e("Probando",vo.getAddress());
-        Log.e("Probando",vo.toString());
         Intent intent = new Intent(getContext(), BarActivity.class);
         intent.putExtra("establishment",vo);
         startActivity(intent);

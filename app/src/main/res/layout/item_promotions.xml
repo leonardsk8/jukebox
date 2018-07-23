@@ -16,7 +16,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        app:cardBackgroundColor="@color/cardview_dark_background"
+        app:cardBackgroundColor="@color/cardview_light_background"
         card_view:cardCornerRadius="4dp">
 
         <RelativeLayout
@@ -65,7 +65,8 @@
                 android:id="@+id/cvBtnGetCoupon"
                 android:layout_width="300dp"
                 android:layout_height="50dp"
-                android:layout_alignParentBottom="true"
+                android:layout_marginTop="40dp"
+                android:layout_below="@+id/tvDescriptionPromotion"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="29dp"
                 app:cardBackgroundColor="@color/orange"

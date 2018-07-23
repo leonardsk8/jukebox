@@ -116,28 +116,42 @@ public class RegisterActivity extends GenericActivity implements Handler.Callbac
 
     private void registerUser() {
        if(validateFields()){
-           showCharging("Registrando\nUn momento por favor");
-           if(photo != null) {
-               StorageReference photoRef = mStorageRef.child("images/"+user.getUserEmail()+".jpg");
-               photoRef.putFile(photo)
-                       .addOnSuccessListener(taskSnapshot -> {
-                           Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                           registerUserInFireBaseAuth(downloadUrl);
-                       })
-                       .addOnFailureListener(exception -> {
-                           hideCharging();
-                           messageToast("Error subiendo imagen");
-                       });
-           }else{
-               Uri uri =  Uri.parse( "https://pbs.twimg.com/profile_images/958172060206841856/xNhKM5Sn_400x400.png" );
-               registerUserInFireBaseAuth(uri);
+           if(validateEmail()) {
+               showCharging("Registrando\nUn momento por favor");
+               if (photo != null) {
+                   StorageReference photoRef = mStorageRef.child("images/" + user.getUserEmail() + ".jpg");
+                   photoRef.putFile(photo)
+                           .addOnSuccessListener(taskSnapshot -> {
+                               Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                               registerUserInFireBaseAuth(downloadUrl);
+                           })
+                           .addOnFailureListener(exception -> {
+                               hideCharging();
+                               messageToast("Error subiendo imagen " + exception.getMessage());
+                           });
+               } else {
+                   Uri uri = Uri.parse("https://pbs.twimg.com/profile_images/958172060206841856/xNhKM5Sn_400x400.png");
+                   registerUserInFireBaseAuth(uri);
+               }
+
            }
-
-
 
        }
        else
            messageToast("Complete los campos");
+    }
+
+    private boolean validateEmail() {
+        String email = etEmail.getText().toString();
+        if(!email.contains("@")) {
+            messageToast("Ingrese un correo valido");
+            return false;
+        }
+        if(email.split("@")[1].contains("gmail")) {
+            messageToast("Inicie sesión por google");
+            return false;
+        }
+        return  true;
     }
 
     private void registerUserInFireBaseAuth(Uri downloadUrl) {
@@ -150,7 +164,7 @@ public class RegisterActivity extends GenericActivity implements Handler.Callbac
                         //startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
                     }else{
                         hideCharging();
-                        messageToast("Error Registrando");
+                        messageToast("Error Registrando "+task.getException().getMessage());
                     }
 
                 });

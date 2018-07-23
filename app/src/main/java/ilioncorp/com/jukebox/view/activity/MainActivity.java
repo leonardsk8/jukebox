@@ -2,40 +2,42 @@ package ilioncorp.com.jukebox.view.activity;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-
 import ilioncorp.com.jukebox.R;
+import ilioncorp.com.jukebox.model.dao.CreditsDAO;
 import ilioncorp.com.jukebox.model.dao.UserDAO;
-import ilioncorp.com.jukebox.model.dto.UserVO;
-import ilioncorp.com.jukebox.utils.constantes.Constantes;
+import ilioncorp.com.jukebox.model.dto.CreditsVO;
 import ilioncorp.com.jukebox.view.fragment.FragmentMap;
 import ilioncorp.com.jukebox.view.fragment.FragmentOptions;
 import ilioncorp.com.jukebox.view.generic.GenericActivity;
 
 
-public class MainActivity extends GenericActivity implements View.OnClickListener,Runnable,GoogleApiClient.OnConnectionFailedListener{
+public class MainActivity extends GenericActivity implements
+        Handler.Callback,
+        View.OnClickListener,
+        Runnable,
+        GoogleApiClient.OnConnectionFailedListener {
 
     private android.widget.ImageView imOptions;
 
@@ -43,19 +45,29 @@ public class MainActivity extends GenericActivity implements View.OnClickListene
     private FragmentMap maps;
     private FragmentOptions options;
     private int hilo;
-    LocationManager mlocManager;
-    UserDAO userdao;
+    private LocationManager mlocManager;
+    private UserDAO userdao;
+    private CreditsDAO credits;
+    private Handler bridge;
+    private android.widget.TextView toolbartitle;
+    private android.support.v7.widget.Toolbar toolbar;
+    private TextView tvCredits;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        this.tvCredits =  findViewById(R.id.tvCredits);
+
+
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         this.imOptions =  findViewById(R.id.imOptions);
-        imOptions.setOnClickListener(this);
+        imOptions.setOnClickListener(this::onClick);
         maps = new FragmentMap();
         mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-
+        bridge = new Handler(this);
+        credits = new CreditsDAO(bridge);
         administrator = getSupportFragmentManager();
         options = new FragmentOptions(this);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -149,7 +161,9 @@ public class MainActivity extends GenericActivity implements View.OnClickListene
                     if (!currentFragment.getClass().getName().equalsIgnoreCase(options.getClass().getName())) {
                         //currentFragment no concide con maps
                         loadFragment(options);
-                    }
+                    } else
+                        this.administrator.popBackStack();
+
                 }
                 break;
         }
@@ -162,6 +176,9 @@ public class MainActivity extends GenericActivity implements View.OnClickListene
         }
         else
             super.onBackPressed();
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.content);
+        if (currentFragment == null)
+            finish();
     }
     private void loadFragment(Fragment newFragment) {
         getSupportFragmentManager().beginTransaction()
@@ -181,5 +198,12 @@ public class MainActivity extends GenericActivity implements View.OnClickListene
             finish();
             break;
         }
+    }
+
+    @Override
+    public boolean handleMessage(Message message) {
+        CreditsVO credits = (CreditsVO) message.obj;
+        this.tvCredits.setText(credits.getCredits()+"");
+        return false;
     }
 }

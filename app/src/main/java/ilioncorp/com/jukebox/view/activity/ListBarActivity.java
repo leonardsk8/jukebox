@@ -1,5 +1,7 @@
 package ilioncorp.com.jukebox.view.activity;
 
+import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +11,7 @@ import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,13 +27,17 @@ import ilioncorp.com.jukebox.model.dto.MenuVO;
 import ilioncorp.com.jukebox.view.adapter.BarListAdapter;
 import ilioncorp.com.jukebox.view.generic.GenericActivity;
 
+import static ilioncorp.com.jukebox.R.color.orange;
+
 public class ListBarActivity extends GenericActivity implements Handler.Callback,View.OnClickListener,Runnable,SearchView.OnQueryTextListener {
 
     private BarListAdapter adapter;
     private ArrayList<EstablishmentVO> listItems;
     private Handler bridge;
     private android.support.v7.widget.RecyclerView listBarsRecicler;
+    private Toolbar toolbar;
 
+    @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,19 +45,25 @@ public class ListBarActivity extends GenericActivity implements Handler.Callback
         this.listBarsRecicler = findViewById(R.id.listBarsRecicler);
         this.listBarsRecicler.setHasFixedSize(true);
         this.listBarsRecicler.setLayoutManager(new LinearLayoutManager(this));
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.setBackgroundColor(R.color.orange);
+        toolbar.inflateMenu(R.menu.menu_search);
         showCharging("Loading");
         bridge = new Handler(this);
         EstablishmentDAO establishment = new EstablishmentDAO(bridge);
         establishment.getAllBars();
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         getMenuInflater().inflate(R.menu.menu_search,menu);
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         MenuItem item = menu.findItem(R.id.Search);
         SearchView searchView = (SearchView) item.getActionView();
         searchView.setOnQueryTextListener(this);
+        searchView.setBackgroundColor(R.color.orange);
         item.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem menuItem) {

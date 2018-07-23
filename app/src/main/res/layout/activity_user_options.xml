@@ -27,7 +27,7 @@
                 android:src="@drawable/menu"
 
                 />
-            <ImageButton
+            <ImageView
                 android:id="@+id/btnMap"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
@@ -37,7 +37,17 @@
                 android:layout_marginTop="82dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/mapsmenu" />
-            <ImageButton
+            <TextView
+                android:id="@+id/tvMapa"
+                android:layout_alignStart="@+id/btnMap"
+                android:layout_below="@+id/btnMap"
+                android:text="Mapa"
+                android:textSize="20dp"
+                android:layout_marginLeft="15dp"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <ImageView
                 android:id="@+id/btnProfile"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
@@ -45,9 +55,18 @@
                 android:layout_alignTop="@+id/btnMap"
                 android:layout_marginEnd="41dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/previewbar" />
+                android:src="@drawable/profile" />
+            <TextView
+                android:layout_marginLeft="15dp"
+                android:layout_alignStart="@+id/btnProfile"
+                android:layout_below="@+id/btnProfile"
+                android:text="Perfil"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/btnChargeAccount"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
@@ -55,37 +74,71 @@
                 android:layout_alignTop="@+id/btnHistory"
                 android:scaleType="fitCenter"
                 android:src="@drawable/chargeaccount" />
-            <ImageButton
+            <TextView
+                android:id="@+id/tvChargeAccount"
+                android:text="Cargar Cuenta"
+                android:layout_alignStart="@+id/btnChargeAccount"
+                android:layout_below="@+id/btnChargeAccount"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <ImageView
                 android:id="@+id/btnListBar"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_alignStart="@+id/btnChargeAccount"
-                android:layout_below="@+id/btnChargeAccount"
+                android:layout_below="@+id/tvChargeAccount"
                 android:scaleType="fitCenter"
                 android:layout_marginTop="20dp"
                 android:src="@drawable/list" />
+            <TextView
+                android:layout_alignStart="@+id/btnListBar"
+                android:layout_below="@+id/btnListBar"
+                android:text="Lista bares"
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/btnHistory"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_alignStart="@+id/btnMap"
                 android:layout_marginTop="20dp"
-                android:layout_below="@+id/btnMap"
+                android:layout_below="@+id/tvMapa"
                 android:scaleType="fitCenter"
                 android:src="@drawable/history" />
 
+            <TextView
+                android:layout_below="@+id/btnHistory"
+                android:layout_alignStart="@+id/btnHistory"
+                android:text="Historial"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/btnScan"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_alignStart="@+id/btnMap"
-                android:layout_alignTop="@+id/btnListBar"
+                android:layout_alignTop="@id/btnListBar"
                 android:scaleType="fitCenter"
                 android:src="@drawable/scan" />
+            <TextView
+                android:id="@+id/tvScan"
+                android:layout_alignStart="@id/btnScan"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:layout_below="@id/btnScan"
+                android:text="Escaner QR"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/btnExit"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
@@ -93,8 +146,16 @@
                 android:layout_marginTop="20dp"
                 android:src="@drawable/exit"
                 android:layout_alignStart="@+id/btnScan"
-                android:layout_below="@+id/btnScan"
+                android:layout_below="@id/tvScan"
                 />
+            <TextView
+                android:layout_alignStart="@id/btnExit"
+                android:layout_below="@id/btnExit"
+                android:text="Salir"
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
         </RelativeLayout>
     </ScrollView>
 

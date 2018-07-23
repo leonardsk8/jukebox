@@ -7,7 +7,8 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.ImageView;
+
 
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,14 +25,14 @@ import ilioncorp.com.jukebox.view.activity.MainActivity;
 @SuppressLint("ValidFragment")
 public class FragmentOptions extends GenericFragment implements View.OnClickListener{
 
-    private android.widget.ImageButton btnMap;
-    private android.widget.ImageButton btnChargeAccount;
-    private android.widget.ImageButton btnListBar;
-    private android.widget.ImageButton btnScan;
-    private android.widget.ImageButton btnHistory;
-    private android.widget.ImageButton btnProfile;
+    private ImageView btnMap;
+    private ImageView btnChargeAccount;
+    private ImageView btnListBar;
+    private ImageView btnScan;
+    private ImageView btnHistory;
+    private ImageView btnProfile;
     MainActivity context;
-    private ImageButton btnExit;
+    private ImageView btnExit;
 
     public FragmentOptions(MainActivity context) {
         this.context = context;
