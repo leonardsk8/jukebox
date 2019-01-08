@@ -78,13 +78,14 @@ public class PlayerActivity extends YouTubeBaseActivity implements YouTubePlayer
     public void onClick(View view) {
         SessionDAO session = new SessionDAO();
         this.view = view;
-        session.checkSession(bridge,idBar);
+        session.checkSession(bridge,idBar,"no");
 
     }
 
     @Override
     public boolean handleMessage(Message message) {
-        String answer = (String)message.obj;
+        String[] array = (String[]) message.obj;
+        String answer = array[0];
         if(answer.equals("active")) {
             if(checkCredits()) {
                 new ReproductionListDAO(idBar, TabReproducing.bridge, true).sendSong(song);

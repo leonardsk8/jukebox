@@ -19,7 +19,7 @@ import ilioncorp.com.jukebox.model.dto.BarPhotoVO;
 import ilioncorp.com.jukebox.view.generic.GenericActivity;
 
 
-
+@Deprecated
 public class SpacePhotoActivity extends GenericActivity {
     public static final String EXTRA_SPACE_PHOTO = "SpacePhotoActivity.SPACE_PHOTO";
     private ImageView mImageView;

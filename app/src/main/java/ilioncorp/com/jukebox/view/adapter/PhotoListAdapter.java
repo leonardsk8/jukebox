@@ -20,7 +20,7 @@ import ilioncorp.com.jukebox.R;
 import ilioncorp.com.jukebox.model.dto.BarPhotoVO;
 import ilioncorp.com.jukebox.model.dto.EstablishmentVO;
 import ilioncorp.com.jukebox.view.activity.FullScreenActivity;
-import ilioncorp.com.jukebox.view.activity.SpacePhotoActivity;
+
 @SuppressLint("ValidFragment")
 public class PhotoListAdapter extends Fragment {
 
@@ -110,6 +110,7 @@ public class PhotoListAdapter extends Fragment {
                 if(position != RecyclerView.NO_POSITION) {
                     Intent intent = new Intent(mContext, FullScreenActivity.class);
                     intent.putExtra("IMAGES", images);
+                    intent.putExtra("POSITION",position);
                     mContext.startActivity(intent);
                 }
             }

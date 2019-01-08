@@ -95,7 +95,6 @@
                 android:name=".view.activity.BarActivity"
                 android:label="@string/title_activity_bar"
                 android:theme="@style/JukeboxTheme"/>
-        <activity android:name=".view.activity.SpacePhotoActivity"/>
         <activity android:name=".view.activity.PlayerActivity"/>
         <activity android:name=".view.activity.ChargeAccountActivity"/>
         <activity

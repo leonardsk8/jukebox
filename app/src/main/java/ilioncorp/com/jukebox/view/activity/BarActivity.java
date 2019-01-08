@@ -50,7 +50,6 @@ public class BarActivity extends GenericActivity implements View.OnClickListener
          */
         private SectionsPagerAdapter mSectionsPagerAdapter;
         TabLayout tab;
-        private boolean state;
         private Handler bridge;
         private String answer;
         private View view;
@@ -82,7 +81,6 @@ public class BarActivity extends GenericActivity implements View.OnClickListener
         mViewPager = findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         tab = findViewById(R.id.tabs);
-        state = true;
         answer="";
         tab.setupWithViewPager(mViewPager);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_bar);
@@ -91,15 +89,15 @@ public class BarActivity extends GenericActivity implements View.OnClickListener
         fabMenu.setClosedOnTouchOutside(true);
         Constantes.idBar = String.valueOf(establishment.getId());
         subFabOpenSesion.setOnClickListener(this::onClick);
+        generateSession(view,"yes");
         }
 
 
 
 
-    private void generateSession(View view) {
-            state = true;
+    private void generateSession(View view,String onlyCheck) {
             SessionDAO session = new SessionDAO();
-            session.checkSession(bridge,establishment.getId());
+            session.checkSession(bridge,establishment.getId(),onlyCheck);
             this.view = view;
             showCharging("cargando");
         }
@@ -108,38 +106,45 @@ public class BarActivity extends GenericActivity implements View.OnClickListener
     @Override
         public boolean handleMessage(Message message) {
             hideCharging();
-            answer = (String) message.obj;
-            SessionDAO session = new SessionDAO();
-            if (answer.contains("inactive")) {
-                session.generatedSession(establishment.getId());
-                messageSnackBar("Sesión generada con el bar",view);
-                state = false;
-            }
-            else if(answer.contains("vetoed")){
-                messageSnackBar("Te encuentras Vetado de este bar",view);
-                state = false;
+            String[] array = (String[]) message.obj;
+            String option = array[1];
+            answer = array[0];
+            if(option.equals("no")) {
+                SessionDAO session = new SessionDAO();
+                if (answer.contains("inactive")) {
+                    session.generatedSession(establishment.getId());
+                    messageSnackBar("Sesión generada con el bar", view);
 
-            }
-            else if(answer.contains("active")){
+                } else if (answer.contains("vetoed")) {
+                    messageSnackBar("Te encuentras Vetado de este bar", view);
 
-                session.closeSession(establishment.getId());
-                messageSnackBar("Sesión cerrada",view);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    subFabOpenSesion.setImageIcon(Icon.createWithResource(this,R.drawable.open_sesion));
-                }
-                subFabOpenSesion.setImageResource(R.drawable.open_sesion);
-                state = false;
+
+                } else if (answer.contains("active")) {
+
+                    session.closeSession(establishment.getId());
+                    messageSnackBar("Sesión cerrada", view);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        subFabOpenSesion.setImageIcon(Icon.createWithResource(this, R.drawable.open_sesion));
+                    }
+                    subFabOpenSesion.setImageResource(R.drawable.open_sesion);
+
+
+                } else if (answer.contains("")) {
+                    session.closeSession(Constantes.idBarSessionActual);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        subFabOpenSesion.setImageIcon(Icon.createWithResource(this, R.drawable.close_sesion));
+                    }
+                    subFabOpenSesion.setImageResource(R.drawable.close_sesion);
+                    session.generatedSession(establishment.getId());
+                    messageSnackBar("Sesión generada con el bar", view);
 
                 }
-            else if(answer.contains("")){
-                session.closeSession(Constantes.idBarSessionActual);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    subFabOpenSesion.setImageIcon(Icon.createWithResource(this,R.drawable.close_sesion));
-                }
-                subFabOpenSesion.setImageResource(R.drawable.close_sesion);
-                session.generatedSession(establishment.getId());
-                messageSnackBar("Sesión generada con el bar",view);
-                state = false;
+            }else{
+                if (answer.contains("active"))
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                        subFabOpenSesion.setImageIcon(Icon.createWithResource(this, R.drawable.close_sesion));
+
+
             }
             return false;
         }
@@ -203,7 +208,7 @@ public class BarActivity extends GenericActivity implements View.OnClickListener
 
     @Override
     public void onClick(View view) {
-        generateSession(view);
+        generateSession(view,"no");
     }
 
 

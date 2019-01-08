@@ -115,8 +115,9 @@ public class SessionDAO extends CRUD implements ValueEventListener,Runnable {
 
     }
 
-    public void checkSession(Handler bridge,String idBar) {
-        final String[] state = {""};
+    public void checkSession(Handler bridge,String idBar,String onlyCheck) {
+        final String[] state = {"",""};
+        state[1] = onlyCheck;
         Query query = myRef.child("session").child("establishment").child(idBar).child("users").
                 orderByChild("sessionUserId").equalTo(userID).limitToFirst(1);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -135,7 +136,7 @@ public class SessionDAO extends CRUD implements ValueEventListener,Runnable {
                 else
                     state[0] = "";
                 Message msg  = new Message();
-                msg.obj = state[0];
+                msg.obj = state;
                 bridge.sendMessage(msg);
             }
 
