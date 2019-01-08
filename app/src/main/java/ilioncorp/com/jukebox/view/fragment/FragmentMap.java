@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Geocoder;
+import android.location.Location;
 import android.location.LocationManager;
 import android.media.Image;
 import android.os.Bundle;
@@ -39,6 +40,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -46,9 +48,11 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import ilioncorp.com.jukebox.model.dao.EstablishmentDAO;
 import ilioncorp.com.jukebox.utils.constantes.Constantes;
@@ -72,8 +76,10 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
         GoogleMap.OnCameraMoveStartedListener,
         GoogleMap.OnCameraMoveListener,
         GoogleMap.OnCameraMoveCanceledListener,
-        GoogleMap.OnCameraIdleListener{
+        GoogleMap.OnCameraIdleListener,
+        GoogleMap.OnMarkerClickListener{
 
+    private boolean oneTime =true;
     private android.widget.SeekBar sbRank;
     private android.widget.TextView tvRank;
     private android.widget.RelativeLayout layoutRango;
@@ -85,8 +91,8 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
     private GoogleMap mMap;
     private Localizacion Local;
     private Circle circulo;
-    private boolean endHandler=false;
-
+    private boolean endHandler = false;
+    private int contadorPrimeraVez=0;
     Handler mensaje;
     private Handler bridge;
 
@@ -98,10 +104,13 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
     LocationManager mlocManager;
     EstablishmentDAO establishmentDAO;
 
+    Marker previousMarker;
+    Marker lastMarker;
 
     private FusedLocationProviderClient mFusedLocationProviderClient;
 
-    public final static int CODE_GPS=101;
+    public final static int CODE_GPS = 101;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -112,7 +121,7 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
         this.sbRank = view.findViewById(R.id.sbRank);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        mapFragment.getMapAsync(this::onMapReady);
         this.sbRank.setOnSeekBarChangeListener(this);
         this.sbRank.setMax(3);
         progress = 1;
@@ -121,9 +130,9 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
         circleOptions = new CircleOptions();
         mensaje = new Handler(this);
         bar = new ArrayList<>();
-        bridge = new Handler((msg)->{
+        bridge = new Handler((msg) -> {
             bar = (ArrayList<EstablishmentVO>) msg.obj;
-            isThereBars = (bar.size() > 0)?true :false;
+            isThereBars = (bar.size() > 0) ? true : false;
             endHandler = true;
             return false;
         });
@@ -143,13 +152,12 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
     }
 
 
-
     private void permission() {
         final boolean gpsEnabled = mlocManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         if (!gpsEnabled) {
             Intent settingsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-            startActivityForResult(settingsIntent,FragmentMap.CODE_GPS);
-        }else{
+            startActivityForResult(settingsIntent, FragmentMap.CODE_GPS);
+        } else {
             start();
         }
     }
@@ -157,7 +165,7 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if(Constantes.openDialog)
+        if (Constantes.openDialog)
             createDialog();
     }
 
@@ -166,7 +174,7 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
         builder.setMessage("Te invitamos a que completes tu registro")
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        startActivity(new Intent(getContext(),ProfileActivity.class));
+                        startActivity(new Intent(getContext(), ProfileActivity.class));
                     }
                 }).setNegativeButton("Ahora no", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -179,13 +187,11 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
 
 
     private void start() {
-        showCharging("Obtieniedo Ubicación", getContext());
+        showCharging("Obtieniedo Ubicación", getContext(), true);
         locationStart();
         hilo = "start";
-        new Thread(this).start();
+        new Thread(this::run).start();
     }
-
-
 
 
     private void locationStart() {
@@ -198,8 +204,8 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
             return;
         }
-        mlocManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, Local);
-        mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, Local);
+        //mlocManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, Local);
+        mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2 * 20 * 1000, 10, Local);
     }
 
     private void drawCircle(LatLng point, int radius) {
@@ -245,21 +251,17 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
         try {
-            if (true) {
+            final Task location = mFusedLocationProviderClient.getLastLocation();
+            location.addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    moveCamera(new LatLng(latitud, longitud),
+                            14,
+                            "My Location");
 
-                final Task location = mFusedLocationProviderClient.getLastLocation();
-                location.addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-
-                        moveCamera(new LatLng(latitud, longitud),
-                                14,
-                                "My Location");
-
-                    } else {
-                        Toast.makeText(getContext(), "unable to get current location", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
+                } else {
+                    Toast.makeText(getContext(), "unable to get current location", Toast.LENGTH_SHORT).show();
+                }
+            });
             mFusedLocationProviderClient = null;
         } catch (SecurityException e) {
             e.printStackTrace();
@@ -274,17 +276,25 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
         }
         googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getView().getContext(), R.raw.mapstyle));
         mMap.setOnMarkerDragListener(this);
-        mMap.setOnInfoWindowClickListener(this);
-        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter(){
+        //mMap.setMyLocationEnabled(true);
+        mMap.setOnMarkerClickListener(this::onMarkerClick);
+        mMap.setOnInfoWindowClickListener(this::onInfoWindowClick);
+        mMap.setOnCameraIdleListener(this::onCameraIdle);
+        mMap.setOnCameraMoveStartedListener(this::onCameraMoveStarted);
+        mMap.setOnCameraMoveListener(this::onCameraMove);
+
+
+        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
             @Override
             public View getInfoWindow(Marker marker) {
                 return null;
             }
+
             @Override
             public View getInfoContents(Marker marker) {
-                Log.e("here",marker.getId()+" "+marker.getTitle());
+                Log.e("here", marker.getId() + " " + marker.getTitle());
                 View v;
-                if(marker.isDraggable())
+                if (marker.isDraggable())
                     v = getLayoutInflater().inflate(R.layout.item_info_window, null);
                 else {
                     v = getLayoutInflater().inflate(R.layout.preview_bar, null);
@@ -319,7 +329,7 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.myLocation:
                 getDeviceLocation();
                 break;
@@ -334,15 +344,28 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
 
     @Override
     public void run() {
+        Calendar calendario = Calendar.getInstance();
+        int segundos, segundos2;
         switch (hilo) {
             case "start":
+                segundos = calendario.get(Calendar.SECOND);
                 while (true) {
                     if (Local.getLatitud() != 0 & Local.getLongitud() != 0) {
                         latitud = Local.getLatitud();
                         longitud = Local.getLongitud();
-
                         break;
                     }
+                    Calendar calen = Calendar.getInstance();
+                    segundos2 = calen.get(Calendar.SECOND);
+                    if (segundos2 < segundos)
+                        segundos2 += segundos;
+                    Log.e("hora inicio y actual", segundos + "--" + segundos2);
+                    if (segundos2 - segundos > 5) {
+                        lastKnowPosition();
+                        getDeviceLocation();
+                    }
+                    if(latitud != 0 & longitud != 0)
+                        break;
                 }
             case "changeRank":
                 /*for(int i = 0; i<1000000;i++){
@@ -352,13 +375,33 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
 
         }
 
-        while(!endHandler){
+        while (!endHandler) {
 
         }
         hideCharging();
-        Message msg = new Message();
-        mensaje.sendMessage(msg);
+            Message msg = new Message();
+            mensaje.sendMessage(msg);
 
+
+    }
+
+
+    private void lastKnowPosition() {
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            messageToast("Active los permisos de localización");
+            return;
+        }
+        mFusedLocationProviderClient.getLastLocation()
+                .addOnSuccessListener(getActivity(), location -> {
+                    // Got last known location. In some rare situations this can be null.
+                    if (location != null) {
+                        latitud = location.getLatitude();
+                        longitud = location.getLongitude();
+                        Log.e("PRIMER METODO","ENTRO POR EL PRIMER METODO");
+                    }
+                });
     }
 
     @Override
@@ -379,31 +422,12 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
         }
         return false;
     }
-
-    /*mMap.addMarker(new MarkerOptions().position(
-              new LatLng(positionAct.latitude + progress*0.001 + 0.0003, positionAct.longitude +progress*0.0041 )).title("0 Position")
-              .icon(BitmapDescriptorFactory.fromResource(R.drawable.drink)));
-      mMap.addMarker(new MarkerOptions().position(
-              new LatLng(positionAct.latitude + progress*0.002 + 0.0007, positionAct.longitude +progress*0.0031)).title("1 Position")
-              .icon(BitmapDescriptorFactory.fromResource(R.drawable.drink)));
-      mMap.addMarker(new MarkerOptions().position(
-              new LatLng(positionAct.latitude + progress*0.003 + 0.0008, positionAct.longitude +progress*0.0021 )).title("2 Position")
-              .icon(BitmapDescriptorFactory.fromResource(R.drawable.drink)));
-      mMap.addMarker(new MarkerOptions().position(
-              new LatLng(positionAct.latitude + progress*0.004 - 0.0001 , positionAct.longitude +progress*0.0011 )).title("3 Position")
-              .icon(BitmapDescriptorFactory.fromResource(R.drawable.drink)));
-      mMap.addMarker(new MarkerOptions().position(
-              new LatLng(positionAct.latitude + progress*0.005 + 0.0003, positionAct.longitude +progress*0.0001)).title("4  Position")
-              .icon(BitmapDescriptorFactory.fromResource(R.drawable.drink)));
-      if(progress>=2) {
-          mMap.addMarker(new MarkerOptions().position(
-                  new LatLng(positionAct.latitude - 0.01, positionAct.longitude + 0.01)).title("5  Position")
-                  .icon(BitmapDescriptorFactory.fromResource(R.drawable.drink)));
-      }*/
     private void addMarks() {
 
-        mMap.addMarker(new MarkerOptions().position(positionAct)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)).draggable(true));
+        lastMarker = mMap.addMarker(new MarkerOptions().position(
+               positionAct).title("Buscar Aquí").draggable(true)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+        lastMarker.setTag("search");
         for (EstablishmentVO establishmentVO:bar){
             if(masCercano(establishmentVO.latitude,establishmentVO.lenght,positionAct.latitude,positionAct.longitude))
             mMap.addMarker(new MarkerOptions().position(
@@ -443,8 +467,8 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
     }
 
     private void drawPosition() {
-        mMap.addMarker(new MarkerOptions().position(positionAct)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)).draggable(true));
+//        mMap.addMarker(new MarkerOptions().position(positionAct)
+//                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)).draggable(true));
         float zoomLevel = 14;
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(positionAct, zoomLevel));
         drawCircle(positionAct, progress);
@@ -457,7 +481,7 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
         tvRank.setText("RANGO: "+this.progress+" KM");
         hilo="changeRank";
         if(mensaje != null) {
-            showCharging("Cargando", getContext());
+            showCharging("Cargando", getContext(),false);
             new Thread(this).start();
             mMap.clear();
 
@@ -492,58 +516,70 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
 
     @Override
     public void onMarkerDragEnd(Marker marker) {
-        Geocoder gc = new Geocoder(getContext());
-        LatLng ll = marker.getPosition();
-        /*double lat = ll.latitude;
-        double lng = ll.longitude;
-       /* List<Address> list = null;
-        try {
-            list = gc.getFromLocation(lat, lng, 1);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-        //Address add = list.get(0);
-        //marker.setTitle(add.getLocality());
-        //marker.showInfoWindow();
-        mMap.clear();
-        positionAct = ll;
-        hilo="changeRank";
-        showCharging("Cargando", getContext());
-        new Thread(this).start();
-        marker.hideInfoWindow();
+
         //drawCircle(ll,progress);
         //addMarks();
     }
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        EstablishmentVO vo = (EstablishmentVO) marker.getTag();
-        Intent intent = new Intent(getContext(), BarActivity.class);
-        intent.putExtra("establishment",vo);
-        startActivity(intent);
+        if(!marker.isDraggable()) {
+            EstablishmentVO vo = (EstablishmentVO) marker.getTag();
+            Intent intent = new Intent(getContext(), BarActivity.class);
+            intent.putExtra("establishment", vo);
+            startActivity(intent);
+        }
+
 
     }
 
     @Override
     public void onCameraIdle() {
+        //messageToast("Camera Idle ");
+
+
 
     }
 
     @Override
     public void onCameraMoveCanceled() {
-
+        //messageToast("Camera MoveCanceled ");
     }
 
     @Override
     public void onCameraMove() {
+
+        LatLng latLng = mMap.getCameraPosition().target;
+        if(lastMarker!=null)
+            lastMarker.setPosition(latLng);
+
+
 
     }
 
     @Override
     public void onCameraMoveStarted(int i) {
 
+
     }
-    //EndMarkertOptions
 
 
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        try {
+            String tag = (String) marker.getTag();
+            if(tag.equals("search")) {
+                LatLng ll = marker.getPosition();
+                mMap.clear();
+                positionAct = ll;
+                hilo = "changeRank";
+                showCharging("Cargando", getContext(), false);
+                new Thread(this).start();
+                marker.hideInfoWindow();
+            }
+        }catch (Exception e){
+            Log.e("ERROR","No STRING");
+        }
+        return false;
+    }
 }

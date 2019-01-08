@@ -31,12 +31,12 @@ public abstract class GenericFragment extends Fragment {
         }
         alert.dismiss();
     }
-    public void showCharging(String title, Context contexto){
+    public void showCharging(String title, Context contexto,boolean cancelable){
         AlertDialog.Builder alert = new AlertDialog.Builder(contexto);
         alert.setTitle(title);
         View item = LayoutInflater.from(getContext()).inflate(R.layout.item_cargando,null);
         alert.setView(item);
-        alert.setCancelable(false);
+        alert.setCancelable(cancelable);
         this.alert=alert.create();
         this.alert = alert.show();
     }

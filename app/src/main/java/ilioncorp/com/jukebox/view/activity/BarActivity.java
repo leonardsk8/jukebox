@@ -34,8 +34,9 @@ import ilioncorp.com.jukebox.view.fragment.TabUsers;
 import ilioncorp.com.jukebox.view.fragment.TabYoutube;
 import ilioncorp.com.jukebox.view.generic.GenericActivity;
 
-public class BarActivity extends GenericActivity implements View.OnClickListener, BottomNavigationView.OnNavigationItemSelectedListener
-,Handler.Callback{
+public class BarActivity extends GenericActivity implements View.OnClickListener,
+        BottomNavigationView.OnNavigationItemSelectedListener
+        ,Handler.Callback{
 
         private static final int REQUESTCODE_WRITE = 2;
         private static final int REQUESTCODE_READ = 3;

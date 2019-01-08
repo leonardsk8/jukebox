@@ -101,31 +101,6 @@ public class LoginActivity extends GenericActivity implements Handler.Callback,V
         btnLoginFacebook.setReadPermissions(Arrays.asList("email"));
 
     }
-    /*private void guardar() {
-        try {
-            String ruta =Environment.getExternalStorageDirectory() + "/google-services.json";
-            String information = "{"+
-                    "\"type\": \"service_account\","+
-                    "\"project_id\": \"dispositivo1-202101\","+
-                    "\"private_key_id\": \"f66e325140e4f2e27816e63f741781655bfa330c\","+
-                    "\"private_key\": \"-----BEGIN PRIVATE KEY-----MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCu3BUnCiHcMlbXwC3t6m5CU05AFN9ZVaN4s8uGP/yVbhlHdeVb8Zg8MQb6PRg9UmPTA4nC8NGHwhIWk9dTm2ND9DxIupmotLqsWf87i5hu5LM3PqLAZebFw/lXPXRGEt9I0WDzq8PtbdfgVEBWbWmX83eYbq11hL01ox650EY0R74bF9z/SHqyKbXe7bWhoPBFJxUF74ZYG6NPDL9ClSUlICdfqFEhYDwPMF2rt6QpSXhvD0e6lpExFpzIWzqQ7Nn1UU0cOtIFwUJQK9D54n/P1LeH8oxmOvRK7iRV8ziFiqpaolpt7LZe/WllMI0eYt+deOvRTg/bYr3r38znVtnVAgMBAAECggEAJ/R0BOKk0ArUmyH3nLiHjzI33B6o1mHiI495vuhaD88Dibefu/2dWoudW4qgQkrUMoBJdzjNt+aZeX04o4sLCJkDOV8iA1GgogdCcdm48AXkCYiPacUfEStxiwSoz+Y6DQqCy8sAzvzdag32UYlYqnbgaf1IN2UoUtw+BhlYIVOtu8u2RLcSDTHSJJ1dRCWOGZWsX2SlPSrbCTj6UkkqBeV0n2MXMtw8Xk2ST/k0pyd6VBYW2sd2uIft3HSTArkHOciuhl1NBmp9Zq+8I4eIw3xJzeMGL9ZDfDDPnjdixS/W45r/dCFq2Be2JXtxGS1MC+Q179mzHF2FibTw6sp1YQKBgQDysCoWiN5TsQb5DCsX+8uZxYvI9Qo2HCu9RFUzYwO0CC6M/Zo8rFf6YtCUJWErLNQEPjplYj1cCibrB0OnjE9A2CpNrLfeL8g6lkgB6sDPa755rhlObZxavRVjKuhsidXiH+c/3ywdMK7CCc607g+28VkT+qFI+Vo/3A2IlhezHQKBgQC4c3gBbv1UHTDnWT05bV8AQEF/Ow1W54lkflBvqWth+5ma++qUkbGDBNe3YKJUiHumsoIgpGHdx2Fe1g92lW2UJHQb2NIYrkTeD+1vtwL7KjOoTK4B1TDPKCAc7znk6k9a8xZFbhpQbqk4RPF8NMwI8MYulA+wrNs+Qj5vMlUMGQKBgQCiAmQ2Yuw4ZodHHo5uFlNWtf+ZCavlb2zrjoBqK4E/X+7jhDDArDSXG/wtyb5SOjzXEEuffrODi+trHpBVe1805Jlo/RJJqxA5vDUZwoMwdLbVOBoAtz+Xe36Zkv1R57n2mGGhy/QBEIy5UB7DveCTug5DPh8JPhy3YMlQExKDKQKBgHGD9q4DLXrvwCIRBKHsEpRn9ycjI5GBS0gCiOQ/guu5WQ5NzU+D3phAibW8jgqyOE8d+wG1yNkhlGY2HSwgyGBsktx0ctBnp9B2Qu0G15nVnhcMoeZU2wYSrri/7YRZQ184zVMLcLxhbllH7MpA//TcoUsXKhTUPNWzFROACWE5AoGAVWQJsksNl8qsb29TWhIur9qtlppRellUKOZwdoyiF1eRUQ6dEFtjnQ7zTamW5Jpsleyg0myAPnAGWuU4/hHjL0SonPhscnOrlX0XhqRC592VwZZ+0uP2nkrD0gQDrvoxDk2gsYs0G79kvQz0BoKqIyUIPc3LTyQAv84SOee3xTY=-----END PRIVATE KEY-----\","+
-                    "\"client_email\": \"firebase-adminsdk-0bilz@dispositivo1-202101.iam.gserviceaccount.com\","+
-                    "\"client_id\": \"103616341977185591233\","+
-                    "\"auth_uri\": \"https://accounts.google.com/o/oauth2/auth\","+
-                    "\"token_uri\": \"https://accounts.google.com/o/oauth2/token\","+
-                    "\"auth_provider_x509_cert_url\": \"https://www.googleapis.com/oauth2/v1/certs\","+
-                    "\"client_x509_cert_url\": \"https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-0bilz%40dispositivo1-202101.iam.gserviceaccount.com\""+
-                    "}";
-            PrintStream escribe = new PrintStream(ruta);
-            escribe.println(information);
-            Toast t = Toast.makeText(this, "Los datos fueron grabados",
-                    Toast.LENGTH_SHORT);
-            t.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
-
 
     private void handleFacebookAccessToken(AccessToken accessToken) {
         showCharging("Cargando");
@@ -139,9 +114,6 @@ public class LoginActivity extends GenericActivity implements Handler.Callback,V
         switch (id){
             case R.id.cvBtnLogin:
                 checkLogin();
-                /*startActivity(new Intent(this,MainActivity.class));
-                finish();
-                */
                 break;
             case R.id.tvForgotPassword:
                 break;
@@ -173,7 +145,6 @@ public class LoginActivity extends GenericActivity implements Handler.Callback,V
 
                     }
 
-                    // ...
                 });
     }
 
@@ -236,7 +207,7 @@ public class LoginActivity extends GenericActivity implements Handler.Callback,V
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount signInAccount) {
         AuthCredential credential = GoogleAuthProvider.getCredential(signInAccount.getIdToken(),null);
-        firebaseAuth.signInWithCredential(credential).addOnCompleteListener(this,this);
+        firebaseAuth.signInWithCredential(credential).addOnCompleteListener(this,this::onComplete);
     }
 
     private void goToMainScreen() {

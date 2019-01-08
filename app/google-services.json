@@ -23,6 +23,22 @@
           }
         },
         {
+          "client_id": "629911785392-uefpnr69h8ec15gbh8ngdj2kvlmt60or.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ilioncorp.com.jukebox",
+            "certificate_hash": "9f285876cbddf84ea0af4fb88aa583d1da935738"
+          }
+        },
+        {
+          "client_id": "629911785392-su7uie1blmfkk7dhpdsge3p43rcusb8k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ilioncorp.com.jukebox",
+            "certificate_hash": "680ae96b35712731855238def9fec58f9211d778"
+          }
+        },
+        {
           "client_id": "629911785392-dn9dpgknvtk1fpck4efenud74fuj695j.apps.googleusercontent.com",
           "client_type": 3
         }

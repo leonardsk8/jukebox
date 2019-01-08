@@ -40,7 +40,6 @@ public class MainActivity extends GenericActivity implements
         GoogleApiClient.OnConnectionFailedListener {
 
     private android.widget.ImageView imOptions;
-
     public FragmentManager administrator;
     private FragmentMap maps;
     private FragmentOptions options;
@@ -66,7 +65,7 @@ public class MainActivity extends GenericActivity implements
         imOptions.setOnClickListener(this::onClick);
         maps = new FragmentMap();
         mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-        bridge = new Handler(this);
+        bridge = new Handler(this::handleMessage);
         credits = new CreditsDAO(bridge);
         administrator = getSupportFragmentManager();
         options = new FragmentOptions(this);
@@ -86,7 +85,7 @@ public class MainActivity extends GenericActivity implements
     }
 
 
-
+    /**PERMISOS DE UBICACIÓN*/
     private void checkPer() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
@@ -118,6 +117,7 @@ public class MainActivity extends GenericActivity implements
             }
         }
     }
+    /**AGREGA EL FRAGMENT DEL MAPA*/
     private void start(){
         administrator.beginTransaction().add(R.id.content,maps).addToBackStack(null).commit();
     }

@@ -1,9 +1,7 @@
 package ilioncorp.com.jukebox.model.dao;
 
-import android.app.ProgressDialog;
+
 import android.content.Context;
-import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 

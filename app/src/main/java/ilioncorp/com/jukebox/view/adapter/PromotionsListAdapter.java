@@ -38,7 +38,7 @@ public class PromotionsListAdapter extends GenericFragment implements Handler.Ca
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_promotions, container, false);
         MyRecyclerView =  view.findViewById(R.id.listPromotions);
-        showCharging("Cargando usuarios",getContext());
+        showCharging("Cargando usuarios",getContext(),true);
         promotions = new PromotionsDAO(bridge,this.idBar,getContext());
         return view;
     }

@@ -92,7 +92,7 @@ public class TabUsers extends GenericFragment implements Handler.Callback,View.O
     }
 
     private void callUsers() {
-        showCharging("Cargando usuarios",getContext());
+        showCharging("Cargando usuarios",getContext(),true);
         sessionDAO = new SessionDAO(this.idBar,bridge,getContext());
     }
 

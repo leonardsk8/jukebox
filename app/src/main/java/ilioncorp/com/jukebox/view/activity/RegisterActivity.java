@@ -14,6 +14,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -39,6 +40,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import ilioncorp.com.jukebox.BuildConfig;
 import ilioncorp.com.jukebox.R;
 import ilioncorp.com.jukebox.model.dto.UserVO;
 import ilioncorp.com.jukebox.view.generic.GenericActivity;
@@ -46,7 +48,8 @@ import pl.droidsonroids.gif.GifImageView;
 
 
 
-public class RegisterActivity extends GenericActivity implements Handler.Callback,View.OnClickListener,Runnable,DialogInterface.OnClickListener{
+public class RegisterActivity extends GenericActivity implements Handler.Callback,
+        View.OnClickListener,Runnable,DialogInterface.OnClickListener{
 
     private android.widget.EditText etName;
     private android.widget.EditText etSurname;
@@ -210,8 +213,10 @@ public class RegisterActivity extends GenericActivity implements Handler.Callbac
 
     private void dialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Source of the photo").setNeutralButton("Cancel",this::onClick)
-        .setPositiveButton("CAMERA",this).setNegativeButton("GALLERY",this::onClick);
+        builder.setMessage("Source of the photo")
+                .setNeutralButton("Cancel",this::onClick)
+                .setPositiveButton("CAMERA",this::onClick)
+                .setNegativeButton("GALLERY",this::onClick);
         builder.create();
         builder.show();
     }
@@ -244,17 +249,12 @@ public class RegisterActivity extends GenericActivity implements Handler.Callbac
         }
         Fresco.getImagePipeline().clearCaches();
         switch (requestCode) {
-
             case CAPTURE_CAMERA:
                 photo = Uri.parse("file:///" + filen);
                 selectImage.setImageURI(photo);
-
                 break;
-
-
             case MY_REQUEST_GALLERY:
                 try {
-
                     InputStream inputStream = getContentResolver().openInputStream(data.getData());
                     filen = getFile();
                     FileOutputStream fileOutputStream = new FileOutputStream(filen);
@@ -277,7 +277,6 @@ public class RegisterActivity extends GenericActivity implements Handler.Callbac
         }
     }
     public File getFile() {
-
         File fileDir = new File(Environment.getExternalStorageDirectory()
                 + "/Android/data/"
                 + getApplicationContext().getPackageName()
@@ -308,6 +307,8 @@ public class RegisterActivity extends GenericActivity implements Handler.Callbac
                 break;
         }
     }
+    /**
+     * PERMISO PARA LA CAMARA*/
     private void checkPermissionCA(){
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
         if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
@@ -317,6 +318,7 @@ public class RegisterActivity extends GenericActivity implements Handler.Callbac
             catchPhoto();
         }
     }
+    /**PERMISO PARA ESCRIBIR EN MEMORIA CON FOTO DEL TELEFONO*/
     private void checkPermissionCW(){
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
@@ -331,7 +333,11 @@ public class RegisterActivity extends GenericActivity implements Handler.Callbac
         if(filen!=null) {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             try {
-                Uri photocUri = Uri.fromFile(filen);
+                //Uri photocUri = Uri.fromFile(filen);
+                Uri photocUri = FileProvider.getUriForFile(this,
+                        BuildConfig.APPLICATION_ID + ".provider",
+                        filen);
+
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, photocUri);
                 startActivityForResult(intent, CAPTURE_CAMERA);
             } catch (ActivityNotFoundException e) {
@@ -341,6 +347,8 @@ public class RegisterActivity extends GenericActivity implements Handler.Callbac
             Toast.makeText(this, "please check your sdcard status", Toast.LENGTH_SHORT).show();
         }
     }
+    /**
+     * PERMISO PARA LEER GALERIA*/
     private void checkPermissionRG(){
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
         if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
@@ -350,6 +358,7 @@ public class RegisterActivity extends GenericActivity implements Handler.Callbac
             checkPermissionWG();
         }
     }
+    /**PERMISO PARA ESCRIBIR EN GALERIA*/
     private void checkPermissionWG(){
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
