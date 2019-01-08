@@ -131,6 +131,7 @@ public class LoginActivity extends GenericActivity implements Handler.Callback,V
     private void checkLogin() {
         String email = etUser.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
+        if(!email.isEmpty() & !password.isEmpty())
         firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
@@ -146,6 +147,8 @@ public class LoginActivity extends GenericActivity implements Handler.Callback,V
                     }
 
                 });
+        else
+            messageToast("Complete los campos");
     }
 
 

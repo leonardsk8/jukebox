@@ -1,8 +1,10 @@
 package ilioncorp.com.jukebox.view.activity;
 
+
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+
 import android.support.v7.graphics.Palette;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -15,6 +17,7 @@ import com.bumptech.glide.request.target.Target;
 import ilioncorp.com.jukebox.R;
 import ilioncorp.com.jukebox.model.dto.BarPhotoVO;
 import ilioncorp.com.jukebox.view.generic.GenericActivity;
+
 
 
 public class SpacePhotoActivity extends GenericActivity {

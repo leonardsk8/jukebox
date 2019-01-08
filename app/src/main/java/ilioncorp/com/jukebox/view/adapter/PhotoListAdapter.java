@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide;
 import ilioncorp.com.jukebox.R;
 import ilioncorp.com.jukebox.model.dto.BarPhotoVO;
 import ilioncorp.com.jukebox.model.dto.EstablishmentVO;
+import ilioncorp.com.jukebox.view.activity.FullScreenActivity;
 import ilioncorp.com.jukebox.view.activity.SpacePhotoActivity;
 @SuppressLint("ValidFragment")
 public class PhotoListAdapter extends Fragment {
@@ -100,10 +101,15 @@ public class PhotoListAdapter extends Fragment {
             public void onClick(View view) {
 
                 int position = getAdapterPosition();
+                String[] images = new String[mBarPhotoVOS.length];
+                int index=0;
+                for (BarPhotoVO barPhotos:mBarPhotoVOS){
+                    images[index]=barPhotos.getUrl();
+                    index++;
+                }
                 if(position != RecyclerView.NO_POSITION) {
-                    BarPhotoVO barPhotoVO = mBarPhotoVOS[position];
-                    Intent intent = new Intent(mContext, SpacePhotoActivity.class);
-                    intent.putExtra(SpacePhotoActivity.EXTRA_SPACE_PHOTO, barPhotoVO);
+                    Intent intent = new Intent(mContext, FullScreenActivity.class);
+                    intent.putExtra("IMAGES", images);
                     mContext.startActivity(intent);
                 }
             }

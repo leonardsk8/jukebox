@@ -54,18 +54,6 @@ public class BarPhotoVO implements Parcelable {
         mTitle = title;
     }
 
-    public static  BarPhotoVO[] getSpacePhotos() {
-
-        return new BarPhotoVO[]{
-                new BarPhotoVO("http://i.imgur.com/zuG2bGQ.jpg", "Galaxy"),
-                new BarPhotoVO("http://i.imgur.com/ovr0NAF.jpg", "Space Shuttle"),
-                new BarPhotoVO("http://i.imgur.com/n6RfJX2.jpg", "Galaxy Orion"),
-                new BarPhotoVO("http://i.imgur.com/qpr5LR2.jpg", "Earth"),
-                new BarPhotoVO("http://i.imgur.com/pSHXfu5.jpg", "Astronaut"),
-                new BarPhotoVO("http://i.imgur.com/3wQcZeY.jpg", "Satellite"),
-        };
-    }
-
     @Override
     public int describeContents() {
 

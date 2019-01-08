@@ -172,15 +172,10 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
     private void createDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setMessage("Te invitamos a que completes tu registro")
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        startActivity(new Intent(getContext(), ProfileActivity.class));
-                    }
-                }).setNegativeButton("Ahora no", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialogInterface, int i) {
+                .setPositiveButton("OK", (dialog, id) -> startActivity(new Intent(getContext(), ProfileActivity.class)))
+                .setNegativeButton("Ahora no", (dialogInterface, i) -> {
 
-            }
-        });
+                });
         builder.create().show();
 
     }
@@ -359,7 +354,6 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
                     segundos2 = calen.get(Calendar.SECOND);
                     if (segundos2 < segundos)
                         segundos2 += segundos;
-                    Log.e("hora inicio y actual", segundos + "--" + segundos2);
                     if (segundos2 - segundos > 5) {
                         lastKnowPosition();
                         getDeviceLocation();
@@ -399,7 +393,7 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
                     if (location != null) {
                         latitud = location.getLatitude();
                         longitud = location.getLongitude();
-                        Log.e("PRIMER METODO","ENTRO POR EL PRIMER METODO");
+
                     }
                 });
     }
