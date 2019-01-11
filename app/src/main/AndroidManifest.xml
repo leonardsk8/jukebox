@@ -98,8 +98,8 @@
         <activity android:name=".view.activity.PlayerActivity"/>
         <activity android:name=".view.activity.ChargeAccountActivity"/>
         <activity
-                android:name=".view.activity.ListBarActivity"
-                android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
+                android:name=".view.activity.ListBarActivity"/>
+                <!--android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"-->/>
         <activity
                 android:name=".view.activity.HistoryActivity"
                 android:label="@string/title_activity_history"

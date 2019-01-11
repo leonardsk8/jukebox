@@ -42,19 +42,21 @@ public class ListBarActivity extends GenericActivity implements Handler.Callback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_bar);
+
         this.listBarsRecicler = findViewById(R.id.listBarsRecicler);
         this.listBarsRecicler.setHasFixedSize(true);
         this.listBarsRecicler.setLayoutManager(new LinearLayoutManager(this));
         toolbar = findViewById(R.id.toolbar);
         toolbar.setBackgroundColor(R.color.orange);
         toolbar.inflateMenu(R.menu.menu_search);
+        setSupportActionBar(toolbar);
         showCharging("Loading");
         bridge = new Handler(this);
         EstablishmentDAO establishment = new EstablishmentDAO(bridge);
         establishment.getAllBars();
     }
 
-    @SuppressLint("ResourceAsColor")
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -63,7 +65,6 @@ public class ListBarActivity extends GenericActivity implements Handler.Callback
         MenuItem item = menu.findItem(R.id.Search);
         SearchView searchView = (SearchView) item.getActionView();
         searchView.setOnQueryTextListener(this);
-        searchView.setBackgroundColor(R.color.orange);
         item.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem menuItem) {
