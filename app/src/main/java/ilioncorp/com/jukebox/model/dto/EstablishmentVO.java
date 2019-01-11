@@ -20,7 +20,15 @@ public class EstablishmentVO implements Serializable{
     public float raiting;
     public String[] imagesBar;
     public ArrayList<MenuVO> menuList;
+    public String schedulesHours;
 
+    public String getSchedulesHours() {
+        return schedulesHours;
+    }
+
+    public void setSchedulesHours(String schedulesHours) {
+        this.schedulesHours = schedulesHours;
+    }
 
     public String getGenders() {
         return genders;

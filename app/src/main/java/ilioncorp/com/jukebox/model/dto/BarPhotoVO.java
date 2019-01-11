@@ -6,15 +6,6 @@ import android.os.Parcelable;
 public class BarPhotoVO implements Parcelable {
     private String mUrl;
     private String mTitle;
-    private BarPhotoVO[] photos;
-
-    public BarPhotoVO[] getPhotos() {
-        return photos;
-    }
-
-    public void setPhotos(BarPhotoVO[] photos) {
-        this.photos = photos;
-    }
 
     public BarPhotoVO(String url, String title) {
         mUrl = url;

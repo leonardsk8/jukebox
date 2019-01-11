@@ -67,7 +67,7 @@ public class ReproductionListAdapter extends RecyclerView.Adapter<ReproductionLi
             holder.tvLikes.setText("Likes: " + listSongs.get(position).getListLikes().size());
             holder.btnLike.setImageResource(R.drawable.like);
         }
-        holder.setItemClickListener(this);
+        holder.setItemClickListener(this::onItemClick);
     }
 
     @Override

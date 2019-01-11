@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,8 +21,8 @@ import ilioncorp.com.jukebox.view.generic.GenericFragment;
 
 @SuppressLint("ValidFragment")
 public class PromotionsListAdapter extends GenericFragment implements Handler.Callback {
-    ArrayList<PromotionsVO> listPromotions;
-    RecyclerView MyRecyclerView;
+    private ArrayList<PromotionsVO> listPromotions;
+    private RecyclerView MyRecyclerView;
     private PromotionsDAO promotions;
     private String idBar;
     private Handler bridge;
@@ -38,8 +37,8 @@ public class PromotionsListAdapter extends GenericFragment implements Handler.Ca
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_promotions, container, false);
         MyRecyclerView =  view.findViewById(R.id.listPromotions);
-        showCharging("Cargando usuarios",getContext(),true);
-        promotions = new PromotionsDAO(bridge,this.idBar,getContext());
+        showCharging("Cargando Promociones",getContext(),true);
+        promotions = new PromotionsDAO(bridge,true,this.idBar,getContext());
         return view;
     }
 
@@ -52,12 +51,11 @@ public class PromotionsListAdapter extends GenericFragment implements Handler.Ca
     public boolean handleMessage(Message message) {
         hideCharging();
         listPromotions = (ArrayList<PromotionsVO>) message.obj;
-
         MyRecyclerView.setHasFixedSize(true);
         LinearLayoutManager MyLayoutManager = new LinearLayoutManager(getActivity());
         MyLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         if (listPromotions.size() > 0 & MyRecyclerView != null) {
-            MyRecyclerView.setAdapter(new AdapterPromotion(listPromotions,getContext()));
+            MyRecyclerView.setAdapter(new AdapterPromotion(listPromotions,getContext(),idBar));
         }
         MyRecyclerView.setLayoutManager(MyLayoutManager);
         return false;

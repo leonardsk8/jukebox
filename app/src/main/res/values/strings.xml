@@ -16,5 +16,10 @@
     <string name="problem_log_in">Problema al ingresar</string>
     <string name="auth">629911785392-vlonqb5mbo12smi3hmsgkffcl9bcu8dn.apps.googleusercontent.com</string>
     <string name="menu">Menu</string>
+    <string name="code_ready">Tu código esta listo puedes redimirlo con el administrador o encargado del bar para
+        obtener tu promoción
+    </string>
+    <string name="timeHas">Veces que has redimido este cupon</string>
+    <string name="timesDO">Veces que se puede redimir este cupon</string>
 
 </resources>

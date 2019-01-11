@@ -35,6 +35,7 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.View
         this.context = context;
         user = FirebaseAuth.getInstance().getCurrentUser();
         this.idBar = idBar;
+
     }
 
     @NonNull

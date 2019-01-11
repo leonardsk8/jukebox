@@ -11,6 +11,15 @@ public class PromotionsVO implements Serializable{
     private int pro_count;
     private String pro_expiration_date;
     private String pro_creation_date;
+    private String pro_limit;
+
+    public String getPro_limit() {
+        return pro_limit;
+    }
+
+    public void setPro_limit(String pro_limit) {
+        this.pro_limit = pro_limit;
+    }
 
     public String getPro_code() {
         return pro_code;

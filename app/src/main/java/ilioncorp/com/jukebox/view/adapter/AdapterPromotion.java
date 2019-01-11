@@ -1,15 +1,12 @@
 package ilioncorp.com.jukebox.view.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -18,15 +15,19 @@ import java.util.ArrayList;
 import ilioncorp.com.jukebox.R;
 import ilioncorp.com.jukebox.model.dto.PromotionsVO;
 
-public class AdapterPromotion extends RecyclerView.Adapter<AdapterPromotion.MyViewHolder> implements View.OnClickListener{
+import ilioncorp.com.jukebox.view.activity.PromotionActivity;
+
+public class AdapterPromotion extends RecyclerView.Adapter<AdapterPromotion.MyViewHolder>{
 
     private ArrayList<PromotionsVO> listPromotions;
     private Context context;
+    private String idBar;
 
 
-    public AdapterPromotion(ArrayList<PromotionsVO> listPromotions, Context context) {
+    public AdapterPromotion(ArrayList<PromotionsVO> listPromotions, Context context,String idBar) {
         this.listPromotions = listPromotions;
         this.context = context;
+        this.idBar = idBar;
     }
 
     @NonNull
@@ -45,7 +46,7 @@ public class AdapterPromotion extends RecyclerView.Adapter<AdapterPromotion.MyVi
                 .into(holder.ivImageMenuItem);
         holder.tvTitlePromotion.setText(listPromotions.get(position).getPro_name());
         holder.tvDescriptionPromotion.setText(listPromotions.get(position).getPro_description());
-        holder.cvBtnGetCoupon.setOnClickListener(this);
+
     }
 
     @Override
@@ -53,12 +54,8 @@ public class AdapterPromotion extends RecyclerView.Adapter<AdapterPromotion.MyVi
         return listPromotions.size();
     }
 
-    @Override
-    public void onClick(View view) {
-        Toast.makeText(context,"Disponible en versiones posteriores",Toast.LENGTH_SHORT).show();
-    }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private android.widget.ImageView ivImageMenuItem;
         private android.widget.TextView tvTitlePromotion;
@@ -72,6 +69,18 @@ public class AdapterPromotion extends RecyclerView.Adapter<AdapterPromotion.MyVi
             this.tvDescriptionPromotion = view.findViewById(R.id.tvDescriptionPromotion);
             this.tvTitlePromotion = view.findViewById(R.id.tvTitlePromotion);
             this.ivImageMenuItem = view.findViewById(R.id.ivImageMenuItem);
+            this.cvBtnGetCoupon.setOnClickListener(this::onClick);
         }
+
+        @Override
+        public void onClick(View view) {
+            int position = getAdapterPosition();
+            PromotionsVO promotionsVO = listPromotions.get(position);
+            Intent intent = new Intent(context,PromotionActivity.class);
+            intent.putExtra("promotions",promotionsVO);
+            intent.putExtra("idBar", idBar);
+            context.startActivity(intent);
+        }
+
     }
 }

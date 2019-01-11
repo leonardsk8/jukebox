@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.location.Geocoder;
 import android.location.Location;
@@ -30,6 +31,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -278,7 +282,10 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
         mMap.setOnCameraMoveStartedListener(this::onCameraMoveStarted);
         mMap.setOnCameraMoveListener(this::onCameraMove);
 
-
+        mMap.setOnMapClickListener(latLng -> {
+            if(!lastMarker.isVisible())
+                lastMarker.setVisible(true);
+        });
         mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
             @Override
             public View getInfoWindow(Marker marker) {
@@ -287,11 +294,11 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
 
             @Override
             public View getInfoContents(Marker marker) {
-                Log.e("here", marker.getId() + " " + marker.getTitle());
                 View v;
                 if (marker.isDraggable())
                     v = getLayoutInflater().inflate(R.layout.item_info_window, null);
                 else {
+
                     v = getLayoutInflater().inflate(R.layout.preview_bar, null);
                     ImageView imageBar = v.findViewById(R.id.imagePreviewBar);
                     TextView nameBar = v.findViewById(R.id.tvNameBarPreview);
@@ -301,7 +308,24 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
                     EstablishmentVO establishment = (EstablishmentVO) marker.getTag();
                     Glide.with(getContext())
                             .load(establishment.getImagesBar()[0])
+                            .asBitmap()
                             .placeholder(R.drawable.error)
+                            .override(50,50)
+                            .listener(new RequestListener<String, Bitmap>() {
+                                @Override
+                                public boolean onException(Exception e, String model, Target<Bitmap> target, boolean isFirstResource) {
+                                    return false;
+                                }
+
+                                @Override
+                                public boolean onResourceReady(Bitmap resource, String model, Target<Bitmap> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                                    if(!isFromMemoryCache) {
+                                        marker.showInfoWindow();
+                                        lastMarker.setVisible(false);
+                                    }
+                                    return false;
+                                }
+                            })
                             .into(imageBar);
                     nameBar.setText(establishment.getName());
                     bar.setRating(establishment.getRaiting());
@@ -333,7 +357,6 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
                 getActivity().overridePendingTransition(R.anim.hide, R.anim.show);
                 break;
 */
-
         }
     }
 
@@ -544,8 +567,12 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
     public void onCameraMove() {
 
         LatLng latLng = mMap.getCameraPosition().target;
-        if(lastMarker!=null)
+        if(lastMarker!=null) {
             lastMarker.setPosition(latLng);
+//            if(!lastMarker.isVisible())
+//                lastMarker.setVisible(true);
+
+        }
 
 
 
@@ -576,4 +603,6 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
         }
         return false;
     }
+
+
 }

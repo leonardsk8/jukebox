@@ -1,6 +1,7 @@
 package ilioncorp.com.jukebox.view.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,12 +15,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import ilioncorp.com.jukebox.PopUpHorarios;
 import ilioncorp.com.jukebox.R;
 import ilioncorp.com.jukebox.model.dto.EstablishmentVO;
 import ilioncorp.com.jukebox.view.adapter.MenuListAdapter;
 import ilioncorp.com.jukebox.view.adapter.PhotoListAdapter;
 @SuppressLint("ValidFragment")
-public class TabInfoBar extends Fragment {
+public class TabInfoBar extends Fragment implements View.OnClickListener {
 
     EstablishmentVO establishment;
     private android.widget.TextView tvTitle;
@@ -35,6 +37,7 @@ public class TabInfoBar extends Fragment {
     private TextView tvAddress;
     private TextView tvEmail;
     private TextView tvGenders;
+    String[] schedulesHours;
 
 
 
@@ -59,6 +62,14 @@ public class TabInfoBar extends Fragment {
         this.ivWednesday = rootView.findViewById(R.id.ivWednesday);
         this.ivTuesday = rootView.findViewById(R.id.ivTuesday);
         this.ivMonday = rootView.findViewById(R.id.ivMonday);
+        this.ivMonday.setOnClickListener(this::onClick);
+        this.ivTuesday.setOnClickListener(this::onClick);
+        this.ivWednesday.setOnClickListener(this::onClick);
+        this.ivThursday.setOnClickListener(this::onClick);
+        this.ivFriday.setOnClickListener(this::onClick);
+        this.ivSaturday.setOnClickListener(this::onClick);
+        this.ivSunday.setOnClickListener(this::onClick);
+        schedulesHours = establishment.getSchedulesHours().split("/");
         return rootView;
     }
 
@@ -146,5 +157,13 @@ public class TabInfoBar extends Fragment {
                 ivSunday.setImageResource(R.drawable.open);
                 break;
         }
+    }
+
+    @Override
+    public void onClick(View view) {
+        Intent intent =new Intent(getContext(), PopUpHorarios.class);
+        intent.putExtra("schedules",schedulesHours);
+        startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.hide, R.anim.show);
     }
 }

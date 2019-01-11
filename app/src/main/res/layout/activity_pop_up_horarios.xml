@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:elevation="10dp"
+        android:background="@drawable/gradient"
+>
+    <ScrollView android:layout_width="match_parent" android:layout_height="match_parent">
+
+
+<RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+    <TextView
+            android:id="@+id/dayMonday"
+            android:layout_marginTop="73dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:text="Lunes:"
+            android:textSize="15dp"
+            android:textColor="@color/white"
+            android:layout_marginLeft="20dp"/>
+    <TextView
+            android:id="@+id/dayTusday"
+            android:layout_below="@+id/dayMonday"
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Martes:"
+            android:textSize="15dp"
+            android:textColor="@color/white"
+            android:layout_marginLeft="20dp"
+            />
+    <TextView
+            android:id="@+id/dayWednesday"
+            android:layout_below="@+id/dayTusday"
+            android:layout_marginTop="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Miercoles:"
+            android:textSize="15dp"
+            android:textColor="@color/white"
+            android:layout_marginLeft="20dp"
+            />
+    <TextView
+            android:id="@+id/dayThursday"
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dayWednesday"
+            android:text="Jueves:"
+            android:textSize="15dp"
+            android:textColor="@color/white"
+            android:layout_marginLeft="20dp"/>
+    <TextView
+            android:id="@+id/dayFriday"
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dayThursday"
+            android:text="Viernes:"
+            android:textSize="15dp"
+            android:textColor="@color/white"
+            android:layout_marginLeft="20dp"/>
+    <TextView
+            android:id="@+id/daySaturday"
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sabado:"
+            android:layout_below="@+id/dayFriday"
+            android:textSize="15dp"
+            android:textColor="@color/white"
+            android:layout_marginLeft="20dp"/>
+    <TextView
+            android:id="@+id/daySunday"
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sunday:"
+            android:layout_below="@+id/daySaturday"
+            android:textSize="15dp"
+            android:textColor="@color/white"
+            android:layout_marginLeft="20dp"/>
+
+    <TextView
+            android:id="@+id/titleHorario"
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Horarios:"
+            android:textSize="25dp"
+            android:textColor="@color/white"
+    />
+    <RelativeLayout
+            android:layout_below="@+id/daySunday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <android.support.v7.widget.CardView
+                android:id="@+id/cvBtnCode"
+                android:layout_width="250dp"
+                android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                app:cardBackgroundColor="@color/orange"
+                app:cardCornerRadius="25dp"
+                app:cardElevation="50dp">
+
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <TextView
+                        android:id="@+id/tvCodePromotion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="11dp"
+                        android:text="Cerrar"
+                        android:textColor="#fff"
+                        android:textSize="25sp" />
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+    </RelativeLayout>
+    </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

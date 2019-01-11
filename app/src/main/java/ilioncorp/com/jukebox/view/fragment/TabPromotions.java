@@ -22,10 +22,9 @@ import ilioncorp.com.jukebox.view.generic.GenericFragment;
 @SuppressLint("ValidFragment")
 public class TabPromotions extends GenericFragment {
 
-    private ArrayList<PromotionsVO> listPromotions;
+
     private String idBar;
     public TabPromotions(String idBar) {
-        this.listPromotions = listPromotions;
         this.idBar = idBar;
     }
 

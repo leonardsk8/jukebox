@@ -110,6 +110,9 @@
         <activity android:name=".view.activity.PromotionActivity"/>
         <activity android:name=".view.activity.FullScreenActivity">
         </activity>
+        <activity android:name=".PopUpHorarios"
+                  android:theme="@style/AppTheme.CustomTheme">
+        </activity>
     </application>
 
 </manifest>
