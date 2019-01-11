@@ -103,7 +103,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dp"
 
-                android:text="Horarios" />
+                android:text="Horarios\nPresiona en los horarios para mas detalles" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
