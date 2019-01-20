@@ -3,19 +3,27 @@ package ilioncorp.com.jukebox.view.activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import ilioncorp.com.jukebox.R;
 import ilioncorp.com.jukebox.model.dao.CommentsDAO;
 import ilioncorp.com.jukebox.model.dto.CommentsVO;
+import ilioncorp.com.jukebox.utils.constantes.Constantes;
 import ilioncorp.com.jukebox.view.adapter.CommentListAdapter;
 import ilioncorp.com.jukebox.view.generic.GenericActivity;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
-public class RatingActivity extends GenericActivity implements Handler.Callback {
+public class RatingActivity extends GenericActivity implements Handler.Callback, View.OnClickListener {
 
     private Handler bridge;
     private String idBar;
@@ -42,11 +50,26 @@ public class RatingActivity extends GenericActivity implements Handler.Callback 
     private TextView tvTotalTwo;
     private TextView tvTotalOne;
     private TextView tvTitleComments;
+    private boolean editComment;
+    private TextView tvNamePersonComment;
+    private TextView tvDateComment;
+    private android.widget.EditText etLeaveComment;
+    private RatingBar rbLeaveStars;
+    private android.widget.ImageView btnAcceptComment;
+    private Date date;
+    private DateFormat dateFormat ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rating);
+        date = new Date();
+        dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        this.btnAcceptComment =  findViewById(R.id.btnAcceptComment);
+        this.rbLeaveStars = findViewById(R.id.rbLeaveStars);
+        this.etLeaveComment = findViewById(R.id.etLeaveComment);
+        this.tvNamePersonComment = findViewById(R.id.tvNamePersonComment);
+        editComment = false;
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         this.tvTitleComments =  findViewById(R.id.tvTitleComments);
         this.tvTotalOne = findViewById(R.id.tvTotalOne);
@@ -78,7 +101,18 @@ public class RatingActivity extends GenericActivity implements Handler.Callback 
         idBar = getIntent().getStringExtra("idBar");
         bridge = new Handler(this::handleMessage);
         commentsDAO = new CommentsDAO(bridge, idBar);
+        commentsDAO.verifyComment(Constantes.userActive.getUserUID(), new Handler(message -> {
+            CommentsVO commentOwn = (CommentsVO) message.obj;
+            editComment = true;
+            this.rbLeaveStars.setRating(commentOwn.getRating());
+            this.etLeaveComment.setText(commentOwn.getComment());
+            return false;
+        }));
         commentsDAO.getComments();
+        this.tvNamePersonComment.setText(Constantes.userActive.getUserName());
+        this.btnAcceptComment.setOnClickListener(this::onClick);
+        this.tvDateComment.setText(dateFormat.format(date));
+
 
     }
 
@@ -99,10 +133,10 @@ public class RatingActivity extends GenericActivity implements Handler.Callback 
     private void classifyRating() {
         int one, two, three, four, five;
         one = two = three = four = five = 0;
-        int value;
+        float value;
         for (CommentsVO vo : listComments) {
             value = vo.getRating();
-            switch (value) {
+            switch ((int) value) {
                 case 1:
                     one++;
                     break;
@@ -155,4 +189,54 @@ public class RatingActivity extends GenericActivity implements Handler.Callback 
         rbAverage.setRating(averageStars);
         tvTotalRating.setText(listComments.size() + " comments");
     }
+
+    @Override
+    public void onClick(View view) {
+        int id = view.getId();
+        switch (id){
+            case R.id.btnAcceptComment:
+                saveComment();
+                if(editComment)
+                    dialog();
+                break;
+
+        }
+    }
+
+    private void saveComment() {
+        if(!validateFieldsComment()) {
+            messageToast("Debe llenar los campos");
+            editComment=false;
+            return;
+        }
+        else {
+            CommentsVO commentsVO = new CommentsVO();
+            commentsVO.setComment(etLeaveComment.getText().toString());
+            commentsVO.setRating(rbLeaveStars.getRating());
+
+            commentsVO.setDate(dateFormat.format(date));
+            commentsVO.setIdBar(this.idBar);
+            commentsVO.setNameUser(Constantes.userActive.getUserName());
+            commentsVO.setIdUser(Constantes.userActive.getUserUID());
+            commentsDAO.saveComment(commentsVO, Constantes.userActive.getUserUID());
+            editComment = true;
+            etLeaveComment.setText("");
+            rbLeaveStars.setRating(0);
+        }
+    }
+
+    private boolean validateFieldsComment() {
+
+            if(etLeaveComment.getText().toString().isEmpty() || rbLeaveStars.getRating()==0.0)
+                return false;
+        return true;
+    }
+
+    private void dialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Tu comentario se ha editado correctamente");
+        builder.create();
+        builder.show();
+    }
+
 }

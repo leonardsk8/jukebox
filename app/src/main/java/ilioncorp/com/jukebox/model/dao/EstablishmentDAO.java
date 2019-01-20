@@ -30,8 +30,8 @@ public class EstablishmentDAO extends CRUD implements ValueEventListener,Handler
 
 
 
-    public void getBar(String idBar){
-        Query query = myRef.child("establishment").child("bares").child(idBar).getParent();
+    public void getBar(String id){
+        Query query = myRef.child("establishment").child("bares").orderByChild("id").equalTo(id);
         query.addListenerForSingleValueEvent(this);
     }
 

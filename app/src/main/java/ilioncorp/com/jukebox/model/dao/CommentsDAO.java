@@ -50,4 +50,33 @@ public class CommentsDAO extends CRUD implements ValueEventListener {
     public void onCancelled(DatabaseError databaseError) {
 
     }
+
+    public void verifyComment(String userUID,Handler bridge) {
+        myRef.child("comments").child(this.idBar).orderByChild("idUser").equalTo(userUID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    CommentsVO commentsVO=null;
+                    for (DataSnapshot ds:dataSnapshot.getChildren()){
+                        commentsVO = ds.getValue(CommentsVO.class);
+                    }
+                    Message message = new Message();
+                    message.obj=commentsVO;
+                    bridge.sendMessage(message);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+    /**
+     * GUARDA EL COMENTARIO EN LA BASE DE DATOS
+     * */
+    public void saveComment(CommentsVO commentsVO,String idUser) {
+        myRef.child("comments").child(commentsVO.getIdBar()).child(idUser).setValue(commentsVO);
+
+    }
 }

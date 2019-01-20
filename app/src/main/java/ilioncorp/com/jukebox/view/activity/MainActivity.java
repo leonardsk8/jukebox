@@ -84,8 +84,10 @@ public class MainActivity extends GenericActivity implements
         if(Constantes.establishmentVOActual == null) {
             Handler puente = new Handler(message -> {
                 sessionUserVO = (SessionUserVO) message.obj;
-                Constantes.idBarSessionActual = sessionUserVO.getEstablishmentId();
-                getEstablishment();
+                if(sessionUserVO != null) {
+                    Constantes.idBarSessionActual = sessionUserVO.getEstablishmentId();
+                    getEstablishment();
+                }
                 return false;
             });
             session = new SessionDAO(puente, this);

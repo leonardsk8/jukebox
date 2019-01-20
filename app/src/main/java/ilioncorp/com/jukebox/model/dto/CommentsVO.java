@@ -4,9 +4,26 @@ public class CommentsVO {
     private String nameUser;
     private String comment;
     private String idBar;
-    private int rating;
+    private String idUser;
+    private String date;
+    private float rating;
 
 
+    public String getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(String idUser) {
+        this.idUser = idUser;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 
     public String getNameUser() {
         return nameUser;
@@ -32,11 +49,11 @@ public class CommentsVO {
         this.idBar = idBar;
     }
 
-    public int getRating() {
+    public float getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(float rating) {
         this.rating = rating;
     }
 }
