@@ -1,5 +1,6 @@
 package ilioncorp.com.jukebox.utils.constantes;
 
+import ilioncorp.com.jukebox.model.dto.EstablishmentVO;
 import ilioncorp.com.jukebox.model.dto.UserVO;
 
 public class Constantes {
@@ -10,6 +11,7 @@ public class Constantes {
     public static int positionLike;
     public static String userToken;
     public static String idBarSessionActual="";
+    public static EstablishmentVO establishmentVOActual=null;
 
 
 }

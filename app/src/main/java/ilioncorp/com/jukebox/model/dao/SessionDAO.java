@@ -32,6 +32,7 @@ import ilioncorp.com.jukebox.utils.constantes.Constantes;
 public class SessionDAO extends CRUD implements ValueEventListener,Runnable {
 
     SessionVO sessionObj;
+
     SessionUserVO sessionUser;
     private Handler bridge;
     private String idBar;
@@ -39,7 +40,11 @@ public class SessionDAO extends CRUD implements ValueEventListener,Runnable {
     private ArrayList<SessionVO> listUsers;
     private ArrayList<Uri> listUris;
 
-    public SessionDAO(String idBar,Handler bridge,Context context) {
+    public SessionDAO() {
+        super();
+    }
+
+    public SessionDAO(String idBar, Handler bridge, Context context) {
         super();
         this.context = context;
         this.bridge = bridge;
@@ -50,8 +55,13 @@ public class SessionDAO extends CRUD implements ValueEventListener,Runnable {
         this.listUris = new ArrayList<>();
     }
 
-    public SessionDAO() {
+    public SessionDAO(Handler bridge,Context context) {
         super();
+        this.sessionObj = new SessionVO();
+        this.listUsers = new ArrayList<>();
+        this.listUris = new ArrayList<>();
+        this.context = context;
+        this.bridge = bridge;
     }
 
     public void generatedSession(String idBar){
@@ -164,4 +174,27 @@ public class SessionDAO extends CRUD implements ValueEventListener,Runnable {
         }
     }
 
+    public void checkSessionUser(String idUser) {
+        Query query = myRef.child("sessionUserEstablishment").child("user").
+                orderByChild("userId").equalTo(idUser).limitToFirst(1);
+        Message msg  = new Message();
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists())
+                    for (DataSnapshot ds:dataSnapshot.getChildren()){
+                        sessionUser = ds.getValue(SessionUserVO.class);
+                    }
+
+                msg.obj = sessionUser;
+                bridge.sendMessage(msg);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 }

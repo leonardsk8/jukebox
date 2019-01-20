@@ -4,9 +4,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.util.DisplayMetrics;
+import android.view.View;
 import android.widget.TextView;
 
-public class PopUpHorarios extends AppCompatActivity {
+public class PopUpHorarios extends AppCompatActivity implements View.OnClickListener{
 
     private String[] horarios;
     private android.widget.TextView dayMonday;
@@ -45,5 +46,10 @@ public class PopUpHorarios extends AppCompatActivity {
         this.dayFriday.setText("Viernes: "+horarios[4]);
         this.daySaturday.setText("Sabado: "+horarios[5]);
         this.daySunday.setText("Domingo: "+horarios[6]);
+    }
+
+    @Override
+    public void onClick(View view) {
+
     }
 }

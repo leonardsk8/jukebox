@@ -56,8 +56,6 @@ public class TabReproducing extends Fragment implements Handler.Callback{
     public boolean handleMessage(Message message) {
         listSongs = (ArrayList<ReproductionListVO>) message.obj;
         listReproductionBar.scrollToPosition(0);
-
-        Log.e("SCroll","POSITION SCROLL IN: ");
         listReproductionBar.setHasFixedSize(true);
         listReproductionBar.setLayoutManager(new LinearLayoutManager(getContext()));
         Collections.sort(listSongs);

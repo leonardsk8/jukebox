@@ -20,7 +20,6 @@ public class PromotionsUserDAO extends CRUD implements ValueEventListener {
         this.bridge = bridge;
         this.idBar = idBar;
         this.context =context;
-
     }
 
     public void getPromotion(String idCode){

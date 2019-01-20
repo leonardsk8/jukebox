@@ -100,7 +100,7 @@ public class BarActivity extends GenericActivity implements View.OnClickListener
             session.checkSession(bridge,establishment.getId(),onlyCheck);
             this.view = view;
             showCharging("cargando");
-        }
+    }
 
 
     @Override
@@ -113,6 +113,7 @@ public class BarActivity extends GenericActivity implements View.OnClickListener
                 SessionDAO session = new SessionDAO();
                 if (answer.contains("inactive")) {
                     session.generatedSession(establishment.getId());
+                    Constantes.establishmentVOActual = establishment;
                     messageSnackBar("Sesión generada con el bar", view);
 
                 } else if (answer.contains("vetoed")) {
@@ -122,6 +123,7 @@ public class BarActivity extends GenericActivity implements View.OnClickListener
                 } else if (answer.contains("active")) {
 
                     session.closeSession(establishment.getId());
+                    Constantes.establishmentVOActual = null;
                     messageSnackBar("Sesión cerrada", view);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         subFabOpenSesion.setImageIcon(Icon.createWithResource(this, R.drawable.open_sesion));
@@ -131,11 +133,13 @@ public class BarActivity extends GenericActivity implements View.OnClickListener
 
                 } else if (answer.contains("")) {
                     session.closeSession(Constantes.idBarSessionActual);
+                    Constantes.establishmentVOActual = null;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         subFabOpenSesion.setImageIcon(Icon.createWithResource(this, R.drawable.close_sesion));
                     }
                     subFabOpenSesion.setImageResource(R.drawable.close_sesion);
                     session.generatedSession(establishment.getId());
+                    Constantes.establishmentVOActual = establishment;
                     messageSnackBar("Sesión generada con el bar", view);
 
                 }
@@ -188,7 +192,7 @@ public class BarActivity extends GenericActivity implements View.OnClickListener
                 return false;
             });
             showCharging("Loading");
-            mViewPager.setCurrentItem(2);
+            mViewPager.setCurrentItem(0);
             fabMenu.setVisibility(View.VISIBLE);
             switch (item.getItemId()) {
                 case R.id.action_information:
@@ -230,9 +234,9 @@ public class BarActivity extends GenericActivity implements View.OnClickListener
                 TabYoutube youtube = new TabYoutube();
                 TabReproducing songs = new TabReproducing(String.valueOf(establishment.getId()));
                 bar = new TabBar(establishment);
-                mFragmentList.add(youtube);
-                mFragmentList.add(songs);
                 mFragmentList.add(bar);
+                mFragmentList.add(songs);
+                mFragmentList.add(youtube);
             }
 
             @Override
@@ -252,11 +256,11 @@ public class BarActivity extends GenericActivity implements View.OnClickListener
 
                 switch (position){
                     case 0:
-                        return "Buscar";
+                        return "Bar";
                     case 1:
                         return "Reproduciendo";
                     case 2:
-                        return "Bar";
+                        return "Buscar";
                 }
                 return null;
             }

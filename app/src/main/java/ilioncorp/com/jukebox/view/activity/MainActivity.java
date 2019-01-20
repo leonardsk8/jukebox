@@ -26,11 +26,18 @@ import com.google.firebase.auth.FirebaseUser;
 
 import ilioncorp.com.jukebox.R;
 import ilioncorp.com.jukebox.model.dao.CreditsDAO;
+import ilioncorp.com.jukebox.model.dao.EstablishmentDAO;
+import ilioncorp.com.jukebox.model.dao.SessionDAO;
 import ilioncorp.com.jukebox.model.dao.UserDAO;
 import ilioncorp.com.jukebox.model.dto.CreditsVO;
+import ilioncorp.com.jukebox.model.dto.EstablishmentVO;
+import ilioncorp.com.jukebox.model.dto.SessionUserVO;
+import ilioncorp.com.jukebox.utils.constantes.Constantes;
 import ilioncorp.com.jukebox.view.fragment.FragmentMap;
 import ilioncorp.com.jukebox.view.fragment.FragmentOptions;
 import ilioncorp.com.jukebox.view.generic.GenericActivity;
+
+import java.util.ArrayList;
 
 
 public class MainActivity extends GenericActivity implements
@@ -46,30 +53,27 @@ public class MainActivity extends GenericActivity implements
     private int hilo;
     private LocationManager mlocManager;
     private UserDAO userdao;
-    private CreditsDAO credits;
     private Handler bridge;
-    private android.widget.TextView toolbartitle;
-    private android.support.v7.widget.Toolbar toolbar;
-    private TextView tvCredits;
+    private SessionDAO session;
+    private SessionUserVO sessionUserVO ;
+    private ArrayList<EstablishmentVO> listItems;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        this.tvCredits =  findViewById(R.id.tvCredits);
-
-
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         this.imOptions =  findViewById(R.id.imOptions);
         imOptions.setOnClickListener(this::onClick);
         maps = new FragmentMap();
         mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
         bridge = new Handler(this::handleMessage);
-        credits = new CreditsDAO(bridge);
+
         administrator = getSupportFragmentManager();
         options = new FragmentOptions(this);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
         userdao = new UserDAO(this);
         userdao.checkProfileUser();
         if (user != null) {
@@ -77,11 +81,32 @@ public class MainActivity extends GenericActivity implements
         } else {
             goLoginScreen();
         }
+        if(Constantes.establishmentVOActual == null) {
+            Handler puente = new Handler(message -> {
+                sessionUserVO = (SessionUserVO) message.obj;
+                Constantes.idBarSessionActual = sessionUserVO.getEstablishmentId();
+                getEstablishment();
+                return false;
+            });
+            session = new SessionDAO(puente, this);
+            session.checkSessionUser(user.getUid());
+        }
 
 
 
 
+    }
 
+    /**METODO QUE TRAE EL BAR EN EL CUAL SE HA INICIADO SESIÓN PARA POSTERIORMENTE PODER ACCEDER DESDE EL MENU DE INICIO
+     *
+     * */
+    private void getEstablishment() {
+        EstablishmentDAO dao = new EstablishmentDAO(new Handler(message -> {
+            listItems = (ArrayList<EstablishmentVO>) message.obj;
+            Constantes.establishmentVOActual = listItems.get(0);
+            return false;
+        }));
+        dao.getBar(Constantes.idBarSessionActual);
     }
 
 
@@ -202,8 +227,6 @@ public class MainActivity extends GenericActivity implements
 
     @Override
     public boolean handleMessage(Message message) {
-        CreditsVO credits = (CreditsVO) message.obj;
-        this.tvCredits.setText(credits.getCredits()+"");
         return false;
     }
 }

@@ -47,6 +47,7 @@ public abstract class GenericFragment extends Fragment {
     public void logout() {
         SessionDAO session = new SessionDAO();
         session.closeSession(Constantes.idBarSessionActual);
+        Constantes.establishmentVOActual = null;
         FirebaseAuth.getInstance().signOut();
         LoginManager.getInstance().logOut();
         goLoginScreen();

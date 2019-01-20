@@ -101,6 +101,7 @@ public class ListBarActivity extends GenericActivity implements Handler.Callback
         listItems = (ArrayList<EstablishmentVO>) message.obj;
         adapter = new BarListAdapter(listItems,this);
         adapter.setOnClickListener(this);
+
         listBarsRecicler.setAdapter(adapter);
         hideCharging();
         return false;

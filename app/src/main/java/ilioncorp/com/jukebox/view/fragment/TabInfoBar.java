@@ -10,14 +10,12 @@ import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.*;
 
 import ilioncorp.com.jukebox.PopUpHorarios;
 import ilioncorp.com.jukebox.R;
 import ilioncorp.com.jukebox.model.dto.EstablishmentVO;
+import ilioncorp.com.jukebox.view.activity.RatingActivity;
 import ilioncorp.com.jukebox.view.adapter.MenuListAdapter;
 import ilioncorp.com.jukebox.view.adapter.PhotoListAdapter;
 @SuppressLint("ValidFragment")
@@ -37,6 +35,8 @@ public class TabInfoBar extends Fragment implements View.OnClickListener {
     private TextView tvAddress;
     private TextView tvEmail;
     private TextView tvGenders;
+    private RatingBar rbRaitingBar;
+    private LinearLayout llRating;
     String[] schedulesHours;
 
 
@@ -48,7 +48,7 @@ public class TabInfoBar extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab_info_bar, container, false);
-
+        this.rbRaitingBar = rootView.findViewById(R.id.rbRaitingBar);
         this.tvGenders =  rootView.findViewById(R.id.tvGenders);
         this.tvEmail = rootView.findViewById(R.id.tvEmail);
         this.tvAddress = rootView.findViewById(R.id.tvAddress);
@@ -70,6 +70,9 @@ public class TabInfoBar extends Fragment implements View.OnClickListener {
         this.ivSaturday.setOnClickListener(this::onClick);
         this.ivSunday.setOnClickListener(this::onClick);
         schedulesHours = establishment.getSchedulesHours().split("/");
+        this.llRating = rootView.findViewById(R.id.llCalificaciones);
+        this.llRating.setOnClickListener(this::onClick);
+
         return rootView;
     }
 
@@ -94,6 +97,7 @@ public class TabInfoBar extends Fragment implements View.OnClickListener {
         this.tvEmail.setText(establishment.getEmail());
         this.tvGenders.setText(establishment.getGenders());
         this.tvPhone.setText(establishment.getPhone());
+        this.rbRaitingBar.setRating(establishment.getRaiting());
         FragmentManager fm = getActivity().getSupportFragmentManager();
         Fragment fragment;
         Fragment fragmentPhotos;
@@ -161,9 +165,19 @@ public class TabInfoBar extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        Intent intent =new Intent(getContext(), PopUpHorarios.class);
-        intent.putExtra("schedules",schedulesHours);
-        startActivity(intent);
-        getActivity().overridePendingTransition(R.anim.hide, R.anim.show);
+        int id=view.getId();
+        switch (id){
+            case R.id.llCalificaciones:
+                Intent i=new Intent(getContext(), RatingActivity.class);
+                i.putExtra("idBar",establishment.getId());
+                startActivity(i);
+                break;
+            default:
+                Intent intent =new Intent(getContext(), PopUpHorarios.class);
+                intent.putExtra("schedules",schedulesHours);
+                startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.hide, R.anim.show);
+                break;
+        }
     }
 }

@@ -97,9 +97,9 @@
                 android:theme="@style/JukeboxTheme"/>
         <activity android:name=".view.activity.PlayerActivity"/>
         <activity android:name=".view.activity.ChargeAccountActivity"/>
-        <activity
-                android:name=".view.activity.ListBarActivity"/>
-                <!--android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"-->/>
+        <activity android:name=".view.activity.ListBarActivity"/>
+        <!-- android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" -->
+        />
         <activity
                 android:name=".view.activity.HistoryActivity"
                 android:label="@string/title_activity_history"
@@ -110,8 +110,11 @@
         <activity android:name=".view.activity.PromotionActivity"/>
         <activity android:name=".view.activity.FullScreenActivity">
         </activity>
-        <activity android:name=".PopUpHorarios"
-                  android:theme="@style/AppTheme.CustomTheme">
+        <activity
+                android:name=".PopUpHorarios"
+                android:theme="@style/AppTheme.CustomTheme">
+        </activity>
+        <activity android:name=".view.activity.RatingActivity">
         </activity>
     </application>
 
