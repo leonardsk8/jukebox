@@ -15,36 +15,25 @@ public class CreditsDAO extends CRUD implements ValueEventListener{
 
     private CreditsVO credits;
     private Handler bridge;
+    private String idBar;
 
-    public CreditsDAO(Handler bridge) {
+    public CreditsDAO(Handler bridge,String idBar,String idUser) {
         super();
         this.bridge = bridge;
-        super.listener =  myRef.child("credits").addValueEventListener(this);
+        this.idBar = idBar;
+        myRef.child("credits").child(idBar).child("creditos").orderByChild("idUser")
+                .equalTo(idUser).addListenerForSingleValueEvent(this);
     }
 
     @Override
     public void onDataChange(DataSnapshot dataSnapshot) {
         credits = new CreditsVO();
-        boolean flag = true;
-        if(dataSnapshot.exists()){
-            for (DataSnapshot ds:dataSnapshot.getChildren()) {
+        if(dataSnapshot.exists())
+            for (DataSnapshot ds : dataSnapshot.getChildren())
                 this.credits = ds.getValue(CreditsVO.class);
-                if(super.userID.contains(ds.getKey())) {
-                    flag = false;
-                    sendMessage();
-
-                }
-            }
-            if(flag){
-                credits.setCredits(""+0);
-                sendMessage();
-            }
-
-        }
-        else{
-            credits.setCredits(00+"");
-        }
-        //sendMessage();
+        else
+                credits.setCredits(0+"");
+        sendMessage();
     }
 
     private void sendMessage() {
@@ -58,9 +47,10 @@ public class CreditsDAO extends CRUD implements ValueEventListener{
 
     }
 
-    public void takeFromCredit(int credits) {
+    public void takeFromCredit(int credits,String idUser) {
         CreditsVO creditsVO = new CreditsVO();
         creditsVO.setCredits(credits+"");
-        myRef.child("credits").child(super.userID).setValue(creditsVO);
+        creditsVO.setIdUser(idUser);
+        myRef.child("credits").child(idBar).child("creditos").child(idUser).setValue(creditsVO);
     }
 }

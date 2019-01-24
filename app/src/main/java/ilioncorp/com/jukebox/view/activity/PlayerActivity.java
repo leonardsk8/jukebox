@@ -19,6 +19,7 @@ import ilioncorp.com.jukebox.model.dao.ReproductionListDAO;
 import ilioncorp.com.jukebox.model.dao.SessionDAO;
 import ilioncorp.com.jukebox.model.dto.CreditsVO;
 import ilioncorp.com.jukebox.model.dto.ReproductionListVO;
+import ilioncorp.com.jukebox.utils.constantes.Constantes;
 import ilioncorp.com.jukebox.view.YoutubeConnector;
 import ilioncorp.com.jukebox.view.fragment.TabReproducing;
 
@@ -36,6 +37,10 @@ public class PlayerActivity extends YouTubeBaseActivity implements YouTubePlayer
     private Handler bridgeCredits;
     private int credits;
     private CreditsDAO creditsDAO;
+    private boolean endProcces = false;
+    private boolean enviada = false;
+    private boolean creditosObtenidos = false;
+
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
@@ -44,17 +49,18 @@ public class PlayerActivity extends YouTubeBaseActivity implements YouTubePlayer
         this.playerView = findViewById(R.id.player_view);
         this.playerView.initialize(YoutubeConnector.KEY, this);
         btnSend = findViewById(R.id.btnSendSong);
-        btnSend.setOnClickListener(this);
+        btnSend.setOnClickListener(this::onClick);
         song = (ReproductionListVO) getIntent().getExtras().getSerializable("song");
         idBar = getIntent().getExtras().getString("idBar");
         bridgeCredits = new Handler(msg -> {
-            int x;
             CreditsVO credits = (CreditsVO) msg.obj;
             this.credits = Integer.parseInt(credits.getCredits());
+            creditosObtenidos = true;
             return false;
 
         });
-        creditsDAO = new CreditsDAO(bridgeCredits);
+        creditsDAO = new CreditsDAO(bridgeCredits,idBar, Constantes.userActive.getUserUID());
+        checkSong();
     }
 
     @Override
@@ -75,33 +81,51 @@ public class PlayerActivity extends YouTubeBaseActivity implements YouTubePlayer
     public void onClick(View view) {
         SessionDAO session = new SessionDAO();
         this.view = view;
-        session.checkSession(bridge,idBar,"no");
+        if(!enviada) {
+            session.checkSession(bridge, idBar, "no");
+            enviada = true;
+        }
+        else
+            Toast.makeText(this,"La canción ya fue enviada",Toast.LENGTH_SHORT).show();
 
+    }
+
+    private void checkSong() {
+        Handler bridge = new Handler(message -> {
+
+            enviada = (boolean) message.obj;
+            endProcces = true;
+            return false;
+        });
+        ReproductionListDAO reproductionListDAO = new ReproductionListDAO(idBar
+        ,bridge);
+        reproductionListDAO.findSong(song.getVideo_id());
     }
 
     @Override
     public boolean handleMessage(Message message) {
         String[] array = (String[]) message.obj;
         String answer = array[0];
-        if(answer.equals("active")) {
-            if(checkCredits()) {
-                new ReproductionListDAO(idBar, TabReproducing.bridge, true).sendSong(song);
-                Snackbar.make(view, "Canción Enviada", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                Toast.makeText(this,"1 Credito Descontado",Toast.LENGTH_SHORT).show();
-                creditsDAO.takeFromCredit(credits-1);
-            }
-            else
-                Snackbar.make(view, "Creditos Insuficientes, por favor recarga", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+        if(endProcces) {
+            if (answer.equals("active")) {
+                if (checkCredits()) {
+                    new ReproductionListDAO(idBar, TabReproducing.bridge, true).sendSong(song);
+                    Snackbar.make(view, "Canción Enviada", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    Toast.makeText(this, "1 Credito Descontado", Toast.LENGTH_SHORT).show();
+                    creditsDAO.takeFromCredit(credits - 1,Constantes.userActive.getUserUID());
+                } else
+                    Snackbar.make(view, "Creditos Insuficientes, por favor recarga", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
 
-        }
-        else if(answer.equals("inactive") || answer.equals(""))
-            Snackbar.make(view, "Debes iniciar Sesión en el bar", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
-        else if (answer.equals("vetoed"))
-            Snackbar.make(view, "No puedes agendar musica, estas vetado", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
+            } else if (answer.equals("inactive") || answer.equals(""))
+                Snackbar.make(view, "Debes iniciar Sesión en el bar", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            else if (answer.equals("vetoed"))
+                Snackbar.make(view, "No puedes agendar musica, estas vetado", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+        }else
+            Toast.makeText(this,"Por favor espere un momento",Toast.LENGTH_SHORT).show();
         return false;
     }
 

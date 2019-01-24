@@ -14,7 +14,15 @@ public class SessionVO implements Serializable{
     private String sessionUserName;
     private String sessionUserImage;
     private String sessionUserBar;
+    private String sessionUserEmail;
 
+    public String getSessionUserEmail() {
+        return sessionUserEmail;
+    }
+
+    public void setSessionUserEmail(String sessionUserEmail) {
+        this.sessionUserEmail = sessionUserEmail;
+    }
 
     public String getSessionUserBar() {
         return sessionUserBar;

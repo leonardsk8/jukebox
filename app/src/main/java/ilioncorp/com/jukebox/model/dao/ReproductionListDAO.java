@@ -37,6 +37,14 @@ public class ReproductionListDAO extends CRUD implements ValueEventListener {
                 .child("songs").addValueEventListener(this);
 
     }
+    public ReproductionListDAO(String idBar,Handler bridge) {
+        super();
+        this.idBar = idBar;
+        this.bridge = bridge;
+        listSongs = new ArrayList<>();
+
+
+    }
 
     public void setLikeSong(UserLikeVO obj){
         myRef.child("reproduction_list").child("establishment").child(idBar).child("songs")
@@ -94,5 +102,26 @@ public class ReproductionListDAO extends CRUD implements ValueEventListener {
     @Override
     public void onCancelled(DatabaseError databaseError) {
 
+    }
+
+    public void findSong(String videoId){
+        myRef.child("reproduction_list").child("establishment").child(this.idBar)
+                .child("songs").orderByChild("video_id").equalTo(videoId)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Message message = new Message();
+                        if(dataSnapshot.exists())
+                            message.obj=true;
+                        else
+                            message.obj=false;
+                        bridge.sendMessage(message);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
     }
 }

@@ -7,8 +7,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import ilioncorp.com.jukebox.R;
@@ -69,6 +67,7 @@ public class RatingActivity extends GenericActivity implements Handler.Callback,
         this.rbLeaveStars = findViewById(R.id.rbLeaveStars);
         this.etLeaveComment = findViewById(R.id.etLeaveComment);
         this.tvNamePersonComment = findViewById(R.id.tvNamePersonComment);
+        this.tvDateComment = findViewById(R.id.tvDateComment);
         editComment = false;
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         this.tvTitleComments =  findViewById(R.id.tvTitleComments);
@@ -213,7 +212,6 @@ public class RatingActivity extends GenericActivity implements Handler.Callback,
             CommentsVO commentsVO = new CommentsVO();
             commentsVO.setComment(etLeaveComment.getText().toString());
             commentsVO.setRating(rbLeaveStars.getRating());
-
             commentsVO.setDate(dateFormat.format(date));
             commentsVO.setIdBar(this.idBar);
             commentsVO.setNameUser(Constantes.userActive.getUserName());

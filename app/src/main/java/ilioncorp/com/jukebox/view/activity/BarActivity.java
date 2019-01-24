@@ -22,8 +22,11 @@ import android.widget.RelativeLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.widget.Toast;
 import ilioncorp.com.jukebox.R;
+import ilioncorp.com.jukebox.model.dao.CreditsDAO;
 import ilioncorp.com.jukebox.model.dao.SessionDAO;
+import ilioncorp.com.jukebox.model.dto.CreditsVO;
 import ilioncorp.com.jukebox.model.dto.EstablishmentVO;
 import ilioncorp.com.jukebox.utils.constantes.Constantes;
 import ilioncorp.com.jukebox.view.fragment.TabBar;
@@ -66,6 +69,7 @@ public class BarActivity extends GenericActivity implements View.OnClickListener
 
     private com.github.clans.fab.FloatingActionMenu fabMenu;
     private com.github.clans.fab.FloatingActionButton subFabOpenSesion;
+    private com.github.clans.fab.FloatingActionButton subCredits;
 
 
     @Override
@@ -74,6 +78,7 @@ public class BarActivity extends GenericActivity implements View.OnClickListener
 
         setContentView(R.layout.activity_bar);
         this.subFabOpenSesion = findViewById(R.id.subFabOpenSesion);
+        this.subCredits= findViewById(R.id.subCredits);
         this.fabMenu = findViewById(R.id.fabMenu);
         establishment = (EstablishmentVO) getIntent().getExtras().getSerializable("establishment");
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -89,6 +94,7 @@ public class BarActivity extends GenericActivity implements View.OnClickListener
         fabMenu.setClosedOnTouchOutside(true);
         Constantes.idBar = String.valueOf(establishment.getId());
         subFabOpenSesion.setOnClickListener(this::onClick);
+        subCredits.setOnClickListener(this::onClick);
         generateSession(view,"yes");
         }
 
@@ -212,7 +218,26 @@ public class BarActivity extends GenericActivity implements View.OnClickListener
 
     @Override
     public void onClick(View view) {
-        generateSession(view,"no");
+        switch (view.getId()){
+            case R.id.subFabOpenSesion:
+                generateSession(view,"no");
+                break;
+            case R.id.subCredits:
+                checkCredits();
+                break;
+
+        }
+
+    }
+
+    private void checkCredits() {
+        Handler bridge = new Handler(message -> {
+            CreditsVO vo = (CreditsVO) message.obj;
+            Toast.makeText(this,"Creditos: "+vo.getCredits(),Toast.LENGTH_SHORT).show();
+            return false;
+        });
+        new CreditsDAO(bridge,establishment.getId(), Constantes.userActive.getUserUID());
+
     }
 
 

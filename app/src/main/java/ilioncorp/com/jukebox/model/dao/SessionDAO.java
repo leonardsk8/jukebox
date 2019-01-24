@@ -75,6 +75,7 @@ public class SessionDAO extends CRUD implements ValueEventListener,Runnable {
         sessionObj.setSessionUserToken(FirebaseInstanceId.getInstance().getToken());
         sessionObj.setSessionUserName(Constantes.userActive.getUserName());
         sessionObj.setSessionUserImage(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString()+"?type=large");
+        sessionObj.setSessionUserEmail(Constantes.userActive.getUserEmail());
         myRef.child("session").child("establishment").child(idBar).child("users")
                 .child(sessionObj.getSessionUserId()).setValue(sessionObj);
         sessionUser = new SessionUserVO();
