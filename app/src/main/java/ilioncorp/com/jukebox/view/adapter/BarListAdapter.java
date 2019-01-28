@@ -25,7 +25,7 @@ public class BarListAdapter extends RecyclerView.Adapter<BarListAdapter.ViewHold
     private Context mContext;
 
     public BarListAdapter(List<EstablishmentVO> listItems,Context mContext) {
-        this.listBares=listItems;
+        this.listBares = listItems;
         this.mContext = mContext;
     }
 
@@ -33,7 +33,7 @@ public class BarListAdapter extends RecyclerView.Adapter<BarListAdapter.ViewHold
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.preview_bar,parent,false);
+                .inflate(R.layout.item_preview_bar,parent,false);
         v.setOnClickListener(this);
         return new ViewHolder(v);
     }

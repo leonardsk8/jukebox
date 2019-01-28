@@ -12,11 +12,9 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -25,11 +23,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import ilioncorp.com.jukebox.R;
-import ilioncorp.com.jukebox.model.dao.CreditsDAO;
 import ilioncorp.com.jukebox.model.dao.EstablishmentDAO;
 import ilioncorp.com.jukebox.model.dao.SessionDAO;
 import ilioncorp.com.jukebox.model.dao.UserDAO;
-import ilioncorp.com.jukebox.model.dto.CreditsVO;
 import ilioncorp.com.jukebox.model.dto.EstablishmentVO;
 import ilioncorp.com.jukebox.model.dto.SessionUserVO;
 import ilioncorp.com.jukebox.utils.constantes.Constantes;
@@ -207,6 +203,7 @@ public class MainActivity extends GenericActivity implements
         if (currentFragment == null)
             finish();
     }
+    /** CARGA EL FRAGMENT SEGUN LA OPCIÓN QUE SE SELECCIONE */
     private void loadFragment(Fragment newFragment) {
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.content, newFragment)

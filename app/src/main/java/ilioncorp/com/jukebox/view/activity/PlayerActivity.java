@@ -15,13 +15,19 @@ import com.google.android.youtube.player.YouTubePlayerView;
 
 import ilioncorp.com.jukebox.R;
 import ilioncorp.com.jukebox.model.dao.CreditsDAO;
+import ilioncorp.com.jukebox.model.dao.HistorySongDAO;
 import ilioncorp.com.jukebox.model.dao.ReproductionListDAO;
 import ilioncorp.com.jukebox.model.dao.SessionDAO;
 import ilioncorp.com.jukebox.model.dto.CreditsVO;
+import ilioncorp.com.jukebox.model.dto.HistorySongVO;
 import ilioncorp.com.jukebox.model.dto.ReproductionListVO;
 import ilioncorp.com.jukebox.utils.constantes.Constantes;
 import ilioncorp.com.jukebox.view.YoutubeConnector;
 import ilioncorp.com.jukebox.view.fragment.TabReproducing;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class PlayerActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener,
         Handler.Callback,View.OnClickListener {
@@ -33,6 +39,7 @@ public class PlayerActivity extends YouTubeBaseActivity implements YouTubePlayer
     private Button btnSend;
     private ReproductionListVO song;
     private String idBar;
+    private String nombreBar;
     private Handler bridge;
     private Handler bridgeCredits;
     private int credits;
@@ -40,6 +47,7 @@ public class PlayerActivity extends YouTubeBaseActivity implements YouTubePlayer
     private boolean endProcces = false;
     private boolean enviada = false;
     private boolean creditosObtenidos = false;
+    private HistorySongVO historySongVO;
 
     @Override
     protected void onCreate(Bundle bundle) {
@@ -52,6 +60,7 @@ public class PlayerActivity extends YouTubeBaseActivity implements YouTubePlayer
         btnSend.setOnClickListener(this::onClick);
         song = (ReproductionListVO) getIntent().getExtras().getSerializable("song");
         idBar = getIntent().getExtras().getString("idBar");
+        historySongVO = new HistorySongVO();
         bridgeCredits = new Handler(msg -> {
             CreditsVO credits = (CreditsVO) msg.obj;
             this.credits = Integer.parseInt(credits.getCredits());
@@ -61,6 +70,10 @@ public class PlayerActivity extends YouTubeBaseActivity implements YouTubePlayer
         });
         creditsDAO = new CreditsDAO(bridgeCredits,idBar, Constantes.userActive.getUserUID());
         checkSong();
+
+
+
+
     }
 
     @Override
@@ -110,6 +123,15 @@ public class PlayerActivity extends YouTubeBaseActivity implements YouTubePlayer
             if (answer.equals("active")) {
                 if (checkCredits()) {
                     new ReproductionListDAO(idBar, TabReproducing.bridge, true).sendSong(song);
+                    HistorySongDAO historySongDAO = new HistorySongDAO(null,Constantes.userActive.getUserUID());
+                    historySongVO.setVideoIdSong(song.getVideo_id());
+                    historySongVO.setIdUser(Constantes.userActive.getUserUID());
+                    historySongVO.setNameSong(song.getName());
+                    historySongVO.setNameBar(Constantes.establishmentVOActual.getName());
+                    historySongVO.setDateSong(getFechaHora());
+                    historySongVO.setStateSong("En espera");
+                    historySongVO.setThumnailSong("https://img.youtube.com/vi/"+song.getVideo_id()+"/mqdefault.jpg");
+                    historySongDAO.putSong(historySongVO);
                     Snackbar.make(view, "Canción Enviada", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                     Toast.makeText(this, "1 Credito Descontado", Toast.LENGTH_SHORT).show();
@@ -127,6 +149,12 @@ public class PlayerActivity extends YouTubeBaseActivity implements YouTubePlayer
         }else
             Toast.makeText(this,"Por favor espere un momento",Toast.LENGTH_SHORT).show();
         return false;
+    }
+
+    private String getFechaHora() {
+        Date date = new Date();
+        DateFormat hourdateFormat = new SimpleDateFormat("HH:mm dd/MM/yyyy");
+        return hourdateFormat.format(date);
     }
 
     private boolean checkCredits() {

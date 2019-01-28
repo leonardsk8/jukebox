@@ -40,9 +40,6 @@ import ilioncorp.com.jukebox.view.generic.GenericActivity;
 public class BarActivity extends GenericActivity implements View.OnClickListener,
         BottomNavigationView.OnNavigationItemSelectedListener
         ,Handler.Callback{
-
-        private static final int REQUESTCODE_WRITE = 2;
-        private static final int REQUESTCODE_READ = 3;
     /**
          * The {@link android.support.v4.view.PagerAdapter} that will provide
          * fragments for each of the sections. We use a
@@ -83,7 +80,7 @@ public class BarActivity extends GenericActivity implements View.OnClickListener
         establishment = (EstablishmentVO) getIntent().getExtras().getSerializable("establishment");
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         // Set up the ViewPager with the sections adapter.
-        mViewPager = findViewById(R.id.container);
+        mViewPager = findViewById(R.id.container_bar);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         tab = findViewById(R.id.tabs);
         answer="";

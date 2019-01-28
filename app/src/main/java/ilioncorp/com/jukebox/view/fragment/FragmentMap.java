@@ -3,15 +3,11 @@ package ilioncorp.com.jukebox.view.fragment;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.location.Geocoder;
-import android.location.Location;
 import android.location.LocationManager;
-import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -31,7 +27,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.common.ConnectionResult;
@@ -44,15 +39,12 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
@@ -63,7 +55,6 @@ import ilioncorp.com.jukebox.utils.constantes.Constantes;
 import ilioncorp.com.jukebox.view.activity.BarActivity;
 import ilioncorp.com.jukebox.R;
 import ilioncorp.com.jukebox.model.dto.EstablishmentVO;
-import ilioncorp.com.jukebox.view.activity.FilterOptions;
 import ilioncorp.com.jukebox.view.activity.ProfileActivity;
 import ilioncorp.com.jukebox.view.generic.GenericFragment;
 import ilioncorp.com.jukebox.view.Localizacion;
@@ -186,7 +177,7 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
 
 
     private void start() {
-        showCharging("Obtieniedo Ubicación", getContext(), true);
+        showCharging("Obteniendo Ubicación", getContext(), true);
         locationStart();
         hilo = "start";
         new Thread(this::run).start();
@@ -299,7 +290,7 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
                     v = getLayoutInflater().inflate(R.layout.item_info_window, null);
                 else {
 
-                    v = getLayoutInflater().inflate(R.layout.preview_bar, null);
+                    v = getLayoutInflater().inflate(R.layout.item_preview_bar, null);
                     ImageView imageBar = v.findViewById(R.id.imagePreviewBar);
                     TextView nameBar = v.findViewById(R.id.tvNameBarPreview);
                     RatingBar bar = v.findViewById(R.id.ratingBarPreview);

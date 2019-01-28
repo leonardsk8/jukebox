@@ -43,38 +43,6 @@ public abstract class CRUD {
 
     }
 
-    public String Read(String parameter,Handler bridge,boolean handlerActive)  {
-        try {
-            String ruta = ERoutes.DOMAIN.getUrl() + ERoutes.NOTIFY.getUrl();
-            URL address = new URL(ruta);
-            HttpURLConnection cnn = (HttpURLConnection) address.openConnection();
-            cnn.setRequestMethod("POST");
-            cnn.setDoInput(true);
-            cnn.setDoOutput(true);
-            PrintStream out = new PrintStream(cnn.getOutputStream());
-            out.print(parameter);
-            out.close();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(cnn.getInputStream()));
-            String line = reader.readLine();
-            String content = "";
-            while (line != null) {
-                content += line;
-                line = reader.readLine();
-            }
-            reader.close();
-            if(handlerActive) {
-                Message message = new Message();
-                message.obj = content;
-                bridge.sendMessage(message);
-            }
-            return content;
-        }catch (IOException e){
-            Message message = new Message();
-            message.obj = e.getMessage();
-            bridge.sendMessage(message);
-            return  "";
-        }
-    }
 
 
 }

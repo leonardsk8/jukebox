@@ -39,14 +39,7 @@ public class ChatMessageDAO extends CRUD implements ValueEventListener{
         query.addListenerForSingleValueEvent(this);
 
     }
-    public void notifyUser(SessionVO user, String body, String title){
-        String parameters = "sessionUserId="+user.getSessionUserId()+"&sessionState="+user.getSessionState() +
-                "&sessionDateStart="+user.getSessionDateStart()+"&sessionUserToken="+user.getSessionUserToken() +
-                "&sessionUserName="+user.getSessionUserName()+"&sessionUserBar="+user.getSessionUserBar()+
-                "&sessionUserImage="+user.getSessionUserImage()+"&title="+title+"&body="+body;
-        String answer = Read(parameters,null,false);
-        Log.e("NOTIFY",answer);
-    }
+
     public void notifyUserOkHttp(SessionVO user,String body,String name){
         ClientNotificationViaFCMServerHelper notify = new
                 ClientNotificationViaFCMServerHelper(user,"NUEVO MENSAJE DE: "+name,body);

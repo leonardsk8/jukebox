@@ -6,12 +6,8 @@ import android.os.Message;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
-
-import ilioncorp.com.jukebox.model.dto.PromotionsUserVO;
 import ilioncorp.com.jukebox.model.dto.PromotionsVO;
 import ilioncorp.com.jukebox.model.generic.CRUD;
 
@@ -20,7 +16,6 @@ public class PromotionsDAO extends CRUD implements ValueEventListener,Runnable  
     private Handler bridge;
     private String idBar;
     private PromotionsVO promotion;
-
     private ArrayList<PromotionsVO> listPromotions;
     private boolean handlerActive;
 
@@ -28,7 +23,6 @@ public class PromotionsDAO extends CRUD implements ValueEventListener,Runnable  
 
     public PromotionsDAO(Handler bridge,boolean handlerActive, String idBar, Context context) {
         this.bridge = bridge;
-        this.idBar = idBar;
         this.handlerActive = handlerActive;
         this.context =context;
         listPromotions =new ArrayList<>();

@@ -6,24 +6,23 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import ilioncorp.com.jukebox.model.dto.HistoryLoadVO;
-import ilioncorp.com.jukebox.model.dto.HistorySongVO;
 import ilioncorp.com.jukebox.model.generic.CRUD;
 
 import java.util.ArrayList;
 
-public class HistorySongDAO extends CRUD implements ValueEventListener {
+public class HistoryLoadDAO extends CRUD implements ValueEventListener {
 
     private Handler bridge;
-    private ArrayList<HistorySongVO> listSongs;
+    private ArrayList<HistoryLoadVO> listSongs;
     private String idUser;
 
-    public HistorySongDAO(Handler bridge, String idUser) {
+    public HistoryLoadDAO(Handler bridge, String idUser) {
         this.bridge = bridge;
         this.idUser = idUser;
         listSongs = new ArrayList<>();
     }
-    public void getSongs(){
-        myRef.child("history").child("users").child("song").child(idUser)
+    public void getLoads(){
+        myRef.child("history").child("users").child("load").child(idUser)
                 .addListenerForSingleValueEvent(this);
     }
 
@@ -32,7 +31,7 @@ public class HistorySongDAO extends CRUD implements ValueEventListener {
 
         if(dataSnapshot.exists()){
             for (DataSnapshot ds:dataSnapshot.getChildren()){
-                HistorySongVO vo = ds.getValue(HistorySongVO.class);
+                HistoryLoadVO vo = ds.getValue(HistoryLoadVO.class);
                 listSongs.add(vo);
             }
         }
@@ -50,10 +49,5 @@ public class HistorySongDAO extends CRUD implements ValueEventListener {
     @Override
     public void onCancelled(DatabaseError databaseError) {
 
-    }
-
-    public void putSong(HistorySongVO history) {
-        myRef.child("history").child("users").child("song").child(idUser).child(history.getVideoIdSong())
-                .setValue(history);
     }
 }

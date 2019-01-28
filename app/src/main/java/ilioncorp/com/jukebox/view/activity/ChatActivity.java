@@ -106,15 +106,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    private void notifyUserOkHttp(String body,String title) {
-        userDao.notifyUserOkHttp(user,body,title);
-    }
 
-    private void notifyUser(String body,String title) {
-        new Thread(()->{
-            userDao.notifyUser(user,body,title);
-        }).start();
-    }
 
     @Override
     public boolean handleMessage(Message message) {
