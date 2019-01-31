@@ -43,7 +43,7 @@
                 android:ems="10"
                 android:layout_marginTop="25dp"
                 android:textAlignment="center"
-                android:hint="Name"
+                android:hint="Nombre"
                 android:inputType="textPersonName"
                 android:textSize="16dp" />
 
@@ -57,7 +57,7 @@
                 android:background="@drawable/rounded_corner"
                 android:ems="10"
                 android:textAlignment="center"
-                android:hint="Surname"
+                android:hint="Apellido"
                 android:inputType="textPersonName" />
             <EditText
                 android:id="@+id/etEmail"
@@ -69,7 +69,7 @@
                 android:background="@drawable/rounded_corner"
                 android:ems="10"
                 android:textAlignment="center"
-                android:hint="Email"
+                android:hint="Correo electronico"
                 android:inputType="textEmailAddress" />
             <EditText
                 android:id="@+id/etCellphone"
@@ -93,7 +93,7 @@
                 android:background="@drawable/rounded_corner"
                 android:ems="10"
                 android:textAlignment="center"
-                android:hint="Password"
+                android:hint="Contraseña"
                 android:inputType="textPassword" />
 
             <DatePicker
@@ -110,7 +110,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tap on \nme to \nset image"
+                android:text="Pon \nuna\nFoto"
                 android:textSize="16sp"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@+id/dpBirthday"
@@ -154,7 +154,7 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="11dp"
                         android:layout_marginBottom="11dp"
-                        android:text="Register Now"
+                        android:text="Registrate Ahora"
                         android:textColor="#fff"
                         android:textSize="18sp" />
                 </RelativeLayout>

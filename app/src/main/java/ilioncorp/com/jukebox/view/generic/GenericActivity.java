@@ -17,16 +17,28 @@ import ilioncorp.com.jukebox.view.activity.MainActivity;
 
 public abstract class GenericActivity  extends AppCompatActivity {
     private AlertDialog alert;
+    AlertDialog.Builder alert2;
     public static final int SIGN_IN_CODE = 777;
     public void showCharging(String title){
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle(title);
-        View item = LayoutInflater.from(this).inflate(R.layout.item_cargando,null);
-        alert.setView(item);
-        alert.setCancelable(false);
-        this.alert=alert.create();
-        this.alert = alert.show();
+        dialogBuilder(title);
+        alert2.setCancelable(false);
+        this.alert=alert2.create();
+        this.alert = alert2.show();
     }
+    public void showCharging(String title,boolean cancelable){
+        dialogBuilder(title);
+        alert2.setCancelable(cancelable);
+        this.alert=alert2.create();
+        this.alert = alert2.show();
+    }
+
+    private void dialogBuilder(String title) {
+        alert2 = new AlertDialog.Builder(this);
+        alert2.setTitle(title);
+        View item = LayoutInflater.from(this).inflate(R.layout.item_cargando,null);
+        alert2.setView(item);
+    }
+
     public void hideCharging(){
         if (alert == null){
             return;
@@ -47,7 +59,12 @@ public abstract class GenericActivity  extends AppCompatActivity {
     }
 
 
-
+    public void dialog(String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(message);
+        builder.create();
+        builder.show();
+    }
 
     protected void handleSignInResult(GoogleSignInResult result) {
 

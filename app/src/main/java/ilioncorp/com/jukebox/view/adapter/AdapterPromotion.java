@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import ilioncorp.com.jukebox.R;
 import ilioncorp.com.jukebox.model.dto.PromotionsVO;
 
@@ -42,7 +43,8 @@ public class AdapterPromotion extends RecyclerView.Adapter<AdapterPromotion.MyVi
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        Glide.with(context).load(listPromotions.get(position).getPro_image()).placeholder(R.drawable.error)
+        Glide.with(context).load(listPromotions.get(position).
+                getPro_image()).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.error)
                 .into(holder.ivImageMenuItem);
         holder.tvTitlePromotion.setText(listPromotions.get(position).getPro_name());
         holder.tvDescriptionPromotion.setText(listPromotions.get(position).getPro_description());

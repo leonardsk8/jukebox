@@ -196,7 +196,7 @@ public class RatingActivity extends GenericActivity implements Handler.Callback,
             case R.id.btnAcceptComment:
                 saveComment();
                 if(editComment)
-                    dialog();
+                    dialog("Se ha editado con exito su comentario");
                 break;
 
         }
@@ -217,6 +217,7 @@ public class RatingActivity extends GenericActivity implements Handler.Callback,
             commentsVO.setNameUser(Constantes.userActive.getUserName());
             commentsVO.setIdUser(Constantes.userActive.getUserUID());
             commentsDAO.saveComment(commentsVO, Constantes.userActive.getUserUID());
+            commentsDAO.updateAverageRating(Float.parseFloat(tvAverage.getText().toString()));
             editComment = true;
             etLeaveComment.setText("");
             rbLeaveStars.setRating(0);
@@ -230,11 +231,6 @@ public class RatingActivity extends GenericActivity implements Handler.Callback,
         return true;
     }
 
-    private void dialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Tu comentario se ha editado correctamente");
-        builder.create();
-        builder.show();
-    }
+
 
 }

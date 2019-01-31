@@ -26,10 +26,13 @@ public class HistorySongDAO extends CRUD implements ValueEventListener {
         myRef.child("history").child("users").child("song").child(idUser)
                 .addListenerForSingleValueEvent(this);
     }
-
+    public void getSongsRealTime(){
+        myRef.child("history").child("users").child("song").child(idUser)
+                .addValueEventListener(this);
+    }
     @Override
     public void onDataChange(DataSnapshot dataSnapshot) {
-
+        this.listSongs.clear();
         if(dataSnapshot.exists()){
             for (DataSnapshot ds:dataSnapshot.getChildren()){
                 HistorySongVO vo = ds.getValue(HistorySongVO.class);

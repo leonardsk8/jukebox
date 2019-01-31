@@ -79,4 +79,7 @@ public class CommentsDAO extends CRUD implements ValueEventListener {
         myRef.child("comments").child(commentsVO.getIdBar()).child(idUser).setValue(commentsVO);
 
     }
+    public void updateAverageRating(float start){
+        myRef.child("establishment").child("bares").child(idBar).child("raiting").setValue(start);
+    }
 }

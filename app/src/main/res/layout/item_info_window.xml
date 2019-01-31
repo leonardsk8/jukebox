@@ -5,7 +5,7 @@
     android:orientation="horizontal" >
 
     <TextView
-        android:text="My position"
+        android:text="Mi posición"
         android:textSize="25dp"
         android:textColor="@color/black"
         android:elevation="25dp"

@@ -1,8 +1,6 @@
 package ilioncorp.com.jukebox.view.adapter;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -12,8 +10,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import ilioncorp.com.jukebox.R;
-import ilioncorp.com.jukebox.model.dao.HistorySongDAO;
+
 import ilioncorp.com.jukebox.model.dto.HistorySongVO;
 
 import java.util.ArrayList;
@@ -40,11 +39,13 @@ public class HistorySongListAdapter extends RecyclerView.Adapter<HistorySongList
         return new ViewHolder(view);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final HistorySongVO song = listSongs.get(position);
         Glide.with(context)
                 .load(song.getThumnailSong())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .placeholder(R.drawable.error)
                 .into(holder.ivhistorysongthumbnail);
 

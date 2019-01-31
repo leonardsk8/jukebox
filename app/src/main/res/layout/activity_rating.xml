@@ -4,6 +4,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".view.activity.RatingActivity"
         >
 
     <include layout="@layout/item_starts_rating"

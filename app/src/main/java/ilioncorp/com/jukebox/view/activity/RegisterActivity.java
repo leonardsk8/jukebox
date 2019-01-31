@@ -163,6 +163,9 @@ public class RegisterActivity extends GenericActivity implements Handler.Callbac
                     //checking if success
                     if(task.isSuccessful()){
                         setAttributesUser(downloadUrl);
+                        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                        firebaseUser.sendEmailVerification();
+                        messageToast("Se ha enviado un correo de verificación a: "+firebaseUser.getEmail());
                         finish();
                         //startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
                     }else{
@@ -213,10 +216,10 @@ public class RegisterActivity extends GenericActivity implements Handler.Callbac
 
     private void dialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Source of the photo")
-                .setNeutralButton("Cancel",this::onClick)
-                .setPositiveButton("CAMERA",this::onClick)
-                .setNegativeButton("GALLERY",this::onClick);
+        builder.setMessage("Fuente de la foto")
+                .setNeutralButton("cancelar",this::onClick)
+                .setPositiveButton("CAMARA",this::onClick)
+                .setNegativeButton("GALERIA",this::onClick);
         builder.create();
         builder.show();
     }

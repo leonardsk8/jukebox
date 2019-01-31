@@ -22,9 +22,8 @@
         <item>Soul</item>
         </string-array>
     <string-array name="genders">
-        <item></item>
-        <item>MAN</item>
-        <item>WOMAN</item>
-        <item>WITHOUT SPECIFIED</item>
+        <item>Hombre</item>
+        <item>Mujer</item>
+        <item>Sin especificar</item>
     </string-array>
 </resources>

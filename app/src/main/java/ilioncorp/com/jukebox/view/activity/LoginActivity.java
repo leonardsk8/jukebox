@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -78,15 +79,17 @@ public class LoginActivity extends GenericActivity implements Handler.Callback,V
         this.signInButton.setOnClickListener(this);
         this.btnLoginFacebook = findViewById(R.id.login_buttonFB);
         this.etUser =  findViewById(R.id.etUser);
-        this.tvRegisterHere.setOnClickListener(this);
-        this.tvForgotPassword.setOnClickListener(this);
+        this.tvRegisterHere.setOnClickListener(this::onClick);
+        //this.tvRegisterHere.setVisibility(View.INVISIBLE);
+
+        this.tvForgotPassword.setOnClickListener(this::onClick);
         this.cvBtnLogin.setOnClickListener(this);
         //        guardar();
         this.btnLoginFacebook.registerCallback(callbackManager,this);
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseAuthListener = (firebaseAuth)->{
             FirebaseUser user =  firebaseAuth.getCurrentUser();
-            if(user != null){
+            if(user != null && user.isEmailVerified()){
                 goToMainScreen();
             }
         };
@@ -109,6 +112,7 @@ public class LoginActivity extends GenericActivity implements Handler.Callback,V
                 checkLogin();
                 break;
             case R.id.tvForgotPassword:
+                startActivity(new Intent(this,RecuperarActivity.class));
                 break;
             case R.id.tvRegisterHere:
                 startActivity(new Intent(this,RegisterActivity.class));
@@ -122,6 +126,7 @@ public class LoginActivity extends GenericActivity implements Handler.Callback,V
     }
 
     private void checkLogin() {
+        showCharging("Iniciando Sesión",false);
         String email = etUser.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
         if(!email.isEmpty() & !password.isEmpty())
@@ -131,9 +136,20 @@ public class LoginActivity extends GenericActivity implements Handler.Callback,V
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithEmail:success");
                         messageToast("EXITO");
-                        goToMainScreen();
+                        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                        if(firebaseUser.isEmailVerified()) {
+                            goToMainScreen();
+                            hideCharging();
+                        }
+                        else {
+                            hideCharging();
+                            dialog("se ha enviado un correo de verificación a: " + firebaseUser.getEmail());
+                            dialog("Debes verificar tu correo electronico\n o puedes iniciar sesión con google o facebook");
+                            firebaseUser.sendEmailVerification();
+
+                        }
                     } else {
-                        // If sign in fails, display a message to the user.
+                        hideCharging();
                         Log.w(TAG, "signInWithEmail:failure", task.getException());
                         messageToast("Error al iniciar sesión"+task.getException());
 
@@ -143,6 +159,7 @@ public class LoginActivity extends GenericActivity implements Handler.Callback,V
         else
             messageToast("Complete los campos");
     }
+
 
 
     @Override

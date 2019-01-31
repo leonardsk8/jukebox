@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import ilioncorp.com.jukebox.R;
 import ilioncorp.com.jukebox.model.dto.EstablishmentVO;
 
@@ -44,6 +45,7 @@ public class BarListAdapter extends RecyclerView.Adapter<BarListAdapter.ViewHold
         Glide.with(mContext)
                 .load(establishment.getImagesBar()[0])
                 .placeholder(R.drawable.error)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.imageBar);
         holder.nameBar.setText(establishment.getName());
         holder.raitingBar.setRating(establishment.getRaiting());

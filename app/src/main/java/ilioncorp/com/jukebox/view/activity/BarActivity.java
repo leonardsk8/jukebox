@@ -1,6 +1,8 @@
 package ilioncorp.com.jukebox.view.activity;
 
+import android.content.Intent;
 import android.graphics.drawable.Icon;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -67,6 +69,7 @@ public class BarActivity extends GenericActivity implements View.OnClickListener
     private com.github.clans.fab.FloatingActionMenu fabMenu;
     private com.github.clans.fab.FloatingActionButton subFabOpenSesion;
     private com.github.clans.fab.FloatingActionButton subCredits;
+    private com.github.clans.fab.FloatingActionButton subMaps;
 
 
     @Override
@@ -76,6 +79,7 @@ public class BarActivity extends GenericActivity implements View.OnClickListener
         setContentView(R.layout.activity_bar);
         this.subFabOpenSesion = findViewById(R.id.subFabOpenSesion);
         this.subCredits= findViewById(R.id.subCredits);
+        this.subMaps= findViewById(R.id.subMapa);
         this.fabMenu = findViewById(R.id.fabMenu);
         establishment = (EstablishmentVO) getIntent().getExtras().getSerializable("establishment");
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -92,6 +96,7 @@ public class BarActivity extends GenericActivity implements View.OnClickListener
         Constantes.idBar = String.valueOf(establishment.getId());
         subFabOpenSesion.setOnClickListener(this::onClick);
         subCredits.setOnClickListener(this::onClick);
+        subMaps.setOnClickListener(this::onClick);
         generateSession(view,"yes");
         }
 
@@ -130,27 +135,30 @@ public class BarActivity extends GenericActivity implements View.OnClickListener
                     messageSnackBar("Sesión cerrada", view);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         subFabOpenSesion.setImageIcon(Icon.createWithResource(this, R.drawable.open_sesion));
-                    }
+                    }else
                     subFabOpenSesion.setImageResource(R.drawable.open_sesion);
-
+                    subFabOpenSesion.setLabelText("Iniciar Sesión");
 
                 } else if (answer.contains("")) {
                     session.closeSession(Constantes.idBarSessionActual);
                     Constantes.establishmentVOActual = null;
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
                         subFabOpenSesion.setImageIcon(Icon.createWithResource(this, R.drawable.close_sesion));
-                    }
+                    else
                     subFabOpenSesion.setImageResource(R.drawable.close_sesion);
                     session.generatedSession(establishment.getId());
                     Constantes.establishmentVOActual = establishment;
                     messageSnackBar("Sesión generada con el bar", view);
-
+                    subFabOpenSesion.setLabelText("Cerrar Sesión");
                 }
             }else{
-                if (answer.contains("active"))
+                if (answer.contains("active")) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
                         subFabOpenSesion.setImageIcon(Icon.createWithResource(this, R.drawable.close_sesion));
-
+                    else
+                        subFabOpenSesion.setImageResource(R.drawable.close_sesion);
+                subFabOpenSesion.setLabelText("Cerrar Sesión");
+                }
 
             }
             return false;
@@ -222,6 +230,13 @@ public class BarActivity extends GenericActivity implements View.OnClickListener
             case R.id.subCredits:
                 checkCredits();
                 break;
+            case R.id.subMapa:
+                Uri gmmIntentUri = Uri.parse("google.navigation:q="+establishment.getLatitude()+","
+                        +establishment.getLenght());
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                startActivity(mapIntent);
+                break;
 
         }
 
@@ -254,7 +269,7 @@ public class BarActivity extends GenericActivity implements View.OnClickListener
                 super(fm);
                 mFragmentList = new ArrayList<>();
                 TabYoutube youtube = new TabYoutube();
-                TabReproducing songs = new TabReproducing(String.valueOf(establishment.getId()));
+                TabReproducing songs = new TabReproducing(establishment);
                 bar = new TabBar(establishment);
                 mFragmentList.add(bar);
                 mFragmentList.add(songs);

@@ -16,6 +16,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import ilioncorp.com.jukebox.R;
 import ilioncorp.com.jukebox.model.dto.BarPhotoVO;
 import ilioncorp.com.jukebox.model.dto.EstablishmentVO;
@@ -78,6 +79,7 @@ public class PhotoListAdapter extends Fragment {
             ImageView imageView = holder.mPhotoImageView;
             Glide.with(mContext)
                     .load(barPhotoVO.getUrl())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .placeholder(R.drawable.error)
                     .into(imageView);
         }

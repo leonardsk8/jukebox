@@ -60,7 +60,7 @@ public class TabUsers extends GenericFragment implements Handler.Callback,View.O
         View rootView = inflater.inflate(R.layout.tab_users, container, false);
         this.tvNoUsers = rootView.findViewById(R.id.tvNoUsers);
         this.listRecycleUsers = rootView.findViewById(R.id.listUsers);
-        this.tvNoUsers.setVisibility(View.VISIBLE);
+        tvNoUsers.setVisibility(View.VISIBLE);
         listRecycleUsers.setVisibility(View.INVISIBLE);
         checkPermissionWriteReadExternalStorage();
         return rootView;
@@ -156,7 +156,7 @@ public class TabUsers extends GenericFragment implements Handler.Callback,View.O
         Object[] objArrays = (Object[]) message.obj;
         listUsers = (ArrayList<SessionVO>) objArrays[0];
         listUri = (ArrayList<Uri>) objArrays[1];
-        if(listUsers.size()>=0) {
+        if(listUsers.size()>0) {
             this.tvNoUsers.setVisibility(View.INVISIBLE);
             listRecycleUsers.setVisibility(View.VISIBLE);
         }

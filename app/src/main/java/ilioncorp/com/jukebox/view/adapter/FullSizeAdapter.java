@@ -40,7 +40,7 @@ public class FullSizeAdapter extends PagerAdapter {
         View v = inflater.inflate(R.layout.fragment_bar_photo,null);
         ImageView imageView = v.findViewById(R.id.ivImageSpacePhoto);
         Glide.with(context).load(images[position]).asBitmap().error(R.drawable.error)
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imageView);
         ViewPager vp= (ViewPager) container;
         vp.addView(v,0);

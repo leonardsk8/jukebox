@@ -23,6 +23,7 @@ import ilioncorp.com.jukebox.model.dto.HistorySongVO;
 import ilioncorp.com.jukebox.model.dto.ReproductionListVO;
 import ilioncorp.com.jukebox.utils.constantes.Constantes;
 import ilioncorp.com.jukebox.view.YoutubeConnector;
+import ilioncorp.com.jukebox.view.fragment.TabListReproducing;
 import ilioncorp.com.jukebox.view.fragment.TabReproducing;
 
 import java.text.DateFormat;
@@ -58,6 +59,7 @@ public class PlayerActivity extends YouTubeBaseActivity implements YouTubePlayer
         this.playerView.initialize(YoutubeConnector.KEY, this);
         btnSend = findViewById(R.id.btnSendSong);
         btnSend.setOnClickListener(this::onClick);
+        btnSend.setEnabled(false);
         song = (ReproductionListVO) getIntent().getExtras().getSerializable("song");
         idBar = getIntent().getExtras().getString("idBar");
         historySongVO = new HistorySongVO();
@@ -105,7 +107,7 @@ public class PlayerActivity extends YouTubeBaseActivity implements YouTubePlayer
 
     private void checkSong() {
         Handler bridge = new Handler(message -> {
-
+            btnSend.setEnabled(true);
             enviada = (boolean) message.obj;
             endProcces = true;
             return false;
@@ -122,7 +124,7 @@ public class PlayerActivity extends YouTubeBaseActivity implements YouTubePlayer
         if(endProcces) {
             if (answer.equals("active")) {
                 if (checkCredits()) {
-                    new ReproductionListDAO(idBar, TabReproducing.bridge, true).sendSong(song);
+                    new ReproductionListDAO(idBar, TabListReproducing.bridge, true).sendSong(song);
                     HistorySongDAO historySongDAO = new HistorySongDAO(null,Constantes.userActive.getUserUID());
                     historySongVO.setVideoIdSong(song.getVideo_id());
                     historySongVO.setIdUser(Constantes.userActive.getUserUID());
@@ -131,6 +133,7 @@ public class PlayerActivity extends YouTubeBaseActivity implements YouTubePlayer
                     historySongVO.setDateSong(getFechaHora());
                     historySongVO.setStateSong("En espera");
                     historySongVO.setThumnailSong("https://img.youtube.com/vi/"+song.getVideo_id()+"/mqdefault.jpg");
+                    historySongVO.setIdBar(idBar);
                     historySongDAO.putSong(historySongVO);
                     Snackbar.make(view, "Canción Enviada", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();

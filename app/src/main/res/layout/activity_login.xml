@@ -37,7 +37,7 @@
                 android:layout_marginTop="140dp"
                 android:background="@drawable/rounded_corner"
                 android:ems="10"
-                android:hint="Email or Phone"
+                android:hint="Ingresa tu email"
                 android:inputType="textPersonName"
                 android:textAlignment="center"
                 android:textSize="16dp" />
@@ -51,7 +51,7 @@
                 android:layout_marginTop="199dp"
                 android:background="@drawable/rounded_corner"
                 android:ems="10"
-                android:hint="Password"
+                android:hint="Contraseña"
                 android:inputType="textPassword"
                 android:textAlignment="center" />
 
@@ -77,7 +77,7 @@
                         android:layout_alignParentTop="true"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="11dp"
-                        android:text="Login"
+                        android:text="Iniciar sesión"
                         android:textColor="#fff"
                         android:textSize="18sp" />
                 </RelativeLayout>
@@ -93,7 +93,7 @@
                 android:paddingBottom="10dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:text="Did you forgot your password?"
+                android:text="Olvidaste tu contraseña"
                 android:textColor="#B40404" />
 
             <TextView
@@ -105,7 +105,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:paddingTop="10dp"
-                android:text="Register Here." />
+                android:text="Registrate aquí" />
 
             <com.google.android.gms.common.SignInButton
                 android:id="@+id/btnLoginGoogle"

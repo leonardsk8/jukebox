@@ -368,7 +368,7 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
                     segundos2 = calen.get(Calendar.SECOND);
                     if (segundos2 < segundos)
                         segundos2 += segundos;
-                    if (segundos2 - segundos > 5) {
+                    if (segundos2 - segundos > 4) {
                         lastKnowPosition();
                         getDeviceLocation();
                     }

@@ -26,7 +26,7 @@ public class PromotionsListAdapter extends GenericFragment implements Handler.Ca
     private PromotionsDAO promotions;
     private String idBar;
     private Handler bridge;
-
+    private android.widget.TextView tvNoPromotions;
     public PromotionsListAdapter(String idBar) {
         this.idBar = idBar;
         bridge = new Handler(this);
@@ -36,7 +36,10 @@ public class PromotionsListAdapter extends GenericFragment implements Handler.Ca
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_promotions, container, false);
-        MyRecyclerView =  view.findViewById(R.id.listPromotions);
+        this.MyRecyclerView =  view.findViewById(R.id.listPromotions);
+        this.tvNoPromotions = view.findViewById(R.id.tvNoPromotions);
+        MyRecyclerView.setVisibility(View.INVISIBLE);
+        tvNoPromotions.setVisibility(View.VISIBLE);
         showCharging("Cargando Promociones",getContext(),true);
         promotions = new PromotionsDAO(bridge,true,this.idBar,getContext());
         return view;
@@ -51,13 +54,20 @@ public class PromotionsListAdapter extends GenericFragment implements Handler.Ca
     public boolean handleMessage(Message message) {
         hideCharging();
         listPromotions = (ArrayList<PromotionsVO>) message.obj;
-        MyRecyclerView.setHasFixedSize(true);
-        LinearLayoutManager MyLayoutManager = new LinearLayoutManager(getActivity());
-        MyLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        if (listPromotions.size() > 0 & MyRecyclerView != null) {
-            MyRecyclerView.setAdapter(new AdapterPromotion(listPromotions,getContext(),idBar));
+        if(listPromotions.size()>0) {
+            MyRecyclerView.setVisibility(View.VISIBLE);
+            tvNoPromotions.setVisibility(View.INVISIBLE);
+            MyRecyclerView.setHasFixedSize(true);
+            LinearLayoutManager MyLayoutManager = new LinearLayoutManager(getActivity());
+            MyLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+            if (MyRecyclerView != null) {
+                MyRecyclerView.setAdapter(new AdapterPromotion(listPromotions, getContext(), idBar));
+            }
+            MyRecyclerView.setLayoutManager(MyLayoutManager);
+        }else{
+            MyRecyclerView.setVisibility(View.INVISIBLE);
+            tvNoPromotions.setVisibility(View.VISIBLE);
         }
-        MyRecyclerView.setLayoutManager(MyLayoutManager);
         return false;
     }
 }

@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import ilioncorp.com.jukebox.R;
 import ilioncorp.com.jukebox.model.dto.MenuVO;
 
@@ -36,6 +37,7 @@ public class AdapterMenu extends RecyclerView.Adapter<AdapterMenu.MyViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Glide.with(context).load(list.get(position).getImage()).placeholder(R.drawable.error)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.imageItem);
         holder.nameItem.setText(list.get(position).getName());
         holder.priceItem.setText(String.valueOf(list.get(position).getPrice()));

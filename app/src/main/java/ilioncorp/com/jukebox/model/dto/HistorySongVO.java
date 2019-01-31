@@ -1,6 +1,13 @@
 package ilioncorp.com.jukebox.model.dto;
 
-public class HistorySongVO {
+import android.support.annotation.NonNull;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class HistorySongVO implements Comparable<HistorySongVO> {
+
 
     private String idUser;
     private String nameSong;
@@ -10,6 +17,15 @@ public class HistorySongVO {
     private String nameBar;
     private String videoIdSong;
 
+    private String idBar;
+
+    public String getIdBar() {
+        return idBar;
+    }
+
+    public void setIdBar(String idBar) {
+        this.idBar = idBar;
+    }
 
     public String getVideoIdSong() {
         return videoIdSong;
@@ -65,5 +81,21 @@ public class HistorySongVO {
 
     public void setThumnailSong(String thumnailSong) {
         this.thumnailSong = thumnailSong;
+    }
+
+    @Override
+    public int compareTo(@NonNull HistorySongVO historySongVO) {
+        if (getDateSong() == null || historySongVO.getDateSong() == null)
+            return 0;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm dd/MM/yyyy");
+        Date fecha1 = null ;
+        Date fecha2 = null ;
+        try {
+            fecha1=dateFormat.parse(getDateSong());
+            fecha2=dateFormat.parse(historySongVO.getDateSong());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return fecha2.compareTo(fecha1);
     }
 }

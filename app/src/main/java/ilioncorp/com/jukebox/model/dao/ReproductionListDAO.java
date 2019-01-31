@@ -77,6 +77,8 @@ public class ReproductionListDAO extends CRUD implements ValueEventListener {
             if(handlerActive)
             sendMessage();
         }
+        else
+            sendMessage();
     }
     public void stopListener(){
         if (myRef != null && listener != null) {

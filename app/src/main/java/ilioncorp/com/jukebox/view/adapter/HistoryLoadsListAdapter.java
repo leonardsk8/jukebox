@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import ilioncorp.com.jukebox.R;
 import ilioncorp.com.jukebox.model.dao.HistoryLoadDAO;
 import ilioncorp.com.jukebox.model.dto.HistoryLoadVO;
@@ -40,6 +41,7 @@ public class HistoryLoadsListAdapter extends RecyclerView.Adapter<HistoryLoadsLi
         final HistoryLoadVO historyLoadVO = listLoads.get(position);
         Glide.with(context)
                 .load(historyLoadVO.getThumnailBar())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .placeholder(R.drawable.error)
                 .into(holder.ivhistoryloadthumbnail);
         holder.tvhistoryloaddate.setText(historyLoadVO.getDate());

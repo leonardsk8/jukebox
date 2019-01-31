@@ -78,29 +78,29 @@ public class ReproductionListAdapter extends RecyclerView.Adapter<ReproductionLi
 
     @Override
     public void onItemClick(View v, int pos,ImageView btn) {
-        if(!listSongs.get(pos).isReproducing() & onlyLike(pos)) {
-            Snackbar.make(v, "Like song:" + listSongs.get(pos).getName(), Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
-            listSongs.get(pos).setLikes(listSongs.get(pos).getListLikes().size()+1);
-            UserLikeVO user=new UserLikeVO();
-            user.setLike(true);
-            user.setUserId(Constantes.userActive.getUserUID());
-            user.setVideoId(listSongs.get(pos).getVideo_id());
-            ReproductionListVO song = listSongs.get(pos);
-            song.setLikes(listSongs.get(pos).getListLikes().size()+1);
-            //dao.deleteSong(song);
-            dao.sendSong(song);
-            dao.setLikeSong(user);
+        if(!listSongs.isEmpty()) {
+            if (!listSongs.get(pos).isReproducing() & onlyLike(pos)) {
+                Snackbar.make(v, "Like song:" + listSongs.get(pos).getName(), Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                listSongs.get(pos).setLikes(listSongs.get(pos).getListLikes().size() + 1);
+                UserLikeVO user = new UserLikeVO();
+                user.setLike(true);
+                user.setUserId(Constantes.userActive.getUserUID());
+                user.setVideoId(listSongs.get(pos).getVideo_id());
+                ReproductionListVO song = listSongs.get(pos);
+                song.setLikes(listSongs.get(pos).getListLikes().size() + 1);
+                //dao.deleteSong(song);
+                dao.sendSong(song);
+                dao.setLikeSong(user);
 
-            Constantes.positionLike = pos;
-        }
-        else if (!listSongs.get(pos).isReproducing()){
-            Snackbar.make(v, "Solo puedes dar un like", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
-        }
-        else if (listSongs.get(pos).isReproducing()){
-            Snackbar.make(v, "La canción ya esta sonando", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
+                Constantes.positionLike = pos;
+            } else if (!listSongs.get(pos).isReproducing()) {
+                Snackbar.make(v, "Solo puedes dar un like", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            } else if (listSongs.get(pos).isReproducing()) {
+                Snackbar.make(v, "La canción ya esta sonando", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
         }
     }
 

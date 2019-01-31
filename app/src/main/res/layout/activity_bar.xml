@@ -47,20 +47,20 @@
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/subFabOpenSesion"
             android:src="@drawable/open_sesion"
-            app:fab_label="Open/Close"
+            app:fab_label="Iniciar Sesión"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/subCredits"
             android:src="@drawable/credits"
-            app:fab_label="Credits"
+            app:fab_label="Creditos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/subMapa"
-                android:src="@drawable/mapsmenu"
+                android:src="@drawable/placeholder"
                 android:scaleType="fitCenter"
-                app:fab_label="Credits"
+                app:fab_label="Ir A Este Bar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 

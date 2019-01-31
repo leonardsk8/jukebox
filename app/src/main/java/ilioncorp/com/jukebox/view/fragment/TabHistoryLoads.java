@@ -29,12 +29,16 @@ public class TabHistoryLoads extends Fragment implements Runnable,Handler.Callba
     private String idBar;
     private HistoryLoadDAO historyLoadDAO;
     private HistoryLoadsListAdapter adapter;
+    private android.widget.TextView tvNoHistoryLoads;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab_history_loads, container, false);
         this.listHistoryLoads = rootView.findViewById(R.id.listHistoryLoads);
+        this.tvNoHistoryLoads = rootView.findViewById(R.id.tvNoHistoryLoads);
+        listHistoryLoads.setVisibility(View.INVISIBLE);
+        tvNoHistoryLoads.setVisibility(View.VISIBLE);
         this.listHistoryLoads.setHasFixedSize(true);
         this.listHistoryLoads.setLayoutManager(new LinearLayoutManager(getContext()));
         bridge = new Handler(this::handleMessage);
@@ -55,7 +59,8 @@ public class TabHistoryLoads extends Fragment implements Runnable,Handler.Callba
     @Override
     public boolean handleMessage(Message message) {
         listLoads = (ArrayList<HistoryLoadVO>) message.obj;
-        adapter = new HistoryLoadsListAdapter(listLoads,getContext());
+        TabHistorySongs.visibility(listLoads.size(), listHistoryLoads, tvNoHistoryLoads);
+        adapter = new HistoryLoadsListAdapter(listLoads, getContext());
         listHistoryLoads.setAdapter(adapter);
         return false;
     }
