@@ -25,7 +25,6 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="150dp"
                 android:src="@drawable/menu"
-
                 />
             <ImageView
                 android:id="@+id/btnMap"
@@ -41,6 +40,7 @@
                 android:id="@+id/tvMapa"
                 android:layout_alignStart="@+id/btnMap"
                 android:layout_below="@+id/btnMap"
+                android:textColor="@color/BLANCO"
                 android:text="Mapa"
                 android:textSize="20dp"
                 android:layout_marginLeft="15dp"
@@ -60,6 +60,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_alignStart="@+id/btnProfile"
                 android:layout_below="@+id/btnProfile"
+                android:textColor="@color/BLANCO"
                 android:text="Perfil"
                 android:textSize="20dp"
                 android:textStyle="bold"
@@ -75,6 +76,7 @@
                 android:scaleType="fitCenter"
                 android:src="@drawable/list" />
             <TextView
+                    android:textColor="@color/BLANCO"
                 android:id="@+id/tvChargeAccount"
                 android:text="Lista De Bares"
                 android:layout_alignStart="@+id/btnListBar"
@@ -96,6 +98,7 @@
                 android:layout_alignStart="@+id/btnBarActual"
                 android:layout_below="@+id/btnBarActual"
                 android:text="Bar Actual"
+                android:textColor="@color/BLANCO"
                 android:textStyle="bold"
                 android:textSize="20dp"
                 android:layout_width="wrap_content"
@@ -115,6 +118,7 @@
                 android:layout_below="@+id/btnHistory"
                 android:layout_alignStart="@+id/btnHistory"
                 android:text="Historial"
+                android:textColor="@color/BLANCO"
                 android:textSize="20dp"
                 android:textStyle="bold"
                 android:layout_width="wrap_content"
@@ -135,6 +139,7 @@
                 android:textStyle="bold"
                 android:layout_below="@id/btnScan"
                 android:text="Escaner QR"
+                android:textColor="@color/BLANCO"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -152,6 +157,7 @@
                 android:layout_alignStart="@id/btnExit"
                 android:layout_below="@id/btnExit"
                 android:text="Salir"
+                android:textColor="@color/BLANCO"
                 android:textStyle="bold"
                 android:textSize="20dp"
                 android:layout_width="wrap_content"

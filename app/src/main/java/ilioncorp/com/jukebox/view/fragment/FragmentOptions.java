@@ -12,19 +12,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 
-import com.facebook.login.LoginManager;
-import com.google.firebase.auth.FirebaseAuth;
-
 import ilioncorp.com.jukebox.R;
-import ilioncorp.com.jukebox.model.dao.EstablishmentDAO;
-import ilioncorp.com.jukebox.model.dto.EstablishmentVO;
 import ilioncorp.com.jukebox.utils.constantes.Constantes;
 import ilioncorp.com.jukebox.view.activity.*;
 import ilioncorp.com.jukebox.view.generic.GenericFragment;
-
-import java.util.ArrayList;
-
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 @SuppressLint("ValidFragment")
 public class FragmentOptions extends GenericFragment implements View.OnClickListener,Handler.Callback{
@@ -45,7 +36,7 @@ public class FragmentOptions extends GenericFragment implements View.OnClickList
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_user_options,null);
+        View view = inflater.inflate(R.layout.fragment_user_options,null);
         bridge = new Handler(this::handleMessage);
         this.btnHistory = view.findViewById(R.id.btnHistory);
         this.btnScan = view.findViewById(R.id.btnScan);

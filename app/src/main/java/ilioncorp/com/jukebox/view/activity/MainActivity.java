@@ -8,6 +8,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -111,16 +112,16 @@ public class MainActivity extends GenericActivity implements
 
     /**PERMISOS DE UBICACIÓN*/
     private void checkPer() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION
-                    ,}, 1000);
-            dialog("La aplicación funciona mejor si podemos acceder a tu ubicación");
-        }
-        else{
-            LOCALIZACION_ACTIVO = true;
-        }
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+//                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
+//                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION
+//                    ,}, 1000);
+//            dialog("La aplicación funciona mejor si podemos acceder a tu ubicación");
+//        }
+//        else{
+//            LOCALIZACION_ACTIVO = true;
+//        }
         start();
     }
 
@@ -166,13 +167,19 @@ public class MainActivity extends GenericActivity implements
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(this,"Permiso concedido",Toast.LENGTH_SHORT).show();
                     LOCALIZACION_ACTIVO = true;
+                    final boolean gpsEnabled = mlocManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+                    if(gpsEnabled)
                     maps.permission();
+                    else
+                    {
+                        Intent settingsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivityForResult(settingsIntent, FragmentMap.CODE_GPS);
+                    }
                 } else {
                     LOCALIZACION_ACTIVO = false;
                     Toast.makeText(this,"La aplicación funciona mejor si activas la ubicación",Toast.LENGTH_SHORT).show();
-
+                    maps.permission();
                 }
-                return;
             }
 
             // other 'case' lines to check for other

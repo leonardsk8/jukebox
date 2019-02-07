@@ -22,18 +22,20 @@ import java.util.ArrayList;
 import ilioncorp.com.jukebox.R;
 import ilioncorp.com.jukebox.model.dao.EstablishmentDAO;
 import ilioncorp.com.jukebox.model.dto.EstablishmentVO;
+import ilioncorp.com.jukebox.view.generic.GenericActivity;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 import static android.Manifest.permission.CAMERA;
 
 
-public class ScanCodeActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler
+public class ScanCodeActivity extends GenericActivity implements ZXingScannerView.ResultHandler
 ,Handler.Callback{
 
     private static final int REQUEST_CAMERA = 1;
     private ZXingScannerView scannerView;
     private Handler bridge;
     private ArrayList<EstablishmentVO> listItems;
+    private int contador = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,8 +77,12 @@ public class ScanCodeActivity extends AppCompatActivity implements ZXingScannerV
         if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {
             if (checkPermission()) {
                 startScannerView();
-            } else {
+            } else if(contador<3){
+                contador++;
                 requestPermission();
+            }else {
+                messageToast("No se garantizo el permiso");
+                finish();
             }
         }
         else{

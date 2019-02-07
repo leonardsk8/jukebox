@@ -141,7 +141,8 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}
             , 1000);
         }
-        permission();
+        else
+            permission();
         return view;
     }
 
@@ -159,8 +160,8 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (Constantes.openDialog)
-            createDialog();
+        //if (Constantes.openDialog)
+        //    createDialog();
     }
 
     private void createDialog() {
@@ -176,11 +177,17 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
 
 
     private void start() {
-        if(MainActivity.LOCALIZACION_ACTIVO) {
+        final boolean gpsEnabled = mlocManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        if(MainActivity.LOCALIZACION_ACTIVO & gpsEnabled) {
             showCharging("Obteniendo Ubicación", getContext(), true);
             locationStart();
             hilo = "start";
             new Thread(this::run).start();
+        }
+        else{
+            hilo = "start";
+            Message msg = new Message();
+            mensaje.sendMessage(msg);
         }
     }
 
