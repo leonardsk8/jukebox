@@ -122,6 +122,10 @@ public class MainActivity extends GenericActivity implements
 //        else{
 //            LOCALIZACION_ACTIVO = true;
 //        }
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentapiVersion < android.os.Build.VERSION_CODES.M) {
+            LOCALIZACION_ACTIVO=true;
+        }
         start();
     }
 
