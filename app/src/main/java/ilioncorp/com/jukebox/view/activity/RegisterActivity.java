@@ -150,10 +150,6 @@ public class RegisterActivity extends GenericActivity implements Handler.Callbac
             messageToast("Ingrese un correo valido");
             return false;
         }
-        if(email.split("@")[1].contains("gmail")) {
-            messageToast("Inicie sesión por google");
-            return false;
-        }
         return  true;
     }
 

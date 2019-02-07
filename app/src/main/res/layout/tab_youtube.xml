@@ -12,7 +12,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="search"
+        android:hint="Buscar en youtube"
         android:id="@+id/search_input"
         android:singleLine="true"
         />

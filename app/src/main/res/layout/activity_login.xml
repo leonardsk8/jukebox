@@ -31,6 +31,7 @@
             <EditText
                 android:id="@+id/etUser"
                 android:layout_width="250dp"
+                android:textColorHint="@color/BLANCO"
                 android:layout_height="40dp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
@@ -46,6 +47,7 @@
                 android:id="@+id/etPassword"
                 android:layout_width="250dp"
                 android:layout_height="40dp"
+                android:textColorHint="@color/BLANCO"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="199dp"
@@ -105,6 +107,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:paddingTop="10dp"
+                android:textColor="@color/BLANCO"
                 android:text="Registrate aquí" />
 
             <com.google.android.gms.common.SignInButton

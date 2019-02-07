@@ -11,12 +11,12 @@
         android:id="@+id/action_users"
         android:enabled="true"
         android:icon="@drawable/users"
-        android:title="ACTIVE USERS"
+        android:title="Usuarios Activos"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_promotions"
         android:enabled="true"
         android:icon="@drawable/coupon"
-        android:title="PROMOTIONS"
+        android:title="Promociones"
         app:showAsAction="ifRoom" />
 </menu>

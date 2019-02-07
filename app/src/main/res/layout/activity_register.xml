@@ -35,6 +35,7 @@
 
             <EditText
                 android:id="@+id/etName"
+                android:textColorHint="@color/BLANCO"
                 android:layout_width="300dp"
                 android:layout_height="40dp"
                 android:layout_centerHorizontal="true"
@@ -51,6 +52,7 @@
                 android:id="@+id/etSurname"
                 android:layout_width="300dp"
                 android:layout_height="40dp"
+                android:textColorHint="@color/BLANCO"
                 android:layout_below="@+id/etName"
                 android:layout_marginTop="25dp"
                 android:layout_centerHorizontal="true"
@@ -68,6 +70,7 @@
                 android:layout_centerHorizontal="true"
                 android:background="@drawable/rounded_corner"
                 android:ems="10"
+                android:textColorHint="@color/BLANCO"
                 android:textAlignment="center"
                 android:hint="Correo electronico"
                 android:inputType="textEmailAddress" />
@@ -77,6 +80,7 @@
                 android:layout_height="40dp"
                 android:layout_below="@+id/etEmail"
                 android:layout_marginTop="25dp"
+                android:textColorHint="@color/BLANCO"
                 android:layout_centerHorizontal="true"
                 android:background="@drawable/rounded_corner"
                 android:ems="10"
@@ -87,6 +91,7 @@
                 android:id="@+id/etPassword"
                 android:layout_width="300dp"
                 android:layout_height="40dp"
+                android:textColorHint="@color/BLANCO"
                 android:layout_below="@+id/etCellphone"
                 android:layout_marginTop="25dp"
                 android:layout_centerHorizontal="true"
@@ -101,6 +106,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/etPassword"
+                android:textColor="@color/BLANCO"
+                android:textColorHint="@color/BLANCO"
                 android:calendarViewShown="false"
                 android:layout_centerHorizontal="true"
                 android:datePickerMode="spinner"

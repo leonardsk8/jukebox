@@ -11,10 +11,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.facebook.AccessToken;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
+import com.facebook.*;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
@@ -53,6 +50,7 @@ public class LoginActivity extends GenericActivity implements Handler.Callback,V
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
     private GoogleApiClient googleApiClient;
     private SignInButton signInButton;
+    private boolean byFacebook = false;
 
 
 
@@ -87,23 +85,26 @@ public class LoginActivity extends GenericActivity implements Handler.Callback,V
         //        guardar();
         this.btnLoginFacebook.registerCallback(callbackManager,this);
         firebaseAuth = FirebaseAuth.getInstance();
+        byFacebook = isLoggedIn();
         firebaseAuthListener = (firebaseAuth)->{
             FirebaseUser user =  firebaseAuth.getCurrentUser();
-            if(user != null && user.isEmailVerified()){
+            if(user != null ){
+                if(user.isEmailVerified())
                 goToMainScreen();
+                else if(byFacebook)
+                    goToMainScreen();
             }
         };
 
-        btnLoginFacebook.setReadPermissions(Arrays.asList("email"));
+        btnLoginFacebook.setReadPermissions("email", "public_profile");
+
 
     }
 
-    private void handleFacebookAccessToken(AccessToken accessToken) {
-        showCharging("Cargando");
-        AuthCredential credential = FacebookAuthProvider.getCredential(accessToken.getToken());
-        firebaseAuth.signInWithCredential(credential).addOnCompleteListener(this, this);
+    public boolean isLoggedIn() {
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        return accessToken != null;
     }
-
     @Override
     public void onClick(View view) {
         int id = view.getId();
@@ -173,9 +174,16 @@ public class LoginActivity extends GenericActivity implements Handler.Callback,V
     }
 
     //FACEBOOKSTARTMETHODS
+
+    private void handleFacebookAccessToken(AccessToken accessToken) {
+        showCharging("Cargando");
+        AuthCredential credential = FacebookAuthProvider.getCredential(accessToken.getToken());
+        firebaseAuth.signInWithCredential(credential).addOnCompleteListener(this,this::onComplete);
+    }
     @Override
     public void onSuccess(LoginResult loginResult) {
         handleFacebookAccessToken(loginResult.getAccessToken());
+        byFacebook=true;
     }
 
     @Override
@@ -192,7 +200,7 @@ public class LoginActivity extends GenericActivity implements Handler.Callback,V
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+        super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode){
             case SIGN_IN_CODE:
                 if (requestCode == SIGN_IN_CODE){
@@ -245,13 +253,18 @@ public class LoginActivity extends GenericActivity implements Handler.Callback,V
 
     @Override
     public void onComplete(@NonNull Task<AuthResult> task) {
-        if(!task.isSuccessful())
-            Toast.makeText(getApplicationContext(),"ERROR",Toast.LENGTH_SHORT).show();
+        if(!task.isSuccessful()) {
+            Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
+            Log.e("Error de inicio",task.getException()+" \n "+task.toString());
+        }
         hideCharging();
+
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.e("Error conection",connectionResult.getErrorMessage());
+        messageToast("Error de conección"+connectionResult.getErrorMessage()+
+                " "+connectionResult.toString());
     }
 }

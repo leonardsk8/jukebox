@@ -74,21 +74,29 @@ public class ScanCodeActivity extends AppCompatActivity implements ZXingScannerV
         int currentapiVersion = android.os.Build.VERSION.SDK_INT;
         if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {
             if (checkPermission()) {
-                if(scannerView == null) {
-                    scannerView = new ZXingScannerView(this);
-                    setContentView(scannerView);
-                }
-                scannerView.setResultHandler(this);
-                scannerView.startCamera();
+                startScannerView();
             } else {
                 requestPermission();
             }
         }
+        else{
+            startScannerView();
+        }
+    }
+
+    private void startScannerView() {
+        if(scannerView == null) {
+            scannerView = new ZXingScannerView(this);
+            setContentView(scannerView);
+        }
+        scannerView.setResultHandler(this);
+        scannerView.startCamera();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if(scannerView != null)
         scannerView.stopCamera();
     }
 

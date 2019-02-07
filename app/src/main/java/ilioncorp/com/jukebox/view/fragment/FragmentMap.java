@@ -55,6 +55,7 @@ import ilioncorp.com.jukebox.utils.constantes.Constantes;
 import ilioncorp.com.jukebox.view.activity.BarActivity;
 import ilioncorp.com.jukebox.R;
 import ilioncorp.com.jukebox.model.dto.EstablishmentVO;
+import ilioncorp.com.jukebox.view.activity.MainActivity;
 import ilioncorp.com.jukebox.view.activity.ProfileActivity;
 import ilioncorp.com.jukebox.view.generic.GenericFragment;
 import ilioncorp.com.jukebox.view.Localizacion;
@@ -94,12 +95,11 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
     private String hilo;
 
     private ArrayList<EstablishmentVO> bar;
-    double latitud;
-    double longitud;
+    double latitud=4.7110;
+    double longitud=-74.0721;
     LocationManager mlocManager;
     EstablishmentDAO establishmentDAO;
 
-    Marker previousMarker;
     Marker lastMarker;
 
     private FusedLocationProviderClient mFusedLocationProviderClient;
@@ -114,16 +114,16 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
         this.layoutRango = view.findViewById(R.id.layoutRango);
         this.tvRank = view.findViewById(R.id.tvRank);
         this.sbRank = view.findViewById(R.id.sbRank);
-
+        this.positionAct = new LatLng(4.5709D,4.5709D);
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this::onMapReady);
         this.sbRank.setOnSeekBarChangeListener(this);
         this.sbRank.setMax(3);
         progress = 1;
         this.sbRank.setProgress(progress);
-        myLocation.setOnClickListener(this);
+        myLocation.setOnClickListener(this::onClick);
         circleOptions = new CircleOptions();
-        mensaje = new Handler(this);
+        mensaje = new Handler(this::handleMessage);
         bar = new ArrayList<>();
         bridge = new Handler((msg) -> {
             bar = (ArrayList<EstablishmentVO>) msg.obj;
@@ -138,18 +138,17 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(),
                 Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
-        } else {
-            permission();
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}
+            , 1000);
         }
-
+        permission();
         return view;
     }
 
 
-    private void permission() {
+    public void permission() {
         final boolean gpsEnabled = mlocManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        if (!gpsEnabled) {
+        if (!gpsEnabled && MainActivity.LOCALIZACION_ACTIVO) {
             Intent settingsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
             startActivityForResult(settingsIntent, FragmentMap.CODE_GPS);
         } else {
@@ -177,10 +176,12 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
 
 
     private void start() {
-        showCharging("Obteniendo Ubicación", getContext(), true);
-        locationStart();
-        hilo = "start";
-        new Thread(this::run).start();
+        if(MainActivity.LOCALIZACION_ACTIVO) {
+            showCharging("Obteniendo Ubicación", getContext(), true);
+            locationStart();
+            hilo = "start";
+            new Thread(this::run).start();
+        }
     }
 
 
@@ -261,9 +262,9 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
+//        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            return;
+//        }
         googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getView().getContext(), R.raw.mapstyle));
         mMap.setOnMarkerDragListener(this);
         //mMap.setMyLocationEnabled(true);
@@ -272,7 +273,6 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
         mMap.setOnCameraIdleListener(this::onCameraIdle);
         mMap.setOnCameraMoveStartedListener(this::onCameraMoveStarted);
         mMap.setOnCameraMoveListener(this::onCameraMove);
-
         mMap.setOnMapClickListener(latLng -> {
             if(!lastMarker.isVisible())
                 lastMarker.setVisible(true);
@@ -327,14 +327,17 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
                 return v;
             }
         });
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
+//        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            return;
+//        }
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         UiSettings setting = mMap.getUiSettings();
-        setting.setMyLocationButtonEnabled(false);
+        setting.setMyLocationButtonEnabled(true);
         setting.setZoomControlsEnabled(true);
-
+        if(!MainActivity.LOCALIZACION_ACTIVO){
+            drawPosition();
+            addMarks();
+        }
     }
 
     @Override
@@ -372,7 +375,7 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
                         lastKnowPosition();
                         getDeviceLocation();
                     }
-                    if(latitud != 0 & longitud != 0)
+                    if(latitud != 4.7110 & longitud != -74.0721)
                         break;
                 }
             case "changeRank":
@@ -464,11 +467,13 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
 
     }
     private void startMarks() {
-        mlocManager.removeUpdates(Local);
-        Local = null;
-        mlocManager = null;
-        LatLng myPossition = new LatLng(latitud, longitud);
-        positionAct = myPossition;
+        if(MainActivity.LOCALIZACION_ACTIVO) {
+            mlocManager.removeUpdates(Local);
+            Local = null;
+            mlocManager = null;
+            LatLng myPossition = new LatLng(latitud, longitud);
+            positionAct = myPossition;
+        }
         drawPosition();
         addMarks();
 
@@ -478,6 +483,8 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
 //        mMap.addMarker(new MarkerOptions().position(positionAct)
 //                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)).draggable(true));
         float zoomLevel = 14;
+        if(!MainActivity.LOCALIZACION_ACTIVO)
+            positionAct = new LatLng(latitud,longitud);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(positionAct, zoomLevel));
         drawCircle(positionAct, progress);
     }

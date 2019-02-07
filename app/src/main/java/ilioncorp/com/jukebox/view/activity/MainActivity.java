@@ -42,6 +42,7 @@ public class MainActivity extends GenericActivity implements
         Runnable,
         GoogleApiClient.OnConnectionFailedListener {
 
+    public static boolean LOCALIZACION_ACTIVO = false;
     private android.widget.ImageView imOptions;
     public FragmentManager administrator;
     private FragmentMap maps;
@@ -113,11 +114,14 @@ public class MainActivity extends GenericActivity implements
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
-            return;
-        }else {
-            start();
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION
+                    ,}, 1000);
+            dialog("La aplicación funciona mejor si podemos acceder a tu ubicación");
         }
+        else{
+            LOCALIZACION_ACTIVO = true;
+        }
+        start();
     }
 
     @Override
@@ -131,13 +135,14 @@ public class MainActivity extends GenericActivity implements
         if(requestCode==65637){
             final boolean gpsEnabled = mlocManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
             if (!gpsEnabled) {
-               Toast.makeText(this,"Debe activar el GPS",Toast.LENGTH_SHORT).show();
-               finish();
+               dialog("La app funciona mejor con el GPS activo");
+               LOCALIZACION_ACTIVO = false;
+
             }else {
-                startActivity(new Intent(this, MainActivity.class)
-                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-                finish();
+                LOCALIZACION_ACTIVO = true;
+
             }
+            maps.permission();
         }
     }
     /**AGREGA EL FRAGMENT DEL MAPA*/
@@ -159,14 +164,14 @@ public class MainActivity extends GenericActivity implements
                 Log.e("requestCode","entro: "+requestCode);
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    hilo = 1;
-
+                    Toast.makeText(this,"Permiso concedido",Toast.LENGTH_SHORT).show();
+                    LOCALIZACION_ACTIVO = true;
+                    maps.permission();
                 } else {
-                    hilo = 0;
-                    Toast.makeText(this,"No se garantizo el permiso la aplicación se cerrara",Toast.LENGTH_SHORT).show();
+                    LOCALIZACION_ACTIVO = false;
+                    Toast.makeText(this,"La aplicación funciona mejor si activas la ubicación",Toast.LENGTH_SHORT).show();
 
                 }
-                new Thread(this).start();
                 return;
             }
 
@@ -219,7 +224,7 @@ public class MainActivity extends GenericActivity implements
                 break;
             case 0:
 
-            finish();
+            //finish();
             break;
         }
     }
