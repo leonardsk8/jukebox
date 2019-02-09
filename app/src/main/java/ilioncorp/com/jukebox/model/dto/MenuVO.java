@@ -3,10 +3,20 @@ package ilioncorp.com.jukebox.model.dto;
 import java.io.Serializable;
 
 public class MenuVO implements Serializable {
+    private String id;
     private String image;
     private String name;
     private double price;
     private String description;
+
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getImage() {
         return image;

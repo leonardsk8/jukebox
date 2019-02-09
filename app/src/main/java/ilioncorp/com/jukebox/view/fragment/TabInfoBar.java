@@ -18,6 +18,9 @@ import ilioncorp.com.jukebox.model.dto.EstablishmentVO;
 import ilioncorp.com.jukebox.view.activity.RatingActivity;
 import ilioncorp.com.jukebox.view.adapter.MenuListAdapter;
 import ilioncorp.com.jukebox.view.adapter.PhotoListAdapter;
+
+import java.util.ArrayList;
+
 @SuppressLint("ValidFragment")
 public class TabInfoBar extends Fragment implements View.OnClickListener {
 
@@ -101,7 +104,8 @@ public class TabInfoBar extends Fragment implements View.OnClickListener {
         FragmentManager fm = getActivity().getSupportFragmentManager();
         Fragment fragment;
         Fragment fragmentPhotos;
-
+        if(establishment.getMenuList()==null)
+            establishment.setMenuList(new ArrayList<>());
         //if (fragment == null) {
             fragment = new MenuListAdapter(establishment.getMenuList());
             fragmentPhotos = new PhotoListAdapter(establishment);
