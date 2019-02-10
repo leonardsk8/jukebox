@@ -55,10 +55,12 @@ public class MenuDAO extends CRUD implements ValueEventListener{
                 listMenu.add(menu);
             }
             for (int i=0;i<listEstablishment.size();i++) {
-                if (listEstablishment.get(i).getMenuList() == null) {
-                    if (listMenu.get(i).getId().contains(listEstablishment.get(i).getId())) {
-                        listEstablishment.get(i).setMenuList(listMenu);
-                        break;
+                    if (listEstablishment.get(i).getMenuList() == null) {
+                        for (MenuVO menu:listMenu) {
+                        if (menu.getId().contains(listEstablishment.get(i).getId())) {
+                            listEstablishment.get(i).setMenuList(listMenu);
+                            break;
+                        }
                     }
                 }
             }

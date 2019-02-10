@@ -18,6 +18,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import ilioncorp.com.jukebox.R;
+import ilioncorp.com.jukebox.model.dto.EstablishmentVO;
 import ilioncorp.com.jukebox.model.dto.ReproductionListVO;
 import ilioncorp.com.jukebox.model.dto.VideoItemVO;
 import ilioncorp.com.jukebox.utils.constantes.Constantes;

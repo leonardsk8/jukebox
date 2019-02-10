@@ -18,7 +18,7 @@ public class PopUpHorarios extends AppCompatActivity implements View.OnClickList
     private android.widget.TextView daySaturday;
     private android.widget.TextView daySunday;
     private android.widget.TextView titleHorario;
-    private android.widget.TextView tvCodePromotion;
+    private android.widget.TextView tvCerrarHorario;
     private android.support.v7.widget.CardView cvBtnCode;
 
     @Override
@@ -26,7 +26,7 @@ public class PopUpHorarios extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pop_up_horarios);
         this.cvBtnCode = findViewById(R.id.cvBtnCode);
-        this.tvCodePromotion =  findViewById(R.id.tvCodePromotion);
+        this.tvCerrarHorario =  findViewById(R.id.tvCerrarHorario);
         this.titleHorario =  findViewById(R.id.titleHorario);
         this.daySunday =  findViewById(R.id.daySunday);
         this.daySaturday =  findViewById(R.id.daySaturday);
@@ -46,10 +46,11 @@ public class PopUpHorarios extends AppCompatActivity implements View.OnClickList
         this.dayFriday.setText("Viernes: "+horarios[4]);
         this.daySaturday.setText("Sabado: "+horarios[5]);
         this.daySunday.setText("Domingo: "+horarios[6]);
+        this.tvCerrarHorario.setOnClickListener(this::onClick);
     }
 
     @Override
     public void onClick(View view) {
-
+        finish();
     }
 }

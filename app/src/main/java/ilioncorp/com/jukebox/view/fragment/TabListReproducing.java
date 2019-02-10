@@ -24,9 +24,9 @@ import java.util.Collections;
 public class TabListReproducing extends Fragment implements Handler.Callback{
 
     public static Handler bridge;
-    private RecyclerView listReproductionBar;
+    public static RecyclerView listReproductionBar;
     private ReproductionListDAO songDAO;
-    private ArrayList<ReproductionListVO> listSongs;
+    public static ArrayList<ReproductionListVO> listSongs;
     private String idBar;
     private ReproductionListAdapter adapter;
     private android.widget.TextView tvNoSongReproducing;
@@ -34,6 +34,7 @@ public class TabListReproducing extends Fragment implements Handler.Callback{
     public TabListReproducing(String idBar) {
         this.idBar = idBar;
         bridge = new Handler(this);
+
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

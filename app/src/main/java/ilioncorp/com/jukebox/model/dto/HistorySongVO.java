@@ -16,7 +16,6 @@ public class HistorySongVO implements Comparable<HistorySongVO> {
     private String thumnailSong;
     private String nameBar;
     private String videoIdSong;
-
     private String idBar;
 
     public String getIdBar() {

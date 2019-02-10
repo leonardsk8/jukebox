@@ -21,6 +21,16 @@ public class EstablishmentVO implements Serializable{
     public String[] imagesBar;
     public ArrayList<MenuVO> menuList;
     public String schedulesHours;
+    private boolean requestApproved;
+
+
+    public boolean isRequestApproved() {
+        return requestApproved;
+    }
+
+    public void setRequestApproved(boolean requestApproved) {
+        this.requestApproved = requestApproved;
+    }
 
     public String getSchedulesHours() {
         return schedulesHours;

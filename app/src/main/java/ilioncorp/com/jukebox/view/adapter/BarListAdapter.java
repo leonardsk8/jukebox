@@ -42,8 +42,11 @@ public class BarListAdapter extends RecyclerView.Adapter<BarListAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final EstablishmentVO establishment= listBares.get(position);
+        String image = "";
+        if(establishment.getImagesBar().length>0)
+            image = establishment.getImagesBar()[0];
         Glide.with(mContext)
-                .load(establishment.getImagesBar()[0])
+                .load(image)
                 .placeholder(R.drawable.error)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.imageBar);

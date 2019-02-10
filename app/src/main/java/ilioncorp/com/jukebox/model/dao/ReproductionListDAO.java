@@ -19,7 +19,7 @@ import ilioncorp.com.jukebox.model.generic.CRUD;
 
 public class ReproductionListDAO extends CRUD implements ValueEventListener {
 
-    private ArrayList<ReproductionListVO> listSongs;
+    public ArrayList<ReproductionListVO> listSongs;
     private ArrayList<UserLikeVO>  likes;
     private String idBar;
     private ReproductionListVO song;

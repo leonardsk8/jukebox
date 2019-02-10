@@ -14,11 +14,9 @@ import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
 
 import ilioncorp.com.jukebox.R;
-import ilioncorp.com.jukebox.model.dao.CreditsDAO;
-import ilioncorp.com.jukebox.model.dao.HistorySongDAO;
-import ilioncorp.com.jukebox.model.dao.ReproductionListDAO;
-import ilioncorp.com.jukebox.model.dao.SessionDAO;
+import ilioncorp.com.jukebox.model.dao.*;
 import ilioncorp.com.jukebox.model.dto.CreditsVO;
+import ilioncorp.com.jukebox.model.dto.EstablishmentVO;
 import ilioncorp.com.jukebox.model.dto.HistorySongVO;
 import ilioncorp.com.jukebox.model.dto.ReproductionListVO;
 import ilioncorp.com.jukebox.utils.constantes.Constantes;
@@ -29,6 +27,7 @@ import ilioncorp.com.jukebox.view.fragment.TabReproducing;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class PlayerActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener,
         Handler.Callback,View.OnClickListener {
@@ -49,6 +48,9 @@ public class PlayerActivity extends YouTubeBaseActivity implements YouTubePlayer
     private boolean enviada = false;
     private boolean creditosObtenidos = false;
     private HistorySongVO historySongVO;
+    private EstablishmentVO establishmentVO;
+    private EstablishmentDAO establishmentDAO;
+    private ReproductionListDAO reproductionListDAO;
 
     @Override
     protected void onCreate(Bundle bundle) {
@@ -70,7 +72,18 @@ public class PlayerActivity extends YouTubeBaseActivity implements YouTubePlayer
             return false;
 
         });
+        Handler bridgeEstablishment = new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message message) {
+                List<EstablishmentVO> listEstablishment = (List<EstablishmentVO>) message.obj;
+                if(listEstablishment != null && listEstablishment.size()>0)
+                establishmentVO = listEstablishment.get(0);
+                return false;
+            }
+        });
         creditsDAO = new CreditsDAO(bridgeCredits,idBar, Constantes.userActive.getUserUID());
+        establishmentDAO = new EstablishmentDAO(bridgeEstablishment);
+        establishmentDAO.getBar(idBar);
         checkSong();
 
 
@@ -124,14 +137,22 @@ public class PlayerActivity extends YouTubeBaseActivity implements YouTubePlayer
         if(endProcces) {
             if (answer.equals("active")) {
                 if (checkCredits()) {
-                    new ReproductionListDAO(idBar, TabListReproducing.bridge, true).sendSong(song);
+                    String state="En espera";
                     HistorySongDAO historySongDAO = new HistorySongDAO(null,Constantes.userActive.getUserUID());
+                    if(!establishmentVO.isRequestApproved()) {
+                        song.setApproved(true);
+                        state="Aprobada";
+                    }
+                    reproductionListDAO = new ReproductionListDAO(idBar,
+                            TabListReproducing.bridge, true);
+                    song.setNum((TabListReproducing.listSongs.size()+1)+"");
+                    reproductionListDAO.sendSong(song);
                     historySongVO.setVideoIdSong(song.getVideo_id());
                     historySongVO.setIdUser(Constantes.userActive.getUserUID());
                     historySongVO.setNameSong(song.getName());
                     historySongVO.setNameBar(Constantes.establishmentVOActual.getName());
                     historySongVO.setDateSong(getFechaHora());
-                    historySongVO.setStateSong("En espera");
+                    historySongVO.setStateSong(state);
                     historySongVO.setThumnailSong("https://img.youtube.com/vi/"+song.getVideo_id()+"/mqdefault.jpg");
                     historySongVO.setIdBar(idBar);
                     historySongDAO.putSong(historySongVO);

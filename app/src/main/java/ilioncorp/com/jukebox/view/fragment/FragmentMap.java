@@ -20,11 +20,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RatingBar;
-import android.widget.SeekBar;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestListener;
@@ -73,13 +69,12 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
         GoogleMap.OnCameraMoveListener,
         GoogleMap.OnCameraMoveCanceledListener,
         GoogleMap.OnCameraIdleListener,
-        GoogleMap.OnMarkerClickListener{
+        GoogleMap.OnMarkerClickListener {
 
-    private boolean oneTime =true;
+    private boolean oneTime = true;
     private android.widget.SeekBar sbRank;
     private android.widget.TextView tvRank;
     private android.widget.RelativeLayout layoutRango;
-    private android.widget.ImageView myLocation;
     private CircleOptions circleOptions;
     private int progress;
     private boolean isThereBars;
@@ -88,20 +83,20 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
     private Localizacion Local;
     private Circle circulo;
     private boolean endHandler = false;
-    private int contadorPrimeraVez=0;
+    private int contadorPrimeraVez = 0;
     Handler mensaje;
     private Handler bridge;
 
     private String hilo;
 
     private ArrayList<EstablishmentVO> bar;
-    double latitud=4.7110;
-    double longitud=-74.0721;
+    double latitud = 4.7110;
+    double longitud = -74.0721;
     LocationManager mlocManager;
     EstablishmentDAO establishmentDAO;
 
     Marker lastMarker;
-
+    View mapView;
     private FusedLocationProviderClient mFusedLocationProviderClient;
 
     public final static int CODE_GPS = 101;
@@ -110,18 +105,17 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_maps, container, false);
-        this.myLocation = view.findViewById(R.id.myLocation);
         this.layoutRango = view.findViewById(R.id.layoutRango);
         this.tvRank = view.findViewById(R.id.tvRank);
         this.sbRank = view.findViewById(R.id.sbRank);
-        this.positionAct = new LatLng(4.5709D,4.5709D);
+        this.positionAct = new LatLng(4.5709D, 4.5709D);
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this::onMapReady);
+        mapView = mapFragment.getView();
         this.sbRank.setOnSeekBarChangeListener(this);
         this.sbRank.setMax(3);
         progress = 1;
         this.sbRank.setProgress(progress);
-        myLocation.setOnClickListener(this::onClick);
         circleOptions = new CircleOptions();
         mensaje = new Handler(this::handleMessage);
         bar = new ArrayList<>();
@@ -139,9 +133,8 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(),
                 Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}
-            , 1000);
-        }
-        else
+                    , 1000);
+        } else
             permission();
         return view;
     }
@@ -178,13 +171,12 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
 
     private void start() {
         final boolean gpsEnabled = mlocManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        if(MainActivity.LOCALIZACION_ACTIVO & gpsEnabled) {
+        if (MainActivity.LOCALIZACION_ACTIVO & gpsEnabled) {
             showCharging("Obteniendo Ubicación", getContext(), true);
             locationStart();
             hilo = "start";
             new Thread(this::run).start();
-        }
-        else{
+        } else {
             hilo = "start";
             Message msg = new Message();
             mensaje.sendMessage(msg);
@@ -272,9 +264,20 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
 //        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 //            return;
 //        }
+
         googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getView().getContext(), R.raw.mapstyle));
-        mMap.setOnMarkerDragListener(this);
-        //mMap.setMyLocationEnabled(true);
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(getContext(),"La aplicación funciona mejor con el gps Activo",Toast.LENGTH_SHORT).show();
+        }else {
+            mMap.setMyLocationEnabled(true);
+            View locationButton = ((View) mapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
+            RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
+            // position on right bottom
+            rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
+            rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
+            rlp.setMargins(0, 380, 380, 0);
+        }
+
         mMap.setOnMarkerClickListener(this::onMarkerClick);
         mMap.setOnInfoWindowClickListener(this::onInfoWindowClick);
         mMap.setOnCameraIdleListener(this::onCameraIdle);
@@ -349,16 +352,7 @@ public class FragmentMap extends GenericFragment implements OnMapReadyCallback,
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.myLocation:
-                getDeviceLocation();
-                break;
-            /*case R.id.btnArrow:
-                startActivity(new Intent(getContext(),FilterOptions.class));
-                getActivity().overridePendingTransition(R.anim.hide, R.anim.show);
-                break;
-*/
-        }
+
     }
 
     @Override
