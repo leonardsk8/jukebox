@@ -19,6 +19,8 @@
                 android:id="@+id/tabsReproducing"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:tabTextColor="@color/BLANCO"
+                app:tabSelectedTextColor="@color/BLANCO"
                 app:tabMode="fixed"
                 app:tabGravity="fill"/>
     </android.support.design.widget.AppBarLayout>

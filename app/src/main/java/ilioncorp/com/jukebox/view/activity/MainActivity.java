@@ -115,7 +115,7 @@ public class MainActivity extends GenericActivity implements
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            dialog("La aplicación funciona mejor si podemos acceder a tu ubicación");
+            messageToast("La aplicación funciona mejor si podemos acceder a tu ubicación");
         }
         else{
             LOCALIZACION_ACTIVO = true;

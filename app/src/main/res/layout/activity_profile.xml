@@ -52,6 +52,8 @@
                 android:ems="10"
                 android:textAlignment="center"
                 android:hint="Nombre"
+                android:textColorHint="@color/BLANCO"
+                android:textColor="@color/BLANCO"
                 android:inputType="textEmailAddress" />
             <EditText
                 android:id="@+id/etEmailProfile"
@@ -64,20 +66,31 @@
                 android:ems="10"
                 android:textAlignment="center"
                 android:hint="Correo"
+                android:textColor="@color/BLANCO"
+                android:textColorHint="@color/BLANCO"
                 android:inputType="textEmailAddress" />
 
+            <TextView
+                    android:textAlignment="center"
+                    android:layout_marginTop="15dp"
+                    android:layout_below="@id/etEmailProfile"
+                    android:textColor="@color/BLANCO"
+                    android:text="Fecha nacimiento"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
             <DatePicker
-                android:id="@+id/dpBirthdayProfile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/etEmailProfile"
-                android:calendarViewShown="false"
-                android:layout_centerHorizontal="true"
-                android:datePickerMode="spinner"
-                android:spinnersShown="true"
-                android:layout_marginTop="25dp"
-                android:maxDate="01-01-"
-                />
+                    android:id="@+id/dpBirthdayProfile"
+                    android:layout_width="220dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/etEmailProfile"
+                    android:calendarViewShown="false"
+                    android:layout_centerHorizontal="true"
+                    android:textColor="@color/BLANCO"
+                    android:datePickerMode="spinner"
+                    android:spinnersShown="true"
+                    android:layout_marginTop="25dp"
+                    android:maxDate="01-01-2008"
+                    />
 
             <Spinner
                 android:id="@+id/spinnerGenderProfile"
@@ -89,7 +102,8 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:paddingRight="15dp"
-
+                android:textColorHint="@color/BLANCO"
+                android:textColor="@color/BLANCO"
                 android:paddingLeft="15dp"
                 />
             <EditText
@@ -101,6 +115,8 @@
                 android:ems="10"
                 android:layout_marginBottom="25dp"
                 android:hint="Escribe acerca de ti"
+                android:textColorHint="@color/BLANCO"
+                android:textColor="@color/BLANCO"
                 android:inputType="textMultiLine" />
             <android.support.v7.widget.CardView
                     android:layout_alignParentBottom="true"

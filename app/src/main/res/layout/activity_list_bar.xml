@@ -15,14 +15,14 @@
         android:background="?colorPrimary"
         android:elevation="4dp"
         app:titleTextColor="@color/black"
-        app:title="JUKEBOX LIST BAR"
+        app:title="JUKEBOX LISTA DE BARES"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="LIST BARS"
+        android:text="LISTA DE BARES"
         android:textColor="@color/black"
         android:textSize="35dp"        />
     <android.support.v7.widget.RecyclerView
