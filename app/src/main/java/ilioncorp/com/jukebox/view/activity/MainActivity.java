@@ -112,16 +112,14 @@ public class MainActivity extends GenericActivity implements
 
     /**PERMISOS DE UBICACIÓN*/
     private void checkPer() {
-//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-//                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
-//                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION
-//                    ,}, 1000);
-//            dialog("La aplicación funciona mejor si podemos acceder a tu ubicación");
-//        }
-//        else{
-//            LOCALIZACION_ACTIVO = true;
-//        }
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            dialog("La aplicación funciona mejor si podemos acceder a tu ubicación");
+        }
+        else{
+            LOCALIZACION_ACTIVO = true;
+        }
         int currentapiVersion = android.os.Build.VERSION.SDK_INT;
         if (currentapiVersion < android.os.Build.VERSION_CODES.M) {
             LOCALIZACION_ACTIVO=true;

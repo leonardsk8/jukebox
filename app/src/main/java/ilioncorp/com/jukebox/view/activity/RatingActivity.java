@@ -197,6 +197,8 @@ public class RatingActivity extends GenericActivity implements Handler.Callback,
                 saveComment();
                 if(editComment)
                     dialog("Se ha editado con exito su comentario");
+                else
+                    dialog("Se ha guardado con exito su comentario");
                 break;
 
         }

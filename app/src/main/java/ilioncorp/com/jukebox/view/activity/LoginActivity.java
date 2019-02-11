@@ -157,8 +157,10 @@ public class LoginActivity extends GenericActivity implements Handler.Callback,V
                     }
 
                 });
-        else
+        else {
             messageToast("Complete los campos");
+            hideCharging();
+        }
     }
 
 
