@@ -146,6 +146,7 @@ public class PlayerActivity extends YouTubeBaseActivity implements YouTubePlayer
                     reproductionListDAO = new ReproductionListDAO(idBar,
                             TabListReproducing.bridge, true);
                     song.setNum((TabListReproducing.listSongs.size()+1)+"");
+                    song.setSum(0);
                     reproductionListDAO.sendSong(song);
                     historySongVO.setVideoIdSong(song.getVideo_id());
                     historySongVO.setIdUser(Constantes.userActive.getUserUID());

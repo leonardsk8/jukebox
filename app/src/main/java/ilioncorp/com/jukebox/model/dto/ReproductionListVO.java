@@ -19,6 +19,7 @@ public class ReproductionListVO implements Serializable,Comparable<ReproductionL
     private int likes;
     private boolean approved;
     private String token;
+    private int sum;
     private Map<String, UserLikeVO> listLikes;
 
     public Map<String, UserLikeVO> getListLikes() {
@@ -28,6 +29,9 @@ public class ReproductionListVO implements Serializable,Comparable<ReproductionL
             return new HashMap<>();
     }
 
+    public void setSum(int sum) {
+        this.sum = sum;
+    }
 
     public String getUserId() {
         return userId;
@@ -67,7 +71,7 @@ public class ReproductionListVO implements Serializable,Comparable<ReproductionL
 
     public int getLikes() {
         if(getListLikes()!=null)
-            likes = getListLikes().size()+1;
+            likes = getListLikes().size()+sum;
         if(isReproducing())
             likes = 1000;
         return likes;

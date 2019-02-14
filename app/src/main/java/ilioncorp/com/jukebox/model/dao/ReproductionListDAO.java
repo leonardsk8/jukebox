@@ -57,7 +57,6 @@ public class ReproductionListDAO extends CRUD implements ValueEventListener {
         this.listSongs.clear();
         if(dataSnapshot.exists()){
             song = new ReproductionListVO();
-            int x=0;
             for (DataSnapshot ds: dataSnapshot.getChildren()){
                 this.song = ds.getValue(ReproductionListVO.class);
                 if(this.song.isApproved()) {
@@ -70,7 +69,6 @@ public class ReproductionListDAO extends CRUD implements ValueEventListener {
                         Log.e("list likes",vo.isLike()+"");
                     }*/
                 }
-                x++;
             }
 
 
@@ -99,6 +97,10 @@ public class ReproductionListDAO extends CRUD implements ValueEventListener {
     public void sendSong(ReproductionListVO song){
         myRef.child("reproduction_list").child("establishment").child(this.idBar)
                 .child("songs").child(song.getVideo_id()).setValue(song);
+    }
+    public void sendLike(int like){
+        myRef.child("reproduction_list").child("establishment").child(this.idBar)
+                .child("songs").child(song.getVideo_id()).child("likes").setValue(like);
     }
 
     @Override

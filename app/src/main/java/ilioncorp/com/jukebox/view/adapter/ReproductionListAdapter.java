@@ -29,6 +29,7 @@ public class ReproductionListAdapter extends RecyclerView.Adapter<ReproductionLi
     private ArrayList<ReproductionListVO> listSongs;
     private Context context;
     private ReproductionListDAO dao;
+    ReproductionListVO song;
 
     public ReproductionListAdapter(ArrayList<ReproductionListVO> listSongs, Context context,ReproductionListDAO dao) {
         this.listSongs = listSongs;
@@ -82,13 +83,13 @@ public class ReproductionListAdapter extends RecyclerView.Adapter<ReproductionLi
             if (!listSongs.get(pos).isReproducing() & onlyLike(pos)) {
                 Snackbar.make(v, "Like song:" + listSongs.get(pos).getName(), Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                listSongs.get(pos).setLikes(listSongs.get(pos).getListLikes().size() + 1);
+                //listSongs.get(pos).setLikes(listSongs.get(pos).getListLikes().size() + 1);
                 UserLikeVO user = new UserLikeVO();
                 user.setLike(true);
                 user.setUserId(Constantes.userActive.getUserUID());
                 user.setVideoId(listSongs.get(pos).getVideo_id());
-                ReproductionListVO song = listSongs.get(pos);
-                song.setLikes(listSongs.get(pos).getListLikes().size() + 1);
+                song = listSongs.get(pos);
+                song.setSum(1);
                 //dao.deleteSong(song);
                 dao.sendSong(song);
                 dao.setLikeSong(user);
