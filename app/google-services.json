@@ -55,6 +55,14 @@
           }
         },
         {
+          "client_id": "629911785392-fbglv7i2bb4vj70gv6jmhj115gt5u0ao.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ilioncorp.com.jukebox",
+            "certificate_hash": "3f7c4196e3877ae3abaf2726493644578f12738a"
+          }
+        },
+        {
           "client_id": "629911785392-dn9dpgknvtk1fpck4efenud74fuj695j.apps.googleusercontent.com",
           "client_type": 3
         }
