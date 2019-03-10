@@ -10,6 +10,8 @@ import com.google.firebase.database.ValueEventListener;
 import ilioncorp.com.jukebox.model.dto.PromotionsUserVO;
 import ilioncorp.com.jukebox.model.generic.CRUD;
 
+import java.util.Random;
+
 public class PromotionsUserDAO extends CRUD implements ValueEventListener {
 
     private Handler bridge;
@@ -24,12 +26,15 @@ public class PromotionsUserDAO extends CRUD implements ValueEventListener {
 
     public void getPromotion(String idCode){
         Query query;
-        query = myRef.child("promotions").child("establishment").child(idBar).child("promoUser").child(idCode);
+        query = myRef.child("promotions").child("establishment").child(idBar).child("promoUser")
+                .orderByChild("proUCode")
+        .equalTo(idCode);
         query.addListenerForSingleValueEvent(this);
     }
 
     public void promotionCreate(PromotionsUserVO vo){
-        myRef.child("promotions").child("establishment").child(idBar).child("promoUser").setValue(vo);
+        myRef.child("promotions").child("establishment").child(idBar).child("promoUser")
+                .child(vo.getProUCode()).setValue(vo);
     }
     @Override
     public void onDataChange(DataSnapshot dataSnapshot) {

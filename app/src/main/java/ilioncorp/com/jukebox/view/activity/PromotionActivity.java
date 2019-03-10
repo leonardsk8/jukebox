@@ -30,7 +30,6 @@ public class PromotionActivity extends GenericActivity implements View.OnClickLi
     private TextView tvCountPro;
     private TextView tvTimesHas;
     private String finalCodePromotion;
-    private PromotionsDAO promotionsDAO;
     private PromotionsUserDAO promotionsUserDAO;
     private android.support.v7.widget.CardView cvBtnCode;
     private String idBar;
@@ -67,17 +66,6 @@ public class PromotionActivity extends GenericActivity implements View.OnClickLi
             messageToast("La promoción ha vencido");
 
         }
-        /*PromotionsUserVO promotionsUserVO = new PromotionsUserVO(promotionsVO.getPro_code(),promotionsVO.getPro_times()
-                ,);*/
-        //promotionsDAO.promotionCreate(promotionsUserVO);
-
-
-
-
-
-
-
-
     }
     /**
      * SE DEBE TENER EN CUENTA QUE EL CODIGO SE GENERA CON LOS ULTIMOS 3 DIGITOS DEL BAR, LOS ULTIMOS 3 DEL USUARIO
@@ -117,7 +105,8 @@ public class PromotionActivity extends GenericActivity implements View.OnClickLi
 
 
     @Override
-    public void onClick(View view) {
+    public void onClick(View view)
+    {
         finish();
     }
 
@@ -125,14 +114,14 @@ public class PromotionActivity extends GenericActivity implements View.OnClickLi
     public boolean handleMessage(Message message) {
         promotionsUserVO = (PromotionsUserVO) message.obj;
         if(promotionsUserVO!=null)
-            tvTimesHas.setText(getString(R.string.timeHas)+" "+promotionsUserVO.getProU_times());
+            tvTimesHas.setText(getString(R.string.timeHas)+" "+promotionsUserVO.getProUTimes());
         else {
             promotionsUserVO = new PromotionsUserVO();
-            promotionsUserVO.setProU_code(finalCodePromotion);
-            promotionsUserVO.setProU_idBar(idBar);
-            promotionsUserVO.setProU_limit(promotionsVO.getPro_limit());
-            promotionsUserVO.setProU_times("0");
-            promotionsUserVO.setProU_userId(user.getUid());
+            promotionsUserVO.setProUCode(finalCodePromotion);
+            promotionsUserVO.setProUIdBar(idBar);
+            promotionsUserVO.setProULimit(promotionsVO.getPro_limit());
+            promotionsUserVO.setProUTimes("0");
+            promotionsUserVO.setProUUserId(user.getUid());
             tvTimesHas.setText("Veces que has redimido este cupon 0");
         }
         promotionsUserDAO.promotionCreate(promotionsUserVO);

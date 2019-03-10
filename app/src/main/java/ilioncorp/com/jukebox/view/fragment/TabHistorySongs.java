@@ -64,12 +64,14 @@ public class TabHistorySongs extends Fragment implements Runnable,Handler.Callba
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        historySongDAO= new HistorySongDAO(bridge, Constantes.userActive.getUserUID());
-        if(onlyLast)
-            historySongDAO.getSongsRealTime();
-        else
-            historySongDAO.getSongs();
-        //listHistorySongs.setAdapter(adapter);
+        if(Constantes.userActive.getUserUID()!=null){
+            historySongDAO= new HistorySongDAO(bridge, Constantes.userActive.getUserUID());
+            if(onlyLast)
+                historySongDAO.getSongsRealTime();
+            else
+                historySongDAO.getSongs();
+            //listHistorySongs.setAdapter(adapter);
+        }
     }
 
     @Override

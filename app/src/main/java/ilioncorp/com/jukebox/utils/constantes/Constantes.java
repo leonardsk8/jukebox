@@ -12,6 +12,4 @@ public class Constantes {
     public static String userToken;
     public static String idBarSessionActual="";
     public static EstablishmentVO establishmentVOActual=null;
-
-
 }
