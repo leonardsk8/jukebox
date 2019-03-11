@@ -77,9 +77,7 @@ public class TabUsers extends GenericFragment implements Handler.Callback,View.O
             if (getContext().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
                     == PackageManager.PERMISSION_GRANTED) {
                 Log.v(TAG, "Permission is granted1");
-
             } else {
-
                 Log.v(TAG, "Permission is revoked1");
                 ActivityCompat.requestPermissions(getActivity(), new String[]{
                         Manifest.permission.READ_EXTERNAL_STORAGE}, REQUESTCODE_READ);
@@ -87,7 +85,7 @@ public class TabUsers extends GenericFragment implements Handler.Callback,View.O
             }
         } else { //permission is automatically granted on sdk<23 upon installation
             Log.v(TAG, "Permission is granted1");
-
+            callUsers();
         }
     }
 
@@ -109,7 +107,7 @@ public class TabUsers extends GenericFragment implements Handler.Callback,View.O
             }
         } else { //permission is automatically granted on sdk<23 upon installation
             Log.v(TAG, "Permission is granted2");
-
+            callUsers();
         }
     }
 

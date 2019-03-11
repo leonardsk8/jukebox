@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
@@ -104,7 +105,12 @@ public class SessionDAO extends CRUD implements ValueEventListener,Runnable {
             }
 
         }
-        new Thread(this).start();
+        if (Build.VERSION.SDK_INT >= 23) {
+            new Thread(this).start();
+        }
+        else{
+            sendMessage();
+        }
     }
 
 
@@ -117,7 +123,8 @@ public class SessionDAO extends CRUD implements ValueEventListener,Runnable {
     public Uri getImageUri(Context inContext, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        String path = MediaStore.Images.Media.insertImage(
+                inContext.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
     }
 

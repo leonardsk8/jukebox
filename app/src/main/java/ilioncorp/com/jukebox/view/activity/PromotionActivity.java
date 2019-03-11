@@ -2,7 +2,6 @@ package ilioncorp.com.jukebox.view.activity;
 
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import android.view.View;
@@ -10,11 +9,9 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import ilioncorp.com.jukebox.R;
-import ilioncorp.com.jukebox.model.dao.PromotionsDAO;
 import ilioncorp.com.jukebox.model.dao.PromotionsUserDAO;
 import ilioncorp.com.jukebox.model.dto.PromotionsUserVO;
 import ilioncorp.com.jukebox.model.dto.PromotionsVO;
-import ilioncorp.com.jukebox.utils.constantes.Constantes;
 import ilioncorp.com.jukebox.view.generic.GenericActivity;
 
 import java.text.ParseException;
@@ -64,7 +61,6 @@ public class PromotionActivity extends GenericActivity implements View.OnClickLi
         else{
             tvCodePromotion.setText("Vencido");
             messageToast("La promoción ha vencido");
-
         }
     }
     /**
@@ -83,7 +79,7 @@ public class PromotionActivity extends GenericActivity implements View.OnClickLi
     private boolean verificarVencimiento(String fecha1, String fechaActual) {
         boolean resultado=false;
         try {
-            /**Obtenemos las fechas enviadas en el formato a comparar*/
+            //Obtenemos las fechas enviadas en el formato a comparar
             SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             Date fechaDate1 = formateador.parse(fecha1);
             Date fechaDate2 = formateador.parse(fechaActual);
@@ -113,8 +109,9 @@ public class PromotionActivity extends GenericActivity implements View.OnClickLi
     @Override
     public boolean handleMessage(Message message) {
         promotionsUserVO = (PromotionsUserVO) message.obj;
-        if(promotionsUserVO!=null)
+        if(promotionsUserVO!=null){
             tvTimesHas.setText(getString(R.string.timeHas)+" "+promotionsUserVO.getProUTimes());
+        }
         else {
             promotionsUserVO = new PromotionsUserVO();
             promotionsUserVO.setProUCode(finalCodePromotion);
@@ -123,8 +120,8 @@ public class PromotionActivity extends GenericActivity implements View.OnClickLi
             promotionsUserVO.setProUTimes("0");
             promotionsUserVO.setProUUserId(user.getUid());
             tvTimesHas.setText("Veces que has redimido este cupon 0");
+            promotionsUserDAO.promotionCreate(promotionsUserVO);
         }
-        promotionsUserDAO.promotionCreate(promotionsUserVO);
         return false;
     }
 }

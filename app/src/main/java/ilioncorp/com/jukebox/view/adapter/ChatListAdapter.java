@@ -2,10 +2,8 @@ package ilioncorp.com.jukebox.view.adapter;
 
 import android.content.Context;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.provider.MediaStore;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,14 +13,6 @@ import android.widget.TextView;
 
 
 import com.facebook.drawee.backends.pipeline.Fresco;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.net.MalformedURLException;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
 
 import ilioncorp.com.jukebox.R;
@@ -66,7 +56,9 @@ implements View.OnClickListener{
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         SessionVO session = listUsers.get(position);
-        holder.imageProfile.setImageURI(listUri.get(position));
+        if (Build.VERSION.SDK_INT >= 23) {
+            holder.imageProfile.setImageURI(listUri.get(position));
+        }
         holder.txtName.setText(session.getSessionUserName());
 
     }

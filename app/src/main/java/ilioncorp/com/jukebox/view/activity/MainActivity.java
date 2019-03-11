@@ -232,8 +232,6 @@ public class MainActivity extends GenericActivity implements
                 start();
                 break;
             case 0:
-
-            //finish();
             break;
         }
     }
