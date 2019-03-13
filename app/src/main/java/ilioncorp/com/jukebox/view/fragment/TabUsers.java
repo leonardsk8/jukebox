@@ -153,7 +153,7 @@ public class TabUsers extends GenericFragment implements Handler.Callback,View.O
         hideCharging();
         Object[] objArrays = (Object[]) message.obj;
         listUsers = (ArrayList<SessionVO>) objArrays[0];
-        listUri = (ArrayList<Uri>) objArrays[1];
+        listUri = new ArrayList<>();
         if(listUsers.size()>0) {
             this.tvNoUsers.setVisibility(View.INVISIBLE);
             listRecycleUsers.setVisibility(View.VISIBLE);

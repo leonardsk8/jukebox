@@ -105,12 +105,10 @@ public class SessionDAO extends CRUD implements ValueEventListener,Runnable {
             }
 
         }
-        if (Build.VERSION.SDK_INT >= 23) {
-            new Thread(this).start();
-        }
-        else{
+
+
             sendMessage();
-        }
+
     }
 
 

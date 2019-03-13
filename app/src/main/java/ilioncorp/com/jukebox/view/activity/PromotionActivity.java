@@ -1,5 +1,6 @@
 package ilioncorp.com.jukebox.view.activity;
 
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ public class PromotionActivity extends GenericActivity implements View.OnClickLi
     private TextView tvDescription;
     private TextView tvCountPro;
     private TextView tvTimesHas;
+    private TextView apoyoTxt;
     private String finalCodePromotion;
     private PromotionsUserDAO promotionsUserDAO;
     private android.support.v7.widget.CardView cvBtnCode;
@@ -50,7 +52,13 @@ public class PromotionActivity extends GenericActivity implements View.OnClickLi
         cvBtnCode = findViewById(R.id.cvBtnCode);
         tvExpirationDate = findViewById(R.id.tvExpirationDatePro);
         tvDescription = findViewById(R.id.tvDescriptionPro);
+        apoyoTxt = findViewById(R.id.apoyoTxt);
         tvCountPro = findViewById(R.id.tvCountPro);
+        if (Build.VERSION.SDK_INT >= 23) {
+        apoyoTxt.setVisibility(View.INVISIBLE);
+        }else{
+            apoyoTxt.setVisibility(View.VISIBLE);
+        }
         cvBtnCode.setOnClickListener(this::onClick);
         tvTimesHas = findViewById(R.id.tvTimeshasPro);
         if(!vencido) {
@@ -121,6 +129,9 @@ public class PromotionActivity extends GenericActivity implements View.OnClickLi
             promotionsUserVO.setProUUserId(user.getUid());
             tvTimesHas.setText("Veces que has redimido este cupon 0");
             promotionsUserDAO.promotionCreate(promotionsUserVO);
+        }
+        if (Build.VERSION.SDK_INT <= 23) {
+            apoyoTxt.setText(finalCodePromotion);
         }
         return false;
     }

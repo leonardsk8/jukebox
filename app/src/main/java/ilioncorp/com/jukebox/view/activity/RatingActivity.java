@@ -187,6 +187,7 @@ public class RatingActivity extends GenericActivity implements Handler.Callback,
         tvAverage.setText(aux);
         rbAverage.setRating(averageStars);
         tvTotalRating.setText(listComments.size() + " comments");
+        commentsDAO.updateAverageRating(Float.parseFloat(aux));
     }
 
     @Override
@@ -219,7 +220,6 @@ public class RatingActivity extends GenericActivity implements Handler.Callback,
             commentsVO.setNameUser(Constantes.userActive.getUserName());
             commentsVO.setIdUser(Constantes.userActive.getUserUID());
             commentsDAO.saveComment(commentsVO, Constantes.userActive.getUserUID());
-            commentsDAO.updateAverageRating(Float.parseFloat(tvAverage.getText().toString()));
             editComment = true;
             etLeaveComment.setText("");
             rbLeaveStars.setRating(0);

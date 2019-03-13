@@ -3,7 +3,6 @@ package ilioncorp.com.jukebox.view.adapter;
 import android.content.Context;
 
 import android.net.Uri;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -56,11 +55,11 @@ implements View.OnClickListener{
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         SessionVO session = listUsers.get(position);
-        if (Build.VERSION.SDK_INT >= 23) {
-            holder.imageProfile.setImageURI(listUri.get(position));
-        }
-        holder.txtName.setText(session.getSessionUserName());
+//        if (Build.VERSION.SDK_INT >= 23) {
+//            holder.imageProfile.setImageURI(listUri.get(position));
+//        }
 
+        holder.txtName.setText(session.getSessionUserName());
     }
 
 
@@ -77,11 +76,9 @@ implements View.OnClickListener{
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private com.facebook.drawee.view.SimpleDraweeView imageProfile;
         private TextView txtName;
         public ViewHolder(View itemView) {
             super(itemView);
-            imageProfile = itemView.findViewById(R.id.ImageChat);
             txtName = itemView.findViewById(R.id.tvNameUser);
         }
     }

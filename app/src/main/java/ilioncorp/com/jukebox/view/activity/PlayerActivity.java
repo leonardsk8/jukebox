@@ -33,7 +33,8 @@ public class PlayerActivity extends YouTubeBaseActivity implements YouTubePlayer
         Handler.Callback,View.OnClickListener {
 
 
-
+    public static String APROBADA = "aprobadas";
+    public static String ENVIADAS = "enviadas";
     private YouTubePlayerView playerView;
     private View view;
     private Button btnSend;
@@ -51,6 +52,7 @@ public class PlayerActivity extends YouTubeBaseActivity implements YouTubePlayer
     private EstablishmentVO establishmentVO;
     private EstablishmentDAO establishmentDAO;
     private ReproductionListDAO reproductionListDAO;
+    private ReportesDAO reportesDAO;
 
     @Override
     protected void onCreate(Bundle bundle) {
@@ -85,7 +87,7 @@ public class PlayerActivity extends YouTubeBaseActivity implements YouTubePlayer
         establishmentDAO = new EstablishmentDAO(bridgeEstablishment);
         establishmentDAO.getBar(idBar);
         checkSong();
-
+        reportesDAO = new ReportesDAO(idBar);
 
 
 
@@ -111,7 +113,7 @@ public class PlayerActivity extends YouTubeBaseActivity implements YouTubePlayer
         this.view = view;
         if(!enviada) {
             session.checkSession(bridge, idBar, "no");
-            enviada = true;
+
         }
         else
             Toast.makeText(this,"La canción ya fue enviada",Toast.LENGTH_SHORT).show();
@@ -142,6 +144,11 @@ public class PlayerActivity extends YouTubeBaseActivity implements YouTubePlayer
                     if(!establishmentVO.isRequestApproved()) {
                         song.setApproved(true);
                         state="Aprobada";
+                        reportesDAO.putCanciones(Constantes.userActive.getUserUID(),song.getVideo_id(),
+                                APROBADA);
+                    }else{
+                        reportesDAO.putCanciones(Constantes.userActive.getUserUID(),song.getVideo_id(),
+                                ENVIADAS);
                     }
                     reproductionListDAO = new ReproductionListDAO(idBar,
                             TabListReproducing.bridge, true);
@@ -159,6 +166,7 @@ public class PlayerActivity extends YouTubeBaseActivity implements YouTubePlayer
                     historySongDAO.putSong(historySongVO);
                     Snackbar.make(view, "Canción Enviada", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
+                    enviada = true;
                     Toast.makeText(this, "1 Credito Descontado", Toast.LENGTH_SHORT).show();
                     creditsDAO.takeFromCredit(credits - 1,Constantes.userActive.getUserUID());
                 } else

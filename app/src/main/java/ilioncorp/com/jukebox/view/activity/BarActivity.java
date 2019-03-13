@@ -22,11 +22,13 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import android.widget.Toast;
 import ilioncorp.com.jukebox.R;
 import ilioncorp.com.jukebox.model.dao.CreditsDAO;
+import ilioncorp.com.jukebox.model.dao.ReportesDAO;
 import ilioncorp.com.jukebox.model.dao.SessionDAO;
 import ilioncorp.com.jukebox.model.dto.CreditsVO;
 import ilioncorp.com.jukebox.model.dto.EstablishmentVO;
@@ -55,6 +57,7 @@ public class BarActivity extends GenericActivity implements View.OnClickListener
         private Handler bridge;
         private String answer;
         private View view;
+        Calendar c;
 
 
 
@@ -70,13 +73,14 @@ public class BarActivity extends GenericActivity implements View.OnClickListener
     private com.github.clans.fab.FloatingActionButton subFabOpenSesion;
     private com.github.clans.fab.FloatingActionButton subCredits;
     private com.github.clans.fab.FloatingActionButton subMaps;
-
+    private ReportesDAO reportesDAO;
 
     @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_bar);
+        c  = Calendar.getInstance();
         this.subFabOpenSesion = findViewById(R.id.subFabOpenSesion);
         this.subCredits= findViewById(R.id.subCredits);
         this.subMaps= findViewById(R.id.subMapa);
@@ -84,6 +88,7 @@ public class BarActivity extends GenericActivity implements View.OnClickListener
         establishment = (EstablishmentVO) getIntent().getExtras().getSerializable("establishment");
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         // Set up the ViewPager with the sections adapter.
+        reportesDAO = new ReportesDAO(establishment.getId());
         mViewPager = findViewById(R.id.container_bar);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         tab = findViewById(R.id.tabs);
@@ -98,10 +103,18 @@ public class BarActivity extends GenericActivity implements View.OnClickListener
         subCredits.setOnClickListener(this::onClick);
         subMaps.setOnClickListener(this::onClick);
         generateSession(view,"yes");
+        putVisit();
         }
 
+    private void putVisit() {
 
-
+        reportesDAO.putVisit(Constantes.userActive.getUserUID(), c.get(Calendar.HOUR_OF_DAY)+":"
+        +c.get(Calendar.MINUTE));
+    }
+    private void putSession() {
+        reportesDAO.putLogin(Constantes.userActive.getUserUID(),c.get(Calendar.HOUR_OF_DAY)+":"
+                +c.get(Calendar.MINUTE));
+    }
 
     private void generateSession(View view,String onlyCheck) {
             SessionDAO session = new SessionDAO();
@@ -123,6 +136,7 @@ public class BarActivity extends GenericActivity implements View.OnClickListener
                     session.generatedSession(establishment.getId());
                     Constantes.establishmentVOActual = establishment;
                     messageSnackBar("Sesión generada con el bar", view);
+                    putSession();
 
                 } else if (answer.contains("vetoed")) {
                     messageSnackBar("Te encuentras Vetado de este bar", view);
@@ -150,6 +164,7 @@ public class BarActivity extends GenericActivity implements View.OnClickListener
                     Constantes.establishmentVOActual = establishment;
                     messageSnackBar("Sesión generada con el bar", view);
                     subFabOpenSesion.setLabelText("Cerrar Sesión");
+                    putSession();
                 }
             }else{
                 if (answer.contains("active")) {
@@ -163,6 +178,7 @@ public class BarActivity extends GenericActivity implements View.OnClickListener
             }
             return false;
         }
+
 
 
 
